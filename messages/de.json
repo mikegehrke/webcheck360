@@ -1,0 +1,158 @@
+{
+  "common": {
+    "loading": "Lädt...",
+    "error": "Ein Fehler ist aufgetreten",
+    "success": "Erfolgreich",
+    "submit": "Absenden",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "back": "Zurück",
+    "next": "Weiter",
+    "close": "Schließen",
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "nav": {
+    "home": "Startseite",
+    "funnel": "Website-Check",
+    "admin": "Admin",
+    "language": "Sprache"
+  },
+  "funnel": {
+    "title": "Kostenloser Website-Check",
+    "subtitle": "Erfahren Sie in 60 Sekunden, wie gut Ihre Website wirklich ist",
+    "step1": {
+      "title": "Ihre Website",
+      "description": "Geben Sie die URL Ihrer Website ein",
+      "urlLabel": "Website-URL",
+      "urlPlaceholder": "https://ihre-website.de",
+      "industryLabel": "Branche (optional)",
+      "industryPlaceholder": "z.B. Friseur, Restaurant, Handwerk",
+      "goalLabel": "Ihr Ziel (optional)",
+      "goalPlaceholder": "z.B. Mehr Kunden, Bessere Sichtbarkeit",
+      "button": "Jetzt analysieren"
+    },
+    "step2": {
+      "title": "Analyse läuft",
+      "description": "Wir prüfen Ihre Website auf wichtige Faktoren",
+      "checks": {
+        "mobile": "Mobile Darstellung",
+        "speed": "Ladegeschwindigkeit",
+        "seo": "Suchmaschinenoptimierung",
+        "trust": "Vertrauensfaktoren",
+        "conversion": "Conversion-Elemente"
+      }
+    },
+    "step3": {
+      "title": "Ihr Ergebnis",
+      "overallScore": "Gesamt-Score",
+      "categories": {
+        "performance": "Performance",
+        "mobile": "Mobile UX",
+        "seo": "SEO",
+        "trust": "Vertrauen",
+        "conversion": "Conversion"
+      },
+      "ratings": {
+        "excellent": "Exzellent",
+        "good": "Gut",
+        "needsWork": "Verbesserungspotenzial",
+        "critical": "Kritisch"
+      }
+    },
+    "step4": {
+      "title": "Vollständigen Bericht erhalten",
+      "description": "Möchten Sie die detaillierte Analyse mit konkreten Empfehlungen per E-Mail erhalten?",
+      "nameLabel": "Ihr Name (optional)",
+      "namePlaceholder": "Max Mustermann",
+      "emailLabel": "Ihre E-Mail",
+      "emailPlaceholder": "max@beispiel.de",
+      "consentLabel": "Ich stimme der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu",
+      "button": "Bericht anfordern",
+      "skipButton": "Nein danke, nur Ergebnis ansehen"
+    },
+    "bullets": {
+      "1": "Vollautomatische Analyse in Sekunden",
+      "2": "Klare Handlungsempfehlungen",
+      "3": "100% kostenlos & unverbindlich"
+    }
+  },
+  "results": {
+    "title": "Website-Analyse",
+    "subtitle": "für",
+    "screenshots": {
+      "desktop": "Desktop-Ansicht",
+      "mobile": "Mobile Ansicht"
+    },
+    "sections": {
+      "good": "Das läuft gut",
+      "improve": "Hier liegt Potenzial",
+      "critical": "Dringend verbessern"
+    },
+    "cta": {
+      "title": "Interesse an einer Optimierung?",
+      "description": "Lassen Sie uns unverbindlich besprechen, wie wir Ihre Website verbessern können.",
+      "button": "Kostenloses Gespräch vereinbaren"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "button": "Anmelden",
+      "error": "Ungültige Anmeldedaten"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "stats": {
+        "total": "Gesamt Analysen",
+        "leads": "Leads",
+        "avgScore": "Ø Score",
+        "today": "Heute"
+      }
+    },
+    "audits": {
+      "title": "Alle Analysen",
+      "columns": {
+        "date": "Datum",
+        "website": "Website",
+        "score": "Score",
+        "industry": "Branche",
+        "email": "E-Mail",
+        "status": "Status"
+      },
+      "filters": {
+        "all": "Alle",
+        "withEmail": "Mit E-Mail",
+        "withoutEmail": "Ohne E-Mail",
+        "lowScore": "Score < 50",
+        "last7days": "Letzte 7 Tage",
+        "last30days": "Letzte 30 Tage"
+      },
+      "status": {
+        "new": "Neu",
+        "contacted": "Kontaktiert",
+        "meeting": "Gespräch geführt",
+        "proposal": "Angebot gesendet",
+        "closed": "Abgeschlossen"
+      }
+    },
+    "detail": {
+      "title": "Analyse Details",
+      "leadInfo": "Lead-Informationen",
+      "noLead": "Kein Lead vorhanden",
+      "notes": "Notizen",
+      "addNote": "Notiz hinzufügen",
+      "followUp": "Follow-up Text",
+      "generateFollowUp": "Text generieren"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 WebCheck360. Alle Rechte vorbehalten.",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum"
+  }
+}

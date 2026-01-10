@@ -1,0 +1,1026 @@
+{
+  "audits": [
+    {
+      "id": "80a5d416-ea72-4ffc-90ad-cae9b760cdc0",
+      "url": "https://mg-digital-solutions-beta.vercel.app",
+      "domain": "mg-digital-solutions-beta.vercel.app",
+      "score_total": 85,
+      "scores": {
+        "performance": 99,
+        "mobile_ux": 93,
+        "seo": 60,
+        "trust": 80,
+        "conversion": 85
+      },
+      "issues": [
+        {
+          "id": "seo-multiple-h1",
+          "category": "seo",
+          "severity": "warning",
+          "title": "Mehrere H1-Überschriften",
+          "description": "Die Seite hat 2 H1-Überschriften",
+          "recommendation": "Verwenden Sie nur eine H1-Überschrift pro Seite."
+        },
+        {
+          "id": "seo-canonical-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Canonical-Tag fehlt",
+          "description": "Die Seite hat keinen Canonical-Tag",
+          "recommendation": "Fügen Sie einen Canonical-Tag hinzu, um Duplicate Content zu vermeiden."
+        },
+        {
+          "id": "seo-structured-data-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Strukturierte Daten fehlen",
+          "description": "Die Seite enthält keine strukturierten Daten (JSON-LD)",
+          "recommendation": "Fügen Sie Schema.org Markup hinzu für bessere Suchergebnisse."
+        },
+        {
+          "id": "trust-no-address",
+          "category": "trust",
+          "severity": "info",
+          "title": "Keine Adresse sichtbar",
+          "description": "Keine Geschäftsadresse auf der Seite gefunden",
+          "recommendation": "Eine sichtbare Adresse erhöht das Vertrauen."
+        },
+        {
+          "id": "trust-no-cookie-banner",
+          "category": "trust",
+          "severity": "warning",
+          "title": "Cookie-Banner nicht erkannt",
+          "description": "Kein Cookie-Consent-Banner gefunden",
+          "recommendation": "Ein Cookie-Banner ist für DSGVO-Konformität wichtig."
+        },
+        {
+          "id": "conversion-no-quick-contact",
+          "category": "conversion",
+          "severity": "info",
+          "title": "Keine Schnellkontakt-Optionen",
+          "description": "Keine modernen Kontaktoptionen wie WhatsApp, Chat oder Online-Buchung",
+          "recommendation": "Erwägen Sie WhatsApp Business, einen Chat-Widget oder ein Buchungssystem."
+        }
+      ],
+      "screenshots": {
+        "desktop": "/screenshots/8688d373-d64d-43c2-af8f-894dc24054ec-desktop.jpg",
+        "mobile": "/screenshots/8688d373-d64d-43c2-af8f-894dc24054ec-mobile.jpg"
+      },
+      "raw_data": {
+        "lighthouse": {
+          "performance": 99,
+          "accessibility": 87,
+          "bestPractices": 100,
+          "seo": 100,
+          "metrics": {
+            "lcp": 1787.6889999999999,
+            "fid": 0,
+            "cls": 0,
+            "ttfb": 144.28199999999998,
+            "fcp": 1765.6889999999999,
+            "si": 2352.1086635807906,
+            "tbt": 0
+          },
+          "errors": []
+        },
+        "seo": {
+          "title": "Mike Gehrke · Digital Solutions",
+          "titleLength": 31,
+          "description": "Mike Gehrke · Digital Solutions – Individuelle Webseiten, Apps & digitale Tools für kleine Unternehmen & Selbstständige.",
+          "descriptionLength": 120,
+          "h1Count": 2,
+          "h1Text": [
+            "Individuelle Webseiten, Apps & digitale Tools – schnell umgesetzt.",
+            "Bauprojekte professionell umgesetzt"
+          ],
+          "h2Count": 10,
+          "imageCount": 0,
+          "imagesWithAlt": 0,
+          "imagesWithoutAlt": 0,
+          "internalLinks": 11,
+          "externalLinks": 2,
+          "canonicalUrl": null,
+          "robotsMeta": null,
+          "ogTags": {},
+          "structuredData": false
+        },
+        "trust": {
+          "hasHttps": true,
+          "hasImpressum": true,
+          "hasPrivacy": true,
+          "hasContact": true,
+          "hasPhone": true,
+          "hasEmail": true,
+          "hasAddress": false,
+          "hasSocialProof": true,
+          "hasReviews": true,
+          "hasLogos": false,
+          "hasCookieBanner": false
+        },
+        "conversion": {
+          "hasCta": true,
+          "ctaCount": 9,
+          "ctaAboveFold": true,
+          "hasContactForm": true,
+          "hasPhoneClickable": true,
+          "hasWhatsapp": false,
+          "hasChatWidget": false,
+          "hasBookingSystem": false,
+          "mobileMenuAccessible": true,
+          "hasValueProposition": true
+        }
+      },
+      "created_at": "2026-01-10T22:09:56.231Z",
+      "updated_at": "2026-01-10T22:09:56.231Z"
+    },
+    {
+      "id": "ffbce9cd-98a8-45e0-bfe7-1b605e67a7da",
+      "url": "https://mg-digital-solutions-beta.vercel.app",
+      "domain": "mg-digital-solutions-beta.vercel.app",
+      "score_total": 84,
+      "scores": {
+        "performance": 96,
+        "mobile_ux": 92,
+        "seo": 60,
+        "trust": 80,
+        "conversion": 85
+      },
+      "issues": [
+        {
+          "id": "seo-multiple-h1",
+          "category": "seo",
+          "severity": "warning",
+          "title": "Mehrere H1-Überschriften",
+          "description": "Die Seite hat 2 H1-Überschriften",
+          "recommendation": "Verwenden Sie nur eine H1-Überschrift pro Seite."
+        },
+        {
+          "id": "seo-canonical-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Canonical-Tag fehlt",
+          "description": "Die Seite hat keinen Canonical-Tag",
+          "recommendation": "Fügen Sie einen Canonical-Tag hinzu, um Duplicate Content zu vermeiden."
+        },
+        {
+          "id": "seo-structured-data-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Strukturierte Daten fehlen",
+          "description": "Die Seite enthält keine strukturierten Daten (JSON-LD)",
+          "recommendation": "Fügen Sie Schema.org Markup hinzu für bessere Suchergebnisse."
+        },
+        {
+          "id": "trust-no-address",
+          "category": "trust",
+          "severity": "info",
+          "title": "Keine Adresse sichtbar",
+          "description": "Keine Geschäftsadresse auf der Seite gefunden",
+          "recommendation": "Eine sichtbare Adresse erhöht das Vertrauen."
+        },
+        {
+          "id": "trust-no-cookie-banner",
+          "category": "trust",
+          "severity": "warning",
+          "title": "Cookie-Banner nicht erkannt",
+          "description": "Kein Cookie-Consent-Banner gefunden",
+          "recommendation": "Ein Cookie-Banner ist für DSGVO-Konformität wichtig."
+        },
+        {
+          "id": "conversion-no-quick-contact",
+          "category": "conversion",
+          "severity": "info",
+          "title": "Keine Schnellkontakt-Optionen",
+          "description": "Keine modernen Kontaktoptionen wie WhatsApp, Chat oder Online-Buchung",
+          "recommendation": "Erwägen Sie WhatsApp Business, einen Chat-Widget oder ein Buchungssystem."
+        }
+      ],
+      "screenshots": {
+        "desktop": "/screenshots/212f2fc9-e640-4c6f-a2ae-af4499ee0e9a-desktop.jpg",
+        "mobile": "/screenshots/212f2fc9-e640-4c6f-a2ae-af4499ee0e9a-mobile.jpg"
+      },
+      "raw_data": {
+        "lighthouse": {
+          "performance": 96,
+          "accessibility": 87,
+          "bestPractices": 100,
+          "seo": 100,
+          "metrics": {
+            "lcp": 2610.6059999999998,
+            "fid": 0,
+            "cls": 0,
+            "ttfb": 12.725999999999992,
+            "fcp": 1659.612,
+            "si": 1734.8076353564356,
+            "tbt": 0
+          },
+          "errors": []
+        },
+        "seo": {
+          "title": "Mike Gehrke · Digital Solutions",
+          "titleLength": 31,
+          "description": "Mike Gehrke · Digital Solutions – Individuelle Webseiten, Apps & digitale Tools für kleine Unternehmen & Selbstständige.",
+          "descriptionLength": 120,
+          "h1Count": 2,
+          "h1Text": [
+            "Individuelle Webseiten, Apps & digitale Tools – schnell umgesetzt.",
+            "Bauprojekte professionell umgesetzt"
+          ],
+          "h2Count": 10,
+          "imageCount": 0,
+          "imagesWithAlt": 0,
+          "imagesWithoutAlt": 0,
+          "internalLinks": 11,
+          "externalLinks": 2,
+          "canonicalUrl": null,
+          "robotsMeta": null,
+          "ogTags": {},
+          "structuredData": false
+        },
+        "trust": {
+          "hasHttps": true,
+          "hasImpressum": true,
+          "hasPrivacy": true,
+          "hasContact": true,
+          "hasPhone": true,
+          "hasEmail": true,
+          "hasAddress": false,
+          "hasSocialProof": true,
+          "hasReviews": true,
+          "hasLogos": false,
+          "hasCookieBanner": false
+        },
+        "conversion": {
+          "hasCta": true,
+          "ctaCount": 9,
+          "ctaAboveFold": true,
+          "hasContactForm": true,
+          "hasPhoneClickable": true,
+          "hasWhatsapp": false,
+          "hasChatWidget": false,
+          "hasBookingSystem": false,
+          "mobileMenuAccessible": true,
+          "hasValueProposition": true
+        }
+      },
+      "created_at": "2026-01-10T22:12:44.932Z",
+      "updated_at": "2026-01-10T22:12:44.932Z"
+    },
+    {
+      "id": "3e0185ee-8115-40e8-84d0-3bbdead2d215",
+      "url": "https://barber.de.ivof.com/friseur-hairsquare-koeln/",
+      "domain": "barber.de.ivof.com",
+      "score_total": 60,
+      "scores": {
+        "performance": 58,
+        "mobile_ux": 74,
+        "seo": 55,
+        "trust": 65,
+        "conversion": 30
+      },
+      "issues": [
+        {
+          "id": "seo-description-missing",
+          "category": "seo",
+          "severity": "critical",
+          "title": "Meta-Description fehlt",
+          "description": "Die Seite hat keine Meta-Description",
+          "recommendation": "Fügen Sie eine aussagekräftige Meta-Description hinzu."
+        },
+        {
+          "id": "seo-alt-partial",
+          "category": "seo",
+          "severity": "warning",
+          "title": "Einige Bilder ohne Alt-Text",
+          "description": "1 von 9 Bildern haben keinen Alt-Text",
+          "recommendation": "Fügen Sie allen Bildern beschreibende Alt-Texte hinzu."
+        },
+        {
+          "id": "seo-structured-data-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Strukturierte Daten fehlen",
+          "description": "Die Seite enthält keine strukturierten Daten (JSON-LD)",
+          "recommendation": "Fügen Sie Schema.org Markup hinzu für bessere Suchergebnisse."
+        },
+        {
+          "id": "trust-no-impressum",
+          "category": "trust",
+          "severity": "critical",
+          "title": "Impressum fehlt",
+          "description": "Kein Impressum-Link gefunden",
+          "recommendation": "Ein Impressum ist in Deutschland gesetzlich vorgeschrieben."
+        },
+        {
+          "id": "trust-no-privacy",
+          "category": "trust",
+          "severity": "critical",
+          "title": "Datenschutzerklärung fehlt",
+          "description": "Keine Datenschutzerklärung gefunden",
+          "recommendation": "Eine Datenschutzerklärung ist gesetzlich vorgeschrieben."
+        },
+        {
+          "id": "conversion-no-cta",
+          "category": "conversion",
+          "severity": "critical",
+          "title": "Kein Call-to-Action gefunden",
+          "description": "Es wurde kein klarer Handlungsaufruf gefunden",
+          "recommendation": "Fügen Sie auffällige CTA-Buttons hinzu (z.B. \"Jetzt Termin buchen\")."
+        },
+        {
+          "id": "conversion-no-form",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Kein Kontaktformular",
+          "description": "Es wurde kein Kontaktformular gefunden",
+          "recommendation": "Ein Kontaktformular senkt die Hemmschwelle zur Kontaktaufnahme."
+        },
+        {
+          "id": "conversion-phone-not-clickable",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Telefonnummer nicht klickbar",
+          "description": "Die Telefonnummer ist nicht als tel:-Link formatiert",
+          "recommendation": "Machen Sie die Telefonnummer klickbar für mobile Nutzer."
+        },
+        {
+          "id": "conversion-mobile-nav",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Mobile Navigation unklar",
+          "description": "Die mobile Navigation ist nicht eindeutig erkennbar",
+          "recommendation": "Stellen Sie sicher, dass die mobile Navigation leicht zugänglich ist."
+        }
+      ],
+      "screenshots": {
+        "desktop": "/screenshots/6c9b42c2-9df9-4b7e-b83a-c049136f8531-desktop.jpg",
+        "mobile": "/screenshots/6c9b42c2-9df9-4b7e-b83a-c049136f8531-mobile.jpg"
+      },
+      "raw_data": {
+        "lighthouse": {
+          "performance": 58,
+          "accessibility": 89,
+          "bestPractices": 100,
+          "seo": 86,
+          "metrics": {
+            "lcp": 2828.835,
+            "fid": 165.39350000000013,
+            "cls": 0.933649289099526,
+            "ttfb": 791.9579999999996,
+            "fcp": 2374.397,
+            "si": 8840.413826064661,
+            "tbt": 165.39350000000013
+          },
+          "errors": []
+        },
+        "seo": {
+          "title": "Friseur Hairsquare Köln – Barber",
+          "titleLength": 32,
+          "description": null,
+          "descriptionLength": 0,
+          "h1Count": 1,
+          "h1Text": [
+            "Friseur Hairsquare Köln"
+          ],
+          "h2Count": 0,
+          "imageCount": 9,
+          "imagesWithAlt": 8,
+          "imagesWithoutAlt": 1,
+          "internalLinks": 1,
+          "externalLinks": 2,
+          "canonicalUrl": "https://barber.de.ivof.com/friseur-hairsquare-koeln/",
+          "robotsMeta": "max-image-preview:large",
+          "ogTags": {},
+          "structuredData": false
+        },
+        "trust": {
+          "hasHttps": true,
+          "hasImpressum": false,
+          "hasPrivacy": false,
+          "hasContact": false,
+          "hasPhone": true,
+          "hasEmail": true,
+          "hasAddress": true,
+          "hasSocialProof": true,
+          "hasReviews": true,
+          "hasLogos": true,
+          "hasCookieBanner": true
+        },
+        "conversion": {
+          "hasCta": false,
+          "ctaCount": 0,
+          "ctaAboveFold": false,
+          "hasContactForm": false,
+          "hasPhoneClickable": false,
+          "hasWhatsapp": false,
+          "hasChatWidget": true,
+          "hasBookingSystem": false,
+          "mobileMenuAccessible": false,
+          "hasValueProposition": true
+        }
+      },
+      "created_at": "2026-01-10T22:13:59.295Z",
+      "updated_at": "2026-01-10T22:13:59.296Z"
+    },
+    {
+      "id": "5e93ef14-f44f-4d72-8d0c-88f416f2bedd",
+      "url": "https://barber.de.ivof.com/friseur-hairsquare-koeln/#google_vignette",
+      "domain": "barber.de.ivof.com",
+      "score_total": 58,
+      "scores": {
+        "performance": 54,
+        "mobile_ux": 72,
+        "seo": 55,
+        "trust": 65,
+        "conversion": 30
+      },
+      "issues": [
+        {
+          "id": "seo-description-missing",
+          "category": "seo",
+          "severity": "critical",
+          "title": "Meta-Description fehlt",
+          "description": "Die Seite hat keine Meta-Description",
+          "recommendation": "Fügen Sie eine aussagekräftige Meta-Description hinzu."
+        },
+        {
+          "id": "seo-alt-partial",
+          "category": "seo",
+          "severity": "warning",
+          "title": "Einige Bilder ohne Alt-Text",
+          "description": "1 von 9 Bildern haben keinen Alt-Text",
+          "recommendation": "Fügen Sie allen Bildern beschreibende Alt-Texte hinzu."
+        },
+        {
+          "id": "seo-structured-data-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Strukturierte Daten fehlen",
+          "description": "Die Seite enthält keine strukturierten Daten (JSON-LD)",
+          "recommendation": "Fügen Sie Schema.org Markup hinzu für bessere Suchergebnisse."
+        },
+        {
+          "id": "trust-no-impressum",
+          "category": "trust",
+          "severity": "critical",
+          "title": "Impressum fehlt",
+          "description": "Kein Impressum-Link gefunden",
+          "recommendation": "Ein Impressum ist in Deutschland gesetzlich vorgeschrieben."
+        },
+        {
+          "id": "trust-no-privacy",
+          "category": "trust",
+          "severity": "critical",
+          "title": "Datenschutzerklärung fehlt",
+          "description": "Keine Datenschutzerklärung gefunden",
+          "recommendation": "Eine Datenschutzerklärung ist gesetzlich vorgeschrieben."
+        },
+        {
+          "id": "conversion-no-cta",
+          "category": "conversion",
+          "severity": "critical",
+          "title": "Kein Call-to-Action gefunden",
+          "description": "Es wurde kein klarer Handlungsaufruf gefunden",
+          "recommendation": "Fügen Sie auffällige CTA-Buttons hinzu (z.B. \"Jetzt Termin buchen\")."
+        },
+        {
+          "id": "conversion-no-form",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Kein Kontaktformular",
+          "description": "Es wurde kein Kontaktformular gefunden",
+          "recommendation": "Ein Kontaktformular senkt die Hemmschwelle zur Kontaktaufnahme."
+        },
+        {
+          "id": "conversion-phone-not-clickable",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Telefonnummer nicht klickbar",
+          "description": "Die Telefonnummer ist nicht als tel:-Link formatiert",
+          "recommendation": "Machen Sie die Telefonnummer klickbar für mobile Nutzer."
+        },
+        {
+          "id": "conversion-mobile-nav",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Mobile Navigation unklar",
+          "description": "Die mobile Navigation ist nicht eindeutig erkennbar",
+          "recommendation": "Stellen Sie sicher, dass die mobile Navigation leicht zugänglich ist."
+        }
+      ],
+      "screenshots": {
+        "desktop": "/screenshots/1655a76a-dcc5-4cab-ac26-c3302c57af0e-desktop.jpg",
+        "mobile": "/screenshots/1655a76a-dcc5-4cab-ac26-c3302c57af0e-mobile.jpg"
+      },
+      "raw_data": {
+        "lighthouse": {
+          "performance": 54,
+          "accessibility": 89,
+          "bestPractices": 100,
+          "seo": 86,
+          "metrics": {
+            "lcp": 5693.587,
+            "fid": 86,
+            "cls": 0.9939125461860695,
+            "ttfb": 100.881,
+            "fcp": 1238.599,
+            "si": 2609.1049000186613,
+            "tbt": 86
+          },
+          "errors": []
+        },
+        "seo": {
+          "title": "Friseur Hairsquare Köln – Barber",
+          "titleLength": 32,
+          "description": null,
+          "descriptionLength": 0,
+          "h1Count": 1,
+          "h1Text": [
+            "Friseur Hairsquare Köln"
+          ],
+          "h2Count": 0,
+          "imageCount": 9,
+          "imagesWithAlt": 8,
+          "imagesWithoutAlt": 1,
+          "internalLinks": 1,
+          "externalLinks": 2,
+          "canonicalUrl": "https://barber.de.ivof.com/friseur-hairsquare-koeln/",
+          "robotsMeta": "max-image-preview:large",
+          "ogTags": {},
+          "structuredData": false
+        },
+        "trust": {
+          "hasHttps": true,
+          "hasImpressum": false,
+          "hasPrivacy": false,
+          "hasContact": false,
+          "hasPhone": true,
+          "hasEmail": true,
+          "hasAddress": true,
+          "hasSocialProof": true,
+          "hasReviews": true,
+          "hasLogos": true,
+          "hasCookieBanner": true
+        },
+        "conversion": {
+          "hasCta": false,
+          "ctaCount": 0,
+          "ctaAboveFold": false,
+          "hasContactForm": false,
+          "hasPhoneClickable": false,
+          "hasWhatsapp": false,
+          "hasChatWidget": true,
+          "hasBookingSystem": false,
+          "mobileMenuAccessible": false,
+          "hasValueProposition": true
+        }
+      },
+      "created_at": "2026-01-10T22:17:36.728Z",
+      "updated_at": "2026-01-10T22:17:36.728Z"
+    },
+    {
+      "id": "dfc7d45e-10ab-4491-b82c-585a680f6975",
+      "url": "https://haircollege.de",
+      "domain": "haircollege.de",
+      "score_total": 71,
+      "scores": {
+        "performance": 55,
+        "mobile_ux": 74,
+        "seo": 60,
+        "trust": 100,
+        "conversion": 85
+      },
+      "issues": [
+        {
+          "id": "seo-description-missing",
+          "category": "seo",
+          "severity": "critical",
+          "title": "Meta-Description fehlt",
+          "description": "Die Seite hat keine Meta-Description",
+          "recommendation": "Fügen Sie eine aussagekräftige Meta-Description hinzu."
+        },
+        {
+          "id": "seo-multiple-h1",
+          "category": "seo",
+          "severity": "warning",
+          "title": "Mehrere H1-Überschriften",
+          "description": "Die Seite hat 3 H1-Überschriften",
+          "recommendation": "Verwenden Sie nur eine H1-Überschrift pro Seite."
+        },
+        {
+          "id": "seo-alt-missing",
+          "category": "seo",
+          "severity": "critical",
+          "title": "Viele Bilder ohne Alt-Text",
+          "description": "9 von 14 Bildern haben keinen Alt-Text",
+          "recommendation": "Alt-Texte sind wichtig für SEO und Barrierefreiheit."
+        },
+        {
+          "id": "conversion-cta-below-fold",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "CTA nicht sofort sichtbar",
+          "description": "Der Haupt-Call-to-Action ist nicht im sichtbaren Bereich",
+          "recommendation": "Platzieren Sie einen CTA-Button im sofort sichtbaren Bereich."
+        }
+      ],
+      "screenshots": {
+        "desktop": "/screenshots/68714062-4c5d-48dd-b8e4-a25ab0878d31-desktop.jpg",
+        "mobile": "/screenshots/68714062-4c5d-48dd-b8e4-a25ab0878d31-mobile.jpg"
+      },
+      "raw_data": {
+        "lighthouse": {
+          "performance": 55,
+          "accessibility": 92,
+          "bestPractices": 100,
+          "seo": 93,
+          "metrics": {
+            "lcp": 7897.389000000003,
+            "fid": 136,
+            "cls": 0.00605576107144626,
+            "ttfb": 1487.363,
+            "fcp": 7155.824000000002,
+            "si": 13768.347305584412,
+            "tbt": 136
+          },
+          "errors": []
+        },
+        "seo": {
+          "title": "Hair College Haartransplantation -",
+          "titleLength": 34,
+          "description": null,
+          "descriptionLength": 0,
+          "h1Count": 3,
+          "h1Text": [
+            "Endlich wieder volles Haar.",
+            "Haartransplantation in Köln bei Hair College",
+            "Endlich wiedervolles Haar"
+          ],
+          "h2Count": 42,
+          "imageCount": 14,
+          "imagesWithAlt": 5,
+          "imagesWithoutAlt": 9,
+          "internalLinks": 81,
+          "externalLinks": 30,
+          "canonicalUrl": "https://haircollege.de/",
+          "robotsMeta": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+          "ogTags": {
+            "og:locale": "en_US",
+            "og:type": "website",
+            "og:title": "Hair College Haartransplantation -",
+            "og:description": "info@haircollege.de Facebook Instagram Youtube HAIR COLLEGE Home Leistungen Über Uns Nachsorge Preise Karriere Kontakt Home Leistungen Über Uns Nachsorge Preise Karriere Kontakt Info@Haircollege.De HAIR COLLEGE Menu Home Leistungen Über Uns Nachsorge Preise Karriere Kontakt HAIR COLLEGE Menu Close Home Leistungen Über Uns Nachsorge Preise Karriere Kontakt Close Home Leistungen Über Uns Nachsorge Preise Karriere Kontakt […]",
+            "og:url": "https://haircollege.de/",
+            "og:image": "https://haircollege.de/wp-content/uploads/2025/12/FA-005_Fussbodenaufkleber_als_Ab1.png",
+            "og:image:width": "653",
+            "og:image:height": "382",
+            "og:image:type": "image/png"
+          },
+          "structuredData": true
+        },
+        "trust": {
+          "hasHttps": true,
+          "hasImpressum": true,
+          "hasPrivacy": true,
+          "hasContact": true,
+          "hasPhone": true,
+          "hasEmail": true,
+          "hasAddress": true,
+          "hasSocialProof": true,
+          "hasReviews": true,
+          "hasLogos": true,
+          "hasCookieBanner": true
+        },
+        "conversion": {
+          "hasCta": true,
+          "ctaCount": 2,
+          "ctaAboveFold": false,
+          "hasContactForm": true,
+          "hasPhoneClickable": true,
+          "hasWhatsapp": true,
+          "hasChatWidget": true,
+          "hasBookingSystem": false,
+          "mobileMenuAccessible": true,
+          "hasValueProposition": true
+        }
+      },
+      "created_at": "2026-01-10T22:49:16.901Z",
+      "updated_at": "2026-01-10T22:49:16.901Z"
+    },
+    {
+      "id": "a1b8b5d0-f63c-4295-b4b7-3df26709df17",
+      "url": "https://haircollege.de",
+      "domain": "haircollege.de",
+      "score_total": 0,
+      "scores": {
+        "performance": 0,
+        "mobile_ux": 0,
+        "seo": 0,
+        "trust": 0,
+        "conversion": 0
+      },
+      "issues": [
+        {
+          "id": "seo-error",
+          "category": "seo",
+          "severity": "critical",
+          "title": "SEO-Analyse fehlgeschlagen",
+          "description": "Die Seite konnte nicht analysiert werden",
+          "recommendation": "Überprüfen Sie, ob die Website erreichbar ist."
+        },
+        {
+          "id": "trust-error",
+          "category": "trust",
+          "severity": "warning",
+          "title": "Trust-Analyse unvollständig",
+          "description": "Einige Trust-Faktoren konnten nicht geprüft werden",
+          "recommendation": "Überprüfen Sie die Website manuell."
+        },
+        {
+          "id": "conversion-error",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Conversion-Analyse unvollständig",
+          "description": "Einige Conversion-Faktoren konnten nicht geprüft werden",
+          "recommendation": "Überprüfen Sie die Website manuell."
+        }
+      ],
+      "screenshots": {
+        "desktop": null,
+        "mobile": null
+      },
+      "raw_data": {
+        "lighthouse": {
+          "performance": 0,
+          "accessibility": 0,
+          "bestPractices": 0,
+          "seo": 0,
+          "metrics": {
+            "lcp": 0,
+            "fid": 0,
+            "cls": 0,
+            "ttfb": 0,
+            "fcp": 0,
+            "si": 0,
+            "tbt": 0
+          },
+          "errors": [
+            "Lighthouse error: Protocol error (Debugger.setSkipAllPauses): Protocol error (Debugger.setSkipAllPauses): Target closed"
+          ]
+        },
+        "seo": {
+          "title": null,
+          "titleLength": 0,
+          "description": null,
+          "descriptionLength": 0,
+          "h1Count": 0,
+          "h1Text": [],
+          "h2Count": 0,
+          "imageCount": 0,
+          "imagesWithAlt": 0,
+          "imagesWithoutAlt": 0,
+          "internalLinks": 0,
+          "externalLinks": 0,
+          "canonicalUrl": null,
+          "robotsMeta": null,
+          "ogTags": {},
+          "structuredData": false
+        },
+        "trust": {
+          "hasHttps": true,
+          "hasImpressum": false,
+          "hasPrivacy": false,
+          "hasContact": false,
+          "hasPhone": false,
+          "hasEmail": false,
+          "hasAddress": false,
+          "hasSocialProof": false,
+          "hasReviews": false,
+          "hasLogos": false,
+          "hasCookieBanner": false
+        },
+        "conversion": {
+          "hasCta": false,
+          "ctaCount": 0,
+          "ctaAboveFold": false,
+          "hasContactForm": false,
+          "hasPhoneClickable": false,
+          "hasWhatsapp": false,
+          "hasChatWidget": false,
+          "hasBookingSystem": false,
+          "mobileMenuAccessible": false,
+          "hasValueProposition": false
+        }
+      },
+      "created_at": "2026-01-10T22:49:20.218Z",
+      "updated_at": "2026-01-10T22:49:20.218Z"
+    },
+    {
+      "id": "c02023ab-24bb-4289-97df-5a7c89127274",
+      "url": "https://www.bauerbauerhairdressers.com",
+      "domain": "bauerbauerhairdressers.com",
+      "score_total": 45,
+      "scores": {
+        "performance": 44,
+        "mobile_ux": 67,
+        "seo": 50,
+        "trust": 25,
+        "conversion": 15
+      },
+      "issues": [
+        {
+          "id": "seo-description-missing",
+          "category": "seo",
+          "severity": "critical",
+          "title": "Meta-Description fehlt",
+          "description": "Die Seite hat keine Meta-Description",
+          "recommendation": "Fügen Sie eine aussagekräftige Meta-Description hinzu."
+        },
+        {
+          "id": "seo-canonical-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Canonical-Tag fehlt",
+          "description": "Die Seite hat keinen Canonical-Tag",
+          "recommendation": "Fügen Sie einen Canonical-Tag hinzu, um Duplicate Content zu vermeiden."
+        },
+        {
+          "id": "seo-structured-data-missing",
+          "category": "seo",
+          "severity": "info",
+          "title": "Strukturierte Daten fehlen",
+          "description": "Die Seite enthält keine strukturierten Daten (JSON-LD)",
+          "recommendation": "Fügen Sie Schema.org Markup hinzu für bessere Suchergebnisse."
+        },
+        {
+          "id": "trust-no-impressum",
+          "category": "trust",
+          "severity": "critical",
+          "title": "Impressum fehlt",
+          "description": "Kein Impressum-Link gefunden",
+          "recommendation": "Ein Impressum ist in Deutschland gesetzlich vorgeschrieben."
+        },
+        {
+          "id": "trust-no-privacy",
+          "category": "trust",
+          "severity": "critical",
+          "title": "Datenschutzerklärung fehlt",
+          "description": "Keine Datenschutzerklärung gefunden",
+          "recommendation": "Eine Datenschutzerklärung ist gesetzlich vorgeschrieben."
+        },
+        {
+          "id": "trust-no-contact",
+          "category": "trust",
+          "severity": "critical",
+          "title": "Keine Kontaktdaten",
+          "description": "Keine Kontaktmöglichkeiten gefunden",
+          "recommendation": "Fügen Sie Kontaktinformationen hinzu (Telefon, E-Mail)."
+        },
+        {
+          "id": "trust-no-address",
+          "category": "trust",
+          "severity": "info",
+          "title": "Keine Adresse sichtbar",
+          "description": "Keine Geschäftsadresse auf der Seite gefunden",
+          "recommendation": "Eine sichtbare Adresse erhöht das Vertrauen."
+        },
+        {
+          "id": "trust-no-social-proof",
+          "category": "trust",
+          "severity": "warning",
+          "title": "Kein Social Proof",
+          "description": "Keine Kundenbewertungen oder Testimonials gefunden",
+          "recommendation": "Zeigen Sie Kundenbewertungen oder Referenzen."
+        },
+        {
+          "id": "conversion-no-cta",
+          "category": "conversion",
+          "severity": "critical",
+          "title": "Kein Call-to-Action gefunden",
+          "description": "Es wurde kein klarer Handlungsaufruf gefunden",
+          "recommendation": "Fügen Sie auffällige CTA-Buttons hinzu (z.B. \"Jetzt Termin buchen\")."
+        },
+        {
+          "id": "conversion-no-form",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Kein Kontaktformular",
+          "description": "Es wurde kein Kontaktformular gefunden",
+          "recommendation": "Ein Kontaktformular senkt die Hemmschwelle zur Kontaktaufnahme."
+        },
+        {
+          "id": "conversion-phone-not-clickable",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Telefonnummer nicht klickbar",
+          "description": "Die Telefonnummer ist nicht als tel:-Link formatiert",
+          "recommendation": "Machen Sie die Telefonnummer klickbar für mobile Nutzer."
+        },
+        {
+          "id": "conversion-no-quick-contact",
+          "category": "conversion",
+          "severity": "info",
+          "title": "Keine Schnellkontakt-Optionen",
+          "description": "Keine modernen Kontaktoptionen wie WhatsApp, Chat oder Online-Buchung",
+          "recommendation": "Erwägen Sie WhatsApp Business, einen Chat-Widget oder ein Buchungssystem."
+        },
+        {
+          "id": "conversion-mobile-nav",
+          "category": "conversion",
+          "severity": "warning",
+          "title": "Mobile Navigation unklar",
+          "description": "Die mobile Navigation ist nicht eindeutig erkennbar",
+          "recommendation": "Stellen Sie sicher, dass die mobile Navigation leicht zugänglich ist."
+        }
+      ],
+      "screenshots": {
+        "desktop": null,
+        "mobile": "/screenshots/176c7253-f29b-4197-8947-c291ef5fcfcc-mobile.jpg"
+      },
+      "raw_data": {
+        "lighthouse": {
+          "performance": 44,
+          "accessibility": 89,
+          "bestPractices": 81,
+          "seo": 92,
+          "metrics": {
+            "lcp": 7607.527999999998,
+            "fid": 1548.3615,
+            "cls": 0.004615536067249163,
+            "ttfb": 28.012,
+            "fcp": 1910.7949999999998,
+            "si": 5199.548080431775,
+            "tbt": 1548.3615
+          },
+          "errors": []
+        },
+        "seo": {
+          "title": "Attention Required! | Cloudflare",
+          "titleLength": 32,
+          "description": null,
+          "descriptionLength": 0,
+          "h1Count": 1,
+          "h1Text": [
+            "Sorry, you have been blocked"
+          ],
+          "h2Count": 3,
+          "imageCount": 0,
+          "imagesWithAlt": 0,
+          "imagesWithoutAlt": 0,
+          "internalLinks": 0,
+          "externalLinks": 1,
+          "canonicalUrl": null,
+          "robotsMeta": "noindex, nofollow",
+          "ogTags": {},
+          "structuredData": false
+        },
+        "trust": {
+          "hasHttps": true,
+          "hasImpressum": false,
+          "hasPrivacy": false,
+          "hasContact": false,
+          "hasPhone": false,
+          "hasEmail": false,
+          "hasAddress": false,
+          "hasSocialProof": false,
+          "hasReviews": false,
+          "hasLogos": true,
+          "hasCookieBanner": true
+        },
+        "conversion": {
+          "hasCta": false,
+          "ctaCount": 0,
+          "ctaAboveFold": false,
+          "hasContactForm": false,
+          "hasPhoneClickable": false,
+          "hasWhatsapp": false,
+          "hasChatWidget": false,
+          "hasBookingSystem": false,
+          "mobileMenuAccessible": false,
+          "hasValueProposition": true
+        }
+      },
+      "created_at": "2026-01-10T23:15:18.390Z",
+      "updated_at": "2026-01-10T23:15:18.391Z"
+    }
+  ],
+  "leads": [
+    {
+      "id": "4788b164-e69a-4bff-bdae-694ba8474086",
+      "audit_id": "c02023ab-24bb-4289-97df-5a7c89127274",
+      "name": "marc",
+      "email": "ibuyplus@gmx.com",
+      "consent": true,
+      "status": "new",
+      "created_at": "2026-01-10T23:40:09.531Z",
+      "updated_at": "2026-01-10T23:40:43.788Z"
+    }
+  ],
+  "notes": [
+    {
+      "id": "2aa54308-85b6-459e-b0c6-16b17062c25d",
+      "audit_id": "c02023ab-24bb-4289-97df-5a7c89127274",
+      "content": "📧 Kontaktanfrage erhalten\nName: marc\nEmail: ibuyplus@gmx.com\nTelefon: 8654321234\nNachricht: ndlksndklams",
+      "created_at": "2026-01-10T23:40:09.532Z"
+    }
+  ]
+}

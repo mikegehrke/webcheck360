@@ -1,0 +1,158 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "nav": {
+    "home": "Home",
+    "funnel": "Website Check",
+    "admin": "Admin",
+    "language": "Language"
+  },
+  "funnel": {
+    "title": "Free Website Check",
+    "subtitle": "Find out in 60 seconds how good your website really is",
+    "step1": {
+      "title": "Your Website",
+      "description": "Enter your website URL",
+      "urlLabel": "Website URL",
+      "urlPlaceholder": "https://your-website.com",
+      "industryLabel": "Industry (optional)",
+      "industryPlaceholder": "e.g. Salon, Restaurant, Craft",
+      "goalLabel": "Your Goal (optional)",
+      "goalPlaceholder": "e.g. More customers, Better visibility",
+      "button": "Analyze now"
+    },
+    "step2": {
+      "title": "Analysis in Progress",
+      "description": "We're checking your website for important factors",
+      "checks": {
+        "mobile": "Mobile Display",
+        "speed": "Loading Speed",
+        "seo": "Search Engine Optimization",
+        "trust": "Trust Factors",
+        "conversion": "Conversion Elements"
+      }
+    },
+    "step3": {
+      "title": "Your Results",
+      "overallScore": "Overall Score",
+      "categories": {
+        "performance": "Performance",
+        "mobile": "Mobile UX",
+        "seo": "SEO",
+        "trust": "Trust",
+        "conversion": "Conversion"
+      },
+      "ratings": {
+        "excellent": "Excellent",
+        "good": "Good",
+        "needsWork": "Needs Improvement",
+        "critical": "Critical"
+      }
+    },
+    "step4": {
+      "title": "Get Your Full Report",
+      "description": "Would you like to receive the detailed analysis with specific recommendations via email?",
+      "nameLabel": "Your Name (optional)",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Your Email",
+      "emailPlaceholder": "john@example.com",
+      "consentLabel": "I agree to the processing of my data according to the privacy policy",
+      "button": "Request Report",
+      "skipButton": "No thanks, just view results"
+    },
+    "bullets": {
+      "1": "Fully automatic analysis in seconds",
+      "2": "Clear action recommendations",
+      "3": "100% free & no obligation"
+    }
+  },
+  "results": {
+    "title": "Website Analysis",
+    "subtitle": "for",
+    "screenshots": {
+      "desktop": "Desktop View",
+      "mobile": "Mobile View"
+    },
+    "sections": {
+      "good": "What's working well",
+      "improve": "Room for improvement",
+      "critical": "Needs immediate attention"
+    },
+    "cta": {
+      "title": "Interested in optimization?",
+      "description": "Let's discuss how we can improve your website - no obligation.",
+      "button": "Schedule a free consultation"
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "email": "Email",
+      "password": "Password",
+      "button": "Sign In",
+      "error": "Invalid credentials"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "stats": {
+        "total": "Total Audits",
+        "leads": "Leads",
+        "avgScore": "Avg Score",
+        "today": "Today"
+      }
+    },
+    "audits": {
+      "title": "All Audits",
+      "columns": {
+        "date": "Date",
+        "website": "Website",
+        "score": "Score",
+        "industry": "Industry",
+        "email": "Email",
+        "status": "Status"
+      },
+      "filters": {
+        "all": "All",
+        "withEmail": "With Email",
+        "withoutEmail": "Without Email",
+        "lowScore": "Score < 50",
+        "last7days": "Last 7 days",
+        "last30days": "Last 30 days"
+      },
+      "status": {
+        "new": "New",
+        "contacted": "Contacted",
+        "meeting": "Meeting Done",
+        "proposal": "Proposal Sent",
+        "closed": "Closed"
+      }
+    },
+    "detail": {
+      "title": "Audit Details",
+      "leadInfo": "Lead Information",
+      "noLead": "No lead data",
+      "notes": "Notes",
+      "addNote": "Add Note",
+      "followUp": "Follow-up Text",
+      "generateFollowUp": "Generate Text"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 WebCheck360. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "imprint": "Imprint"
+  }
+}
