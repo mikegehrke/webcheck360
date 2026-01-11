@@ -1,9 +1,16 @@
-import { Low } from 'lowdb';
-import { JSONFile } from 'lowdb/node';
-import path from 'path';
-import fs from 'fs';
+// Database - Vercel compatible (in-memory on serverless)
 import { v4 as uuidv4 } from 'uuid';
 import { Audit, Lead, AdminNote, LeadStatus, AuditScores, AuditIssue, AuditScreenshots } from './types';
+
+// Check if we're on Vercel
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
+
+// In-memory storage for Vercel (data doesn't persist between requests)
+let memoryDb = {
+  audits: [] as Audit[],
+  leads: [] as Lead[],
+  notes: [] as AdminNote[]
+};
 
 // Database schema
 interface DbSchema {
@@ -12,36 +19,50 @@ interface DbSchema {
   notes: AdminNote[];
 }
 
-const DATA_DIR = path.join(process.cwd(), 'data');
-const DB_PATH = path.join(DATA_DIR, 'db.json');
+// Lazy-initialized lowdb (only for local development)
+let db: any = null;
+let dbInitialized = false;
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-// Default data
-const defaultData: DbSchema = {
-  audits: [],
-  leads: [],
-  notes: []
-};
-
-// Initialize database
-const adapter = new JSONFile<DbSchema>(DB_PATH);
-const db = new Low<DbSchema>(adapter, defaultData);
-
-// Initialize on first import
-async function initDb() {
-  await db.read();
-  if (!db.data) {
-    db.data = defaultData;
-    await db.write();
+async function getDb() {
+  // On Vercel: Use in-memory storage
+  if (isVercel) {
+    return null;
   }
+  
+  // Local: Use lowdb
+  if (!dbInitialized) {
+    try {
+      const { Low } = await import('lowdb');
+      const { JSONFile } = await import('lowdb/node');
+      const path = await import('path');
+      const fs = await import('fs');
+      
+      const DATA_DIR = path.join(process.cwd(), 'data');
+      const DB_PATH = path.join(DATA_DIR, 'db.json');
+      
+      // Ensure data directory exists
+      if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      }
+      
+      const defaultData: DbSchema = { audits: [], leads: [], notes: [] };
+      const adapter = new JSONFile<DbSchema>(DB_PATH);
+      db = new Low<DbSchema>(adapter, defaultData);
+      
+      await db.read();
+      if (!db.data) {
+        db.data = defaultData;
+        await db.write();
+      }
+    } catch (err) {
+      console.error('Failed to initialize lowdb:', err);
+      db = null;
+    }
+    dbInitialized = true;
+  }
+  
+  return db;
 }
-
-// Call init
-initDb();
 
 // Helper functions
 export async function createAudit(data: {
@@ -55,8 +76,6 @@ export async function createAudit(data: {
   industry?: string;
   goal?: string;
 }): Promise<Audit> {
-  await db.read();
-  
   const audit: Audit = {
     id: uuidv4(),
     url: data.url,
@@ -71,64 +90,94 @@ export async function createAudit(data: {
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
-  
-  db.data!.audits.push(audit);
-  await db.write();
+
+  const localDb = await getDb();
+  if (localDb) {
+    await localDb.read();
+    localDb.data!.audits.push(audit);
+    await localDb.write();
+  } else {
+    memoryDb.audits.push(audit);
+  }
   
   return audit;
 }
 
 export async function getAuditById(id: string): Promise<Audit | null> {
-  await db.read();
-  return db.data!.audits.find(a => a.id === id) || null;
+  const localDb = await getDb();
+  if (localDb) {
+    await localDb.read();
+    return localDb.data!.audits.find((a: Audit) => a.id === id) || null;
+  }
+  return memoryDb.audits.find(a => a.id === id) || null;
 }
 
 export async function getAuditWithLead(id: string) {
-  await db.read();
-  const audit = db.data!.audits.find(a => a.id === id);
+  const localDb = await getDb();
+  
+  if (localDb) {
+    await localDb.read();
+    const audit = localDb.data!.audits.find((a: Audit) => a.id === id);
+    if (!audit) return null;
+    const lead = localDb.data!.leads.find((l: Lead) => l.audit_id === id);
+    const notes = localDb.data!.notes.filter((n: AdminNote) => n.audit_id === id);
+    return { ...audit, lead, notes };
+  }
+  
+  const audit = memoryDb.audits.find(a => a.id === id);
   if (!audit) return null;
-  
-  const lead = db.data!.leads.find(l => l.audit_id === id);
-  const notes = db.data!.notes.filter(n => n.audit_id === id);
-  
+  const lead = memoryDb.leads.find(l => l.audit_id === id);
+  const notes = memoryDb.notes.filter(n => n.audit_id === id);
   return { ...audit, lead, notes };
 }
 
 export async function getAllAudits(limit = 100, offset = 0) {
-  await db.read();
+  const localDb = await getDb();
   
-  const audits = db.data!.audits
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    .slice(offset, offset + limit);
+  const audits = localDb 
+    ? (await (async () => { await localDb.read(); return localDb.data!.audits; })())
+    : memoryDb.audits;
   
-  return audits.map(audit => {
-    const lead = db.data!.leads.find(l => l.audit_id === audit.id);
-    return {
-      ...audit,
-      hasEmail: Boolean(lead?.email),
-      status: lead?.status || 'new' as LeadStatus
-    };
-  });
+  const leads = localDb 
+    ? localDb.data!.leads 
+    : memoryDb.leads;
+  
+  return audits
+    .sort((a: Audit, b: Audit) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(offset, offset + limit)
+    .map((audit: Audit) => {
+      const lead = leads.find((l: Lead) => l.audit_id === audit.id);
+      return {
+        ...audit,
+        hasEmail: Boolean(lead?.email),
+        status: lead?.status || 'new' as LeadStatus
+      };
+    });
 }
 
 export async function createLead(data: {
   audit_id: string;
   name?: string;
   email?: string;
+  phone?: string;
+  message?: string;
   consent: boolean;
 }): Promise<Lead> {
-  await db.read();
+  const localDb = await getDb();
   
-  // Check if lead already exists
-  const existing = db.data!.leads.find(l => l.audit_id === data.audit_id);
-  if (existing) {
-    // Update existing lead
-    existing.name = data.name || existing.name;
-    existing.email = data.email || existing.email;
-    existing.consent = data.consent;
-    existing.updated_at = new Date().toISOString();
-    await db.write();
-    return existing;
+  if (localDb) {
+    await localDb.read();
+    const existing = localDb.data!.leads.find((l: Lead) => l.audit_id === data.audit_id);
+    if (existing) {
+      existing.name = data.name || existing.name;
+      existing.email = data.email || existing.email;
+      existing.phone = data.phone || existing.phone;
+      existing.message = data.message || existing.message;
+      existing.consent = data.consent;
+      existing.updated_at = new Date().toISOString();
+      await localDb.write();
+      return existing;
+    }
   }
   
   const lead: Lead = {
@@ -136,34 +185,45 @@ export async function createLead(data: {
     audit_id: data.audit_id,
     name: data.name,
     email: data.email,
+    phone: data.phone,
+    message: data.message,
     consent: data.consent,
     status: 'new',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
   
-  db.data!.leads.push(lead);
-  await db.write();
+  if (localDb) {
+    localDb.data!.leads.push(lead);
+    await localDb.write();
+  } else {
+    memoryDb.leads.push(lead);
+  }
   
   return lead;
 }
 
 export async function updateLeadStatus(auditId: string, status: LeadStatus): Promise<Lead | null> {
-  await db.read();
+  const localDb = await getDb();
   
-  const lead = db.data!.leads.find(l => l.audit_id === auditId);
+  if (localDb) {
+    await localDb.read();
+    const lead = localDb.data!.leads.find((l: Lead) => l.audit_id === auditId);
+    if (!lead) return null;
+    lead.status = status;
+    lead.updated_at = new Date().toISOString();
+    await localDb.write();
+    return lead;
+  }
+  
+  const lead = memoryDb.leads.find(l => l.audit_id === auditId);
   if (!lead) return null;
-  
   lead.status = status;
   lead.updated_at = new Date().toISOString();
-  await db.write();
-  
   return lead;
 }
 
 export async function addNote(auditId: string, content: string): Promise<AdminNote> {
-  await db.read();
-  
   const note: AdminNote = {
     id: uuidv4(),
     audit_id: auditId,
@@ -171,24 +231,36 @@ export async function addNote(auditId: string, content: string): Promise<AdminNo
     created_at: new Date().toISOString()
   };
   
-  db.data!.notes.push(note);
-  await db.write();
+  const localDb = await getDb();
+  if (localDb) {
+    await localDb.read();
+    localDb.data!.notes.push(note);
+    await localDb.write();
+  } else {
+    memoryDb.notes.push(note);
+  }
   
   return note;
 }
 
 export async function getAuditStats() {
-  await db.read();
+  const localDb = await getDb();
+  
+  const audits = localDb 
+    ? (await (async () => { await localDb.read(); return localDb.data!.audits; })())
+    : memoryDb.audits;
+  
+  const leads = localDb ? localDb.data!.leads : memoryDb.leads;
   
   const today = new Date().toISOString().split('T')[0];
-  const auditsToday = db.data!.audits.filter(a => a.created_at.startsWith(today));
-  const leadsWithEmail = db.data!.leads.filter(l => l.email);
-  const avgScore = db.data!.audits.length > 0
-    ? Math.round(db.data!.audits.reduce((sum, a) => sum + a.score_total, 0) / db.data!.audits.length)
+  const auditsToday = audits.filter((a: Audit) => a.created_at.startsWith(today));
+  const leadsWithEmail = leads.filter((l: Lead) => l.email);
+  const avgScore = audits.length > 0
+    ? Math.round(audits.reduce((sum: number, a: Audit) => sum + a.score_total, 0) / audits.length)
     : 0;
   
   return {
-    total: db.data!.audits.length,
+    total: audits.length,
     leads: leadsWithEmail.length,
     avgScore,
     today: auditsToday.length
@@ -196,27 +268,41 @@ export async function getAuditStats() {
 }
 
 export async function getNotesForAudit(auditId: string) {
-  await db.read();
-  return db.data!.notes.filter(n => n.audit_id === auditId).sort((a, b) => 
-    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+  const localDb = await getDb();
+  
+  const notes = localDb 
+    ? (await (async () => { await localDb.read(); return localDb.data!.notes; })())
+    : memoryDb.notes;
+  
+  return notes
+    .filter((n: AdminNote) => n.audit_id === auditId)
+    .sort((a: AdminNote, b: AdminNote) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
-export default db;
-
 export async function getLeadByAuditId(auditId: string) {
-  await db.read();
-  return db.data!.leads.find(l => l.audit_id === auditId) || null;
+  const localDb = await getDb();
+  
+  if (localDb) {
+    await localDb.read();
+    return localDb.data!.leads.find((l: Lead) => l.audit_id === auditId) || null;
+  }
+  return memoryDb.leads.find(l => l.audit_id === auditId) || null;
 }
 
 export async function getAllLeads(limit = 100) {
-  await db.read();
+  const localDb = await getDb();
   
-  return db.data!.leads
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+  const leads = localDb 
+    ? (await (async () => { await localDb.read(); return localDb.data!.leads; })())
+    : memoryDb.leads;
+  
+  const audits = localDb ? localDb.data!.audits : memoryDb.audits;
+  
+  return leads
+    .sort((a: Lead, b: Lead) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, limit)
-    .map(lead => {
-      const audit = db.data!.audits.find(a => a.id === lead.audit_id);
+    .map((lead: Lead) => {
+      const audit = audits.find((a: Audit) => a.id === lead.audit_id);
       return {
         ...lead,
         url: audit?.url,
@@ -225,3 +311,5 @@ export async function getAllLeads(limit = 100) {
       };
     });
 }
+
+export default { getDb };

@@ -45,6 +45,8 @@ export interface Lead {
   audit_id: string;
   name?: string;
   email?: string;
+  phone?: string;
+  message?: string;
   consent: boolean;
   status: LeadStatus;
   created_at: string;
@@ -90,6 +92,8 @@ export interface LeadCreateRequest {
   audit_id: string;
   name?: string;
   email?: string;
+  phone?: string;
+  message?: string;
   consent: boolean;
 }
 
