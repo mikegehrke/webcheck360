@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createLead } from '@/lib/supabase';
 
-const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
-
-// Formspree Endpoint - kein API-Key nötig!
 const FORMSPREE_URL = 'https://formspree.io/f/mkoowolk';
 
 export async function POST(request: NextRequest) {
   try {
     const { name, email, phone, message, auditId, domain, score, locale } = await request.json();
 
-    // Validate required fields
     if (!name || !email) {
       return NextResponse.json(
         { error: 'Name and email are required' },
@@ -17,40 +14,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Lead in Datenbank speichern (nur lokal)
-    if (auditId && !isVercel) {
+    if (auditId) {
       try {
-        const { createLead, addNote } = await import('@/lib/db');
-        
         await createLead({
+          id: `lead-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
           audit_id: auditId,
           name,
           email,
-          consent: true
+          phone: phone || null,
+          message: message || null,
         });
-
-        // Notiz mit Kontaktdetails hinzufügen
-        const noteContent = [
-          `📧 Kontaktanfrage erhalten`,
-          `Name: ${name}`,
-          `Email: ${email}`,
-          phone ? `Telefon: ${phone}` : null,
-          message ? `Nachricht: ${message}` : null
-        ].filter(Boolean).join('\n');
-
-        await addNote(auditId, noteContent);
-
         console.log('Lead created for audit:', auditId);
       } catch (dbError) {
         console.error('Database error:', dbError);
-        // Continue to send email even if DB fails
       }
     }
 
-    // 2. An Formspree senden (Email) - funktioniert immer!
     const formData = {
       _replyto: email,
-      _subject: `🎯 WebCheck360: Neue Anfrage für ${domain}`,
+      _subject: `WebCheck360: Neue Anfrage fuer ${domain}`,
       name,
       email,
       phone: phone || 'Nicht angegeben',

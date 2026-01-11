@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createAudit } from '@/lib/supabase';
 
 // Increase timeout for Vercel
 export const maxDuration = 60;
 
-// Simple URL helpers (inline to avoid import issues)
+// Simple URL helpers
 function normalizeUrl(url: string): string {
   let normalized = url.trim().toLowerCase();
   if (!normalized.startsWith('http://') && !normalized.startsWith('https://')) {
@@ -116,6 +117,30 @@ export async function POST(request: NextRequest) {
 
     // Generate audit ID
     const auditId = `audit-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+    // Save to Supabase
+    try {
+      await createAudit({
+        id: auditId,
+        url: normalizedUrl,
+        domain: domain,
+        score_total: totalScore,
+        score_performance: scores.performance,
+        score_mobile_ux: scores.mobile_ux,
+        score_seo: scores.seo,
+        score_trust: scores.trust,
+        score_conversion: scores.conversion,
+        issues: allIssues,
+        screenshot_desktop: screenshots.desktop,
+        screenshot_mobile: screenshots.mobile,
+        industry: industry || null,
+        goal: goal || null,
+      });
+      console.log(`Audit saved to Supabase: ${auditId}`);
+    } catch (dbError) {
+      console.error('Failed to save audit to Supabase:', dbError);
+      // Continue even if DB save fails
+    }
 
     console.log(`Analysis complete. Score: ${totalScore}`);
 

@@ -10,6 +10,7 @@
     "db:setup": "node scripts/setup-db.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.1.2",
     "clsx": "^2.1.0",
