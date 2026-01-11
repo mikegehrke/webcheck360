@@ -39,13 +39,21 @@ export async function POST(request: NextRequest) {
     console.log(`Starting analysis for: ${normalizedUrl}`);
 
     // Run all analyses with dynamic imports and error handling
-    let lighthouse = { performance: 50, accessibility: 50, bestPractices: 50, seo: 50, metrics: { lcp: 2500, fid: 100, cls: 0.1, ttfb: 800, fcp: 1800, si: 3000, tbt: 200 }, errors: [] as string[] };
+    let lighthouse = { 
+      performance: 50, 
+      accessibility: 50, 
+      bestPractices: 50, 
+      seo: 50, 
+      metrics: { lcp: 2500, fid: 100, cls: 0.1, ttfb: 800, fcp: 1800, si: 3000, tbt: 200 }, 
+      errors: [] as string[] 
+    };
     let seo = { score: 50, issues: [] as any[], data: {} };
     let trust = { score: 50, issues: [] as any[], data: {} };
     let conversion = { score: 50, issues: [] as any[], data: {} };
+    let screenshots = { desktop: null as string | null, mobile: null as string | null, errors: [] as string[] };
 
     try {
-      const [lighthouseResult, seoResult, trustResult, conversionResult] = await Promise.all([
+      const [lighthouseResult, seoResult, trustResult, conversionResult, screenshotResult] = await Promise.all([
         import('@/services/lighthouse').then(m => m.runLighthouseAnalysis(normalizedUrl)).catch(e => {
           console.error('Lighthouse failed:', e);
           return lighthouse;
@@ -62,17 +70,23 @@ export async function POST(request: NextRequest) {
           console.error('Conversion failed:', e);
           return conversion;
         }),
+        import('@/services/screenshot').then(m => m.captureScreenshots(normalizedUrl)).catch(e => {
+          console.error('Screenshots failed:', e);
+          return screenshots;
+        }),
       ]);
 
       lighthouse = lighthouseResult as typeof lighthouse;
       seo = seoResult as typeof seo;
       trust = trustResult as typeof trust;
       conversion = conversionResult as typeof conversion;
+      screenshots = screenshotResult as typeof screenshots;
     } catch (err) {
       console.error('Analysis batch failed:', err);
     }
 
     console.log('Analysis complete, processing scores...');
+    console.log(`Screenshots: desktop=${screenshots.desktop ? 'yes' : 'no'}, mobile=${screenshots.mobile ? 'yes' : 'no'}`);
 
     // Combine all issues
     const allIssues = [
@@ -111,8 +125,8 @@ export async function POST(request: NextRequest) {
       scores,
       issues: allIssues,
       screenshots: {
-        desktop: null,
-        mobile: null,
+        desktop: screenshots.desktop,
+        mobile: screenshots.mobile,
       },
     });
   } catch (error) {
