@@ -1,15 +1,5 @@
-import { chromium, Browser, Page } from 'playwright';
-import path from 'path';
-import fs from 'fs';
-import { v4 as uuidv4 } from 'uuid';
-
-const SCREENSHOT_DIR = path.join(process.cwd(), 'public', 'screenshots');
-const TIMEOUT = parseInt(process.env.SCREENSHOT_TIMEOUT || '30000');
-
-// Ensure screenshot directory exists
-if (!fs.existsSync(SCREENSHOT_DIR)) {
-  fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
-}
+// Screenshot service with Vercel compatibility
+// Playwright doesn't work on Vercel - use external API or skip
 
 export interface ScreenshotResult {
   desktop: string | null;
@@ -17,154 +7,92 @@ export interface ScreenshotResult {
   errors: string[];
 }
 
-export interface ViewportConfig {
-  width: number;
-  height: number;
-  deviceScaleFactor?: number;
-  isMobile?: boolean;
-}
-
-const DESKTOP_VIEWPORT: ViewportConfig = {
-  width: 1920,
-  height: 1080,
-  deviceScaleFactor: 1,
-  isMobile: false
-};
-
-const MOBILE_VIEWPORT: ViewportConfig = {
-  width: 390,
-  height: 844,
-  deviceScaleFactor: 2,
-  isMobile: true
-};
-
-async function takeScreenshot(
-  page: Page,
-  url: string,
-  viewport: ViewportConfig,
-  filename: string
-): Promise<string | null> {
-  try {
-    await page.setViewportSize({ width: viewport.width, height: viewport.height });
-    
-    // Navigate with timeout
-    await page.goto(url, { 
-      waitUntil: 'networkidle',
-      timeout: TIMEOUT 
-    });
-    
-    // Wait for any lazy-loaded content
-    await page.waitForTimeout(2000);
-    
-    // Scroll down to trigger lazy loading, then back up
-    await page.evaluate(() => {
-      window.scrollTo(0, document.body.scrollHeight);
-    });
-    await page.waitForTimeout(1000);
-    await page.evaluate(() => {
-      window.scrollTo(0, 0);
-    });
-    await page.waitForTimeout(500);
-    
-    // Take screenshot
-    const filepath = path.join(SCREENSHOT_DIR, filename);
-    await page.screenshot({ 
-      path: filepath,
-      fullPage: false,
-      type: 'jpeg',
-      quality: parseInt(process.env.SCREENSHOT_QUALITY || '80')
-    });
-    
-    return `/screenshots/${filename}`;
-  } catch (error) {
-    console.error(`Screenshot error for ${url}:`, error);
-    return null;
-  }
-}
+// Check if we're on Vercel (no Playwright available)
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
 
 export async function captureScreenshots(url: string): Promise<ScreenshotResult> {
-  const result: ScreenshotResult = {
-    desktop: null,
-    mobile: null,
-    errors: []
-  };
-  
-  let browser: Browser | null = null;
-  
+  // On Vercel: Skip screenshots (Playwright not available)
+  if (isVercel) {
+    console.log('Running on Vercel - screenshots disabled');
+    return {
+      desktop: null,
+      mobile: null,
+      errors: ['Screenshots are not available on Vercel deployment']
+    };
+  }
+
+  // Local development: Use Playwright
   try {
-    browser = await chromium.launch({
+    const { chromium } = await import('playwright');
+    const path = await import('path');
+    const fs = await import('fs');
+    const { v4: uuidv4 } = await import('uuid');
+
+    const SCREENSHOT_DIR = path.join(process.cwd(), 'public', 'screenshots');
+    const TIMEOUT = parseInt(process.env.SCREENSHOT_TIMEOUT || '30000');
+
+    // Ensure screenshot directory exists
+    if (!fs.existsSync(SCREENSHOT_DIR)) {
+      fs.mkdirSync(SCREENSHOT_DIR, { recursive: true });
+    }
+
+    const browser = await chromium.launch({ 
       headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu'
-      ]
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
-    
-    const context = await browser.newContext({
-      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      locale: 'de-DE',
-      timezoneId: 'Europe/Berlin'
-    });
-    
-    const page = await context.newPage();
-    
-    // Block unnecessary resources for faster loading
-    await page.route('**/*', (route) => {
-      const resourceType = route.request().resourceType();
-      if (['media', 'font'].includes(resourceType)) {
-        route.abort();
-      } else {
-        route.continue();
+
+    const errors: string[] = [];
+    let desktopPath: string | null = null;
+    let mobilePath: string | null = null;
+
+    try {
+      const context = await browser.newContext();
+      const page = await context.newPage();
+
+      // Desktop screenshot
+      try {
+        await page.setViewportSize({ width: 1920, height: 1080 });
+        await page.goto(url, { waitUntil: 'networkidle', timeout: TIMEOUT });
+        
+        const desktopFilename = `desktop-${uuidv4()}.png`;
+        const desktopFullPath = path.join(SCREENSHOT_DIR, desktopFilename);
+        await page.screenshot({ path: desktopFullPath, fullPage: false });
+        desktopPath = `/screenshots/${desktopFilename}`;
+      } catch (err) {
+        console.error('Desktop screenshot error:', err);
+        errors.push(`Desktop: ${(err as Error).message}`);
       }
-    });
-    
-    const id = uuidv4();
-    
-    // Desktop screenshot
-    result.desktop = await takeScreenshot(
-      page, 
-      url, 
-      DESKTOP_VIEWPORT, 
-      `${id}-desktop.jpg`
-    );
-    if (!result.desktop) {
-      result.errors.push('Desktop screenshot failed');
-    }
-    
-    // Mobile screenshot
-    result.mobile = await takeScreenshot(
-      page, 
-      url, 
-      MOBILE_VIEWPORT, 
-      `${id}-mobile.jpg`
-    );
-    if (!result.mobile) {
-      result.errors.push('Mobile screenshot failed');
-    }
-    
-    await context.close();
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    result.errors.push(`Browser error: ${message}`);
-    console.error('Screenshot service error:', error);
-  } finally {
-    if (browser) {
+
+      // Mobile screenshot
+      try {
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.goto(url, { waitUntil: 'networkidle', timeout: TIMEOUT });
+        
+        const mobileFilename = `mobile-${uuidv4()}.png`;
+        const mobileFullPath = path.join(SCREENSHOT_DIR, mobileFilename);
+        await page.screenshot({ path: mobileFullPath, fullPage: false });
+        mobilePath = `/screenshots/${mobileFilename}`;
+      } catch (err) {
+        console.error('Mobile screenshot error:', err);
+        errors.push(`Mobile: ${(err as Error).message}`);
+      }
+
+    } finally {
       await browser.close();
     }
-  }
-  
-  return result;
-}
 
-export async function deleteScreenshots(desktop: string | null, mobile: string | null): Promise<void> {
-  const files = [desktop, mobile].filter(Boolean) as string[];
-  
-  for (const file of files) {
-    const filepath = path.join(process.cwd(), 'public', file);
-    if (fs.existsSync(filepath)) {
-      fs.unlinkSync(filepath);
-    }
+    return {
+      desktop: desktopPath,
+      mobile: mobilePath,
+      errors
+    };
+
+  } catch (err) {
+    console.error('Screenshot service error:', err);
+    return {
+      desktop: null,
+      mobile: null,
+      errors: [(err as Error).message]
+    };
   }
 }
