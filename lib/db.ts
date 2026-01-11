@@ -203,3 +203,25 @@ export async function getNotesForAudit(auditId: string) {
 }
 
 export default db;
+
+export async function getLeadByAuditId(auditId: string) {
+  await db.read();
+  return db.data!.leads.find(l => l.audit_id === auditId) || null;
+}
+
+export async function getAllLeads(limit = 100) {
+  await db.read();
+  
+  return db.data!.leads
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, limit)
+    .map(lead => {
+      const audit = db.data!.audits.find(a => a.id === lead.audit_id);
+      return {
+        ...lead,
+        url: audit?.url,
+        domain: audit?.domain,
+        score_total: audit?.score_total
+      };
+    });
+}

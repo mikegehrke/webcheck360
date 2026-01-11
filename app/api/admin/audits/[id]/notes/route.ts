@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { v4 as uuidv4 } from 'uuid';
-import db from '@/lib/db';
+import { addNote, getNotesForAudit } from '@/lib/db';
 
 export async function POST(
   request: NextRequest,
@@ -17,15 +16,11 @@ export async function POST(
       );
     }
 
-    const noteId = uuidv4();
-    db.prepare(`
-      INSERT INTO admin_notes (id, audit_id, content)
-      VALUES (?, ?, ?)
-    `).run(noteId, params.id, content);
+    const note = await addNote(params.id, content);
 
     return NextResponse.json({ 
       success: true, 
-      id: noteId 
+      id: note.id 
     });
   } catch (error) {
     console.error('Admin note creation error:', error);
@@ -41,11 +36,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const notes = db.prepare(`
-      SELECT * FROM admin_notes 
-      WHERE audit_id = ? 
-      ORDER BY created_at DESC
-    `).all(params.id);
+    const notes = await getNotesForAudit(params.id);
 
     return NextResponse.json({ notes });
   } catch (error) {
