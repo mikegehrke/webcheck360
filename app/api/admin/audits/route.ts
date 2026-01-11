@@ -1,8 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllAudits, getAuditStats } from '@/lib/db';
+
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
 
 export async function GET(request: NextRequest) {
+  // On Vercel: Return empty data (no persistent DB)
+  if (isVercel) {
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get('type');
+
+    if (type === 'stats') {
+      return NextResponse.json({ total: 0, leads: 0, avgScore: 0, today: 0 });
+    }
+    return NextResponse.json({ audits: [], message: 'Admin not available on Vercel deployment' });
+  }
+
   try {
+    const { getAllAudits, getAuditStats } = await import('@/lib/db');
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type');
 

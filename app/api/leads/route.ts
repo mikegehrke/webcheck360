@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createLead, getLeadByAuditId, getAllLeads } from '@/lib/db';
+
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,6 +14,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // On Vercel: Just return success (no persistent storage)
+    if (isVercel) {
+      return NextResponse.json({ 
+        success: true, 
+        id: `lead-${Date.now()}`
+      });
+    }
+
+    const { createLead } = await import('@/lib/db');
     const lead = await createLead({
       audit_id,
       name,
@@ -34,7 +44,12 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  if (isVercel) {
+    return NextResponse.json({ leads: [] });
+  }
+
   try {
+    const { getLeadByAuditId, getAllLeads } = await import('@/lib/db');
     const { searchParams } = new URL(request.url);
     const auditId = searchParams.get('audit_id');
 

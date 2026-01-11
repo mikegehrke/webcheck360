@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { addNote, getNotesForAudit } from '@/lib/db';
+
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  if (isVercel) {
+    return NextResponse.json({ error: 'Admin not available on Vercel' }, { status: 403 });
+  }
+
   try {
+    const { addNote } = await import('@/lib/db');
     const body = await request.json();
     const { content } = body;
 
@@ -17,11 +23,7 @@ export async function POST(
     }
 
     const note = await addNote(params.id, content);
-
-    return NextResponse.json({ 
-      success: true, 
-      id: note.id 
-    });
+    return NextResponse.json({ success: true, id: note.id });
   } catch (error) {
     console.error('Admin note creation error:', error);
     return NextResponse.json(
@@ -35,9 +37,13 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
-    const notes = await getNotesForAudit(params.id);
+  if (isVercel) {
+    return NextResponse.json({ notes: [] });
+  }
 
+  try {
+    const { getNotesForAudit } = await import('@/lib/db');
+    const notes = await getNotesForAudit(params.id);
     return NextResponse.json({ notes });
   } catch (error) {
     console.error('Admin notes fetch error:', error);

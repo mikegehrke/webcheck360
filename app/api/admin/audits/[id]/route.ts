@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuditWithLead, updateLeadStatus, getNotesForAudit } from '@/lib/db';
+
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  if (isVercel) {
+    return NextResponse.json({ 
+      error: 'Admin not available on Vercel deployment',
+      audit: null 
+    }, { status: 404 });
+  }
+
   try {
+    const { getAuditWithLead, getNotesForAudit } = await import('@/lib/db');
     const auditData = await getAuditWithLead(params.id);
     
     if (!auditData) {
@@ -15,9 +24,7 @@ export async function GET(
       );
     }
 
-    // Get notes for this audit
     const notes = await getNotesForAudit(params.id);
-
     return NextResponse.json({ audit: auditData, notes });
   } catch (error) {
     console.error('Admin audit fetch error:', error);
@@ -32,7 +39,12 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  if (isVercel) {
+    return NextResponse.json({ error: 'Admin not available on Vercel' }, { status: 403 });
+  }
+
   try {
+    const { updateLeadStatus } = await import('@/lib/db');
     const body = await request.json();
     const { status } = body;
 

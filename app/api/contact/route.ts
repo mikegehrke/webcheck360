@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createLead, addNote } from '@/lib/db';
+
+const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
 
 // Formspree Endpoint - kein API-Key nötig!
 const FORMSPREE_URL = 'https://formspree.io/f/mkoowolk';
@@ -16,9 +17,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Lead in Datenbank speichern
-    if (auditId) {
+    // 1. Lead in Datenbank speichern (nur lokal)
+    if (auditId && !isVercel) {
       try {
+        const { createLead, addNote } = await import('@/lib/db');
+        
         await createLead({
           audit_id: auditId,
           name,
@@ -44,7 +47,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 2. An Formspree senden (Email)
+    // 2. An Formspree senden (Email) - funktioniert immer!
     const formData = {
       _replyto: email,
       _subject: `🎯 WebCheck360: Neue Anfrage für ${domain}`,
