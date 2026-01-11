@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { Globe, ArrowRight, Loader2 } from 'lucide-react';
+import { Globe, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
@@ -51,6 +51,22 @@ export function FunnelStep1({ locale }: FunnelStep1Props) {
       if (!response.ok) {
         throw new Error(data.error || 'Analyse fehlgeschlagen');
       }
+
+      // Store results in sessionStorage for the results page
+      const auditData = {
+        id: data.auditId,
+        url: url.startsWith('http') ? url : `https://${url}`,
+        domain: url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0],
+        score_total: data.score,
+        scores: data.scores,
+        issues: data.issues || [],
+        screenshots: data.screenshots || { desktop: null, mobile: null },
+        industry,
+        goal,
+        created_at: new Date().toISOString(),
+      };
+      
+      sessionStorage.setItem(`audit_${data.auditId}`, JSON.stringify(auditData));
 
       router.push(`/${locale}/results/${data.auditId}`);
     } catch (err) {
