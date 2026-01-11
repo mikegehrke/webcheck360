@@ -1,4 +1,4 @@
-// Screenshot service using external APIs for Vercel compatibility
+// Screenshot service using Playwright locally, external API on Vercel
 
 export interface ScreenshotResult {
   desktop: string | null;
@@ -8,7 +8,7 @@ export interface ScreenshotResult {
 
 const isVercel = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
 
-// Use microlink.io for screenshots (free, no API key needed)
+// Use microlink.io for screenshots on Vercel (free, no API key needed)
 async function captureWithMicrolink(url: string, viewport: { width: number; height: number }): Promise<string | null> {
   try {
     const params = new URLSearchParams({
@@ -22,9 +22,7 @@ async function captureWithMicrolink(url: string, viewport: { width: number; heig
     });
     
     const response = await fetch(`https://api.microlink.io?${params.toString()}`, {
-      headers: {
-        'Accept': 'application/json',
-      },
+      headers: { 'Accept': 'application/json' },
     });
     
     if (!response.ok) {
@@ -35,7 +33,6 @@ async function captureWithMicrolink(url: string, viewport: { width: number; heig
     const data = await response.json();
     
     if (data.status === 'success' && data.data?.screenshot?.url) {
-      // Fetch the image and convert to base64
       const imageResponse = await fetch(data.data.screenshot.url);
       if (imageResponse.ok) {
         const buffer = await imageResponse.arrayBuffer();
@@ -51,7 +48,7 @@ async function captureWithMicrolink(url: string, viewport: { width: number; heig
   }
 }
 
-// Fallback: Use Playwright locally
+// Use Playwright locally - SEQUENTIAL to avoid timeout issues
 async function captureWithPlaywright(url: string): Promise<{ desktop: string | null; mobile: string | null }> {
   try {
     const { chromium } = await import('playwright');
@@ -61,7 +58,8 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
     let mobile: string | null = null;
 
     try {
-      // Desktop Screenshot
+      // Desktop Screenshot FIRST
+      console.log('Capturing desktop screenshot...');
       const desktopContext = await browser.newContext({
         viewport: { width: 1920, height: 1080 },
         deviceScaleFactor: 1,
@@ -69,16 +67,27 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
       const desktopPage = await desktopContext.newPage();
       
       try {
-        await desktopPage.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-        await desktopPage.waitForTimeout(2000);
-        const desktopBuffer = await desktopPage.screenshot({ type: 'jpeg', quality: 85 });
+        await desktopPage.goto(url, { 
+          waitUntil: 'domcontentloaded', 
+          timeout: 45000 
+        });
+        // Wait for page to settle
+        await desktopPage.waitForTimeout(3000);
+        
+        const desktopBuffer = await desktopPage.screenshot({ 
+          type: 'jpeg', 
+          quality: 85,
+          fullPage: false 
+        });
         desktop = `data:image/jpeg;base64,${desktopBuffer.toString('base64')}`;
+        console.log('Desktop screenshot captured!');
       } catch (e) {
         console.error('Desktop screenshot failed:', e);
       }
       await desktopContext.close();
 
-      // Mobile Screenshot
+      // Mobile Screenshot SECOND
+      console.log('Capturing mobile screenshot...');
       const mobileContext = await browser.newContext({
         viewport: { width: 375, height: 812 },
         deviceScaleFactor: 2,
@@ -88,10 +97,20 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
       const mobilePage = await mobileContext.newPage();
       
       try {
-        await mobilePage.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-        await mobilePage.waitForTimeout(2000);
-        const mobileBuffer = await mobilePage.screenshot({ type: 'jpeg', quality: 85 });
+        await mobilePage.goto(url, { 
+          waitUntil: 'domcontentloaded', 
+          timeout: 45000 
+        });
+        // Wait for page to settle
+        await mobilePage.waitForTimeout(3000);
+        
+        const mobileBuffer = await mobilePage.screenshot({ 
+          type: 'jpeg', 
+          quality: 85,
+          fullPage: false 
+        });
         mobile = `data:image/jpeg;base64,${mobileBuffer.toString('base64')}`;
+        console.log('Mobile screenshot captured!');
       } catch (e) {
         console.error('Mobile screenshot failed:', e);
       }
@@ -103,7 +122,7 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
 
     return { desktop, mobile };
   } catch (error) {
-    console.error('Playwright not available:', error);
+    console.error('Playwright error:', error);
     return { desktop: null, mobile: null };
   }
 }
@@ -150,7 +169,7 @@ export async function captureScreenshots(url: string): Promise<ScreenshotResult>
     }
   }
 
-  console.log(`Screenshots captured: desktop=${desktop ? 'yes' : 'no'}, mobile=${mobile ? 'yes' : 'no'}`);
+  console.log(`Screenshots result: desktop=${desktop ? 'YES' : 'NO'}, mobile=${mobile ? 'YES' : 'NO'}`);
 
   return { desktop, mobile, errors };
 }
