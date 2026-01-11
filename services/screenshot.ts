@@ -1,4 +1,4 @@
-// Screenshot service using Playwright locally, external API on Vercel
+// Screenshot service using Playwright locally, Microlink API on Vercel
 
 export interface ScreenshotResult {
   desktop: string | null;
@@ -8,22 +8,28 @@ export interface ScreenshotResult {
 
 const isVercel = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
 
-// Use microlink.io for screenshots on Vercel (free, no API key needed)
-async function captureWithMicrolink(url: string, viewport: { width: number; height: number }): Promise<string | null> {
+// Use microlink.io for screenshots on Vercel
+async function captureWithMicrolink(url: string, isMobile: boolean): Promise<string | null> {
   try {
+    const width = isMobile ? 375 : 1280;
+    const height = isMobile ? 812 : 800;
+    
+    // Microlink API returns image directly when using screenshot=true
     const params = new URLSearchParams({
       url: url,
       screenshot: 'true',
       meta: 'false',
-      embed: 'screenshot.url',
-      viewport: `${viewport.width}x${viewport.height}`,
+      'viewport.width': width.toString(),
+      'viewport.height': height.toString(),
+      'viewport.isMobile': isMobile.toString(),
       type: 'jpeg',
       quality: '80',
     });
     
-    const response = await fetch(`https://api.microlink.io?${params.toString()}`, {
-      headers: { 'Accept': 'application/json' },
-    });
+    const apiUrl = `https://api.microlink.io?${params.toString()}`;
+    console.log(`Microlink request: ${apiUrl}`);
+    
+    const response = await fetch(apiUrl);
     
     if (!response.ok) {
       console.error(`Microlink error: ${response.status}`);
@@ -31,13 +37,19 @@ async function captureWithMicrolink(url: string, viewport: { width: number; heig
     }
     
     const data = await response.json();
+    console.log(`Microlink response status: ${data.status}`);
     
     if (data.status === 'success' && data.data?.screenshot?.url) {
-      const imageResponse = await fetch(data.data.screenshot.url);
+      const screenshotUrl = data.data.screenshot.url;
+      console.log(`Screenshot URL: ${screenshotUrl}`);
+      
+      // Fetch the actual image
+      const imageResponse = await fetch(screenshotUrl);
       if (imageResponse.ok) {
         const buffer = await imageResponse.arrayBuffer();
         const base64 = Buffer.from(buffer).toString('base64');
-        return `data:image/jpeg;base64,${base64}`;
+        const contentType = imageResponse.headers.get('content-type') || 'image/png';
+        return `data:${contentType};base64,${base64}`;
       }
     }
     
@@ -48,7 +60,7 @@ async function captureWithMicrolink(url: string, viewport: { width: number; heig
   }
 }
 
-// Use Playwright locally - SEQUENTIAL to avoid timeout issues
+// Use Playwright locally
 async function captureWithPlaywright(url: string): Promise<{ desktop: string | null; mobile: string | null }> {
   try {
     const { chromium } = await import('playwright');
@@ -58,7 +70,7 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
     let mobile: string | null = null;
 
     try {
-      // Desktop Screenshot FIRST
+      // Desktop Screenshot
       console.log('Capturing desktop screenshot...');
       const desktopContext = await browser.newContext({
         viewport: { width: 1920, height: 1080 },
@@ -71,7 +83,6 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
           waitUntil: 'domcontentloaded', 
           timeout: 45000 
         });
-        // Wait for page to settle
         await desktopPage.waitForTimeout(3000);
         
         const desktopBuffer = await desktopPage.screenshot({ 
@@ -86,7 +97,7 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
       }
       await desktopContext.close();
 
-      // Mobile Screenshot SECOND
+      // Mobile Screenshot
       console.log('Capturing mobile screenshot...');
       const mobileContext = await browser.newContext({
         viewport: { width: 375, height: 812 },
@@ -101,7 +112,6 @@ async function captureWithPlaywright(url: string): Promise<{ desktop: string | n
           waitUntil: 'domcontentloaded', 
           timeout: 45000 
         });
-        // Wait for page to settle
         await mobilePage.waitForTimeout(3000);
         
         const mobileBuffer = await mobilePage.screenshot({ 
@@ -135,19 +145,15 @@ export async function captureScreenshots(url: string): Promise<ScreenshotResult>
   console.log(`Capturing screenshots for ${url}, isVercel: ${isVercel}`);
 
   if (isVercel) {
-    // Use external API on Vercel
+    // Use Microlink API on Vercel
     console.log('Using Microlink API for screenshots...');
     
     try {
-      const [desktopResult, mobileResult] = await Promise.all([
-        captureWithMicrolink(url, { width: 1920, height: 1080 }),
-        captureWithMicrolink(url, { width: 375, height: 812 }),
-      ]);
-      
-      desktop = desktopResult;
-      mobile = mobileResult;
-      
+      // Capture sequentially to avoid rate limiting
+      desktop = await captureWithMicrolink(url, false);
       if (!desktop) errors.push('Desktop screenshot failed');
+      
+      mobile = await captureWithMicrolink(url, true);
       if (!mobile) errors.push('Mobile screenshot failed');
       
     } catch (error) {
