@@ -10,9 +10,10 @@ export interface AuditScores {
 export interface AuditIssue {
   id: string;
   category: keyof AuditScores;
-  severity: 'critical' | 'warning' | 'info';
+  severity: 'critical' | 'high' | 'warning' | 'low' | 'info';
   title: string;
   description: string;
+  impact?: string;
   recommendation: string;
 }
 

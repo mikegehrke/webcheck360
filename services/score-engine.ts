@@ -135,8 +135,8 @@ export function getScoreEmoji(score: number): string {
 }
 
 export function sortIssuesBySeverity(issues: AuditIssue[]): AuditIssue[] {
-  const severityOrder = { critical: 0, warning: 1, info: 2 };
-  return [...issues].sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity]);
+  const severityOrder: Record<string, number> = { critical: 0, high: 1, warning: 2, low: 3, info: 4 };
+  return [...issues].sort((a, b) => (severityOrder[a.severity] ?? 5) - (severityOrder[b.severity] ?? 5));
 }
 
 export function groupIssuesByCategory(issues: AuditIssue[]): Record<string, AuditIssue[]> {

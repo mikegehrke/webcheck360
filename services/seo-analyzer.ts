@@ -1,5 +1,5 @@
-import { chromium } from 'playwright';
 import { AuditIssue } from '@/lib/types';
+import * as cheerio from 'cheerio';
 
 export interface SEOResult {
   score: number;
@@ -48,260 +48,283 @@ export async function analyzeSEO(url: string): Promise<SEOResult> {
     }
   };
 
-  let browser = null;
   let scorePoints = 0;
   const maxPoints = 100;
 
   try {
-    browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
-    
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-
-    // Extract SEO data
-    const seoData = await page.evaluate(() => {
-      const getMetaContent = (name: string): string | null => {
-        const meta = document.querySelector(`meta[name="${name}"], meta[property="${name}"]`);
-        return meta?.getAttribute('content') || null;
-      };
-
-      const title = document.title || null;
-      const description = getMetaContent('description');
-      
-      const h1Elements = document.querySelectorAll('h1');
-      const h1Text = Array.from(h1Elements).map(h => h.textContent?.trim() || '');
-      
-      const h2Elements = document.querySelectorAll('h2');
-      
-      const images = document.querySelectorAll('img');
-      const imagesWithAlt = Array.from(images).filter(img => img.alt && img.alt.trim().length > 0);
-      
-      const links = document.querySelectorAll('a[href]');
-      const currentHost = window.location.hostname;
-      let internalLinks = 0;
-      let externalLinks = 0;
-      
-      links.forEach(link => {
-        try {
-          const href = link.getAttribute('href') || '';
-          if (href.startsWith('/') || href.startsWith('#')) {
-            internalLinks++;
-          } else {
-            const linkUrl = new URL(href, window.location.origin);
-            if (linkUrl.hostname === currentHost) {
-              internalLinks++;
-            } else {
-              externalLinks++;
-            }
-          }
-        } catch {
-          internalLinks++;
-        }
-      });
-
-      const canonical = document.querySelector('link[rel="canonical"]');
-      const robotsMeta = getMetaContent('robots');
-      
-      const ogTags: Record<string, string> = {};
-      document.querySelectorAll('meta[property^="og:"]').forEach(meta => {
-        const property = meta.getAttribute('property');
-        const content = meta.getAttribute('content');
-        if (property && content) {
-          ogTags[property] = content;
-        }
-      });
-
-      const structuredData = document.querySelectorAll('script[type="application/ld+json"]').length > 0;
-
-      return {
-        title,
-        titleLength: title?.length || 0,
-        description,
-        descriptionLength: description?.length || 0,
-        h1Count: h1Elements.length,
-        h1Text,
-        h2Count: h2Elements.length,
-        imageCount: images.length,
-        imagesWithAlt: imagesWithAlt.length,
-        imagesWithoutAlt: images.length - imagesWithAlt.length,
-        internalLinks,
-        externalLinks,
-        canonicalUrl: canonical?.getAttribute('href') || null,
-        robotsMeta,
-        ogTags,
-        structuredData
-      };
+    // Fetch HTML with fetch API (works on Vercel)
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      },
+      signal: AbortSignal.timeout(15000)
     });
 
-    result.data = seoData;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    const urlObj = new URL(url);
+
+    // Extract SEO data
+    const title = $('title').text().trim() || null;
+    const description = $('meta[name="description"]').attr('content') || null;
+    
+    const h1Elements = $('h1');
+    const h1Text: string[] = [];
+    h1Elements.each((_, el) => {
+      const text = $(el).text().trim();
+      if (text) h1Text.push(text);
+    });
+    
+    const h2Elements = $('h2');
+    const images = $('img');
+    let imagesWithAlt = 0;
+    images.each((_, el) => {
+      if ($(el).attr('alt')?.trim()) imagesWithAlt++;
+    });
+
+    const links = $('a[href]');
+    let internalLinks = 0;
+    let externalLinks = 0;
+    
+    links.each((_, el) => {
+      const href = $(el).attr('href') || '';
+      try {
+        if (href.startsWith('/') || href.startsWith('#') || href.startsWith('tel:') || href.startsWith('mailto:')) {
+          internalLinks++;
+        } else if (href.startsWith('http')) {
+          const linkUrl = new URL(href);
+          if (linkUrl.hostname === urlObj.hostname) {
+            internalLinks++;
+          } else {
+            externalLinks++;
+          }
+        } else {
+          internalLinks++;
+        }
+      } catch {
+        internalLinks++;
+      }
+    });
+
+    const canonicalUrl = $('link[rel="canonical"]').attr('href') || null;
+    const robotsMeta = $('meta[name="robots"]').attr('content') || null;
+    
+    const ogTags: Record<string, string> = {};
+    $('meta[property^="og:"]').each((_, el) => {
+      const property = $(el).attr('property');
+      const content = $(el).attr('content');
+      if (property && content) {
+        ogTags[property] = content;
+      }
+    });
+
+    const structuredData = $('script[type="application/ld+json"]').length > 0;
+
+    result.data = {
+      title,
+      titleLength: title?.length || 0,
+      description,
+      descriptionLength: description?.length || 0,
+      h1Count: h1Elements.length,
+      h1Text,
+      h2Count: h2Elements.length,
+      imageCount: images.length,
+      imagesWithAlt,
+      imagesWithoutAlt: images.length - imagesWithAlt,
+      internalLinks,
+      externalLinks,
+      canonicalUrl,
+      robotsMeta,
+      ogTags,
+      structuredData
+    };
 
     // Scoring and issue detection
 
     // Title (20 points)
-    if (seoData.title) {
-      if (seoData.titleLength >= 30 && seoData.titleLength <= 60) {
+    if (result.data.title) {
+      if (result.data.titleLength >= 30 && result.data.titleLength <= 60) {
         scorePoints += 20;
-      } else if (seoData.titleLength > 0) {
+      } else if (result.data.titleLength > 0) {
         scorePoints += 10;
         result.issues.push({
           id: 'seo-title-length',
           category: 'seo',
           severity: 'warning',
           title: 'Title-Tag Länge optimieren',
-          description: `Der Title hat ${seoData.titleLength} Zeichen (optimal: 30-60)`,
-          recommendation: 'Passen Sie die Title-Länge auf 30-60 Zeichen an.'
+          description: `Ihr Title-Tag hat ${result.data.titleLength} Zeichen. Optimal sind 30-60 Zeichen.`,
+          impact: 'Zu lange oder zu kurze Title werden in Suchergebnissen abgeschnitten oder sind weniger aussagekräftig.',
+          recommendation: 'Optimieren Sie Ihren Title-Tag auf 30-60 Zeichen mit relevanten Keywords.'
         });
       }
     } else {
       result.issues.push({
-        id: 'seo-title-missing',
+        id: 'seo-no-title',
         category: 'seo',
         severity: 'critical',
-        title: 'Title-Tag fehlt',
-        description: 'Die Seite hat keinen Title-Tag',
-        recommendation: 'Fügen Sie einen aussagekräftigen Title-Tag hinzu.'
+        title: 'Kein Title-Tag vorhanden',
+        description: 'Ihre Seite hat keinen Title-Tag.',
+        impact: 'Ohne Title-Tag kann Google Ihre Seite nicht richtig indexieren.',
+        recommendation: 'Fügen Sie einen aussagekräftigen Title-Tag mit 30-60 Zeichen hinzu.'
       });
     }
 
-    // Description (20 points)
-    if (seoData.description) {
-      if (seoData.descriptionLength >= 120 && seoData.descriptionLength <= 160) {
-        scorePoints += 20;
-      } else if (seoData.descriptionLength > 0) {
-        scorePoints += 10;
+    // Meta Description (15 points)
+    if (result.data.description) {
+      if (result.data.descriptionLength >= 120 && result.data.descriptionLength <= 160) {
+        scorePoints += 15;
+      } else if (result.data.descriptionLength > 0) {
+        scorePoints += 8;
         result.issues.push({
           id: 'seo-description-length',
           category: 'seo',
           severity: 'warning',
           title: 'Meta-Description Länge optimieren',
-          description: `Die Description hat ${seoData.descriptionLength} Zeichen (optimal: 120-160)`,
-          recommendation: 'Passen Sie die Meta-Description auf 120-160 Zeichen an.'
+          description: `Ihre Meta-Description hat ${result.data.descriptionLength} Zeichen. Optimal sind 120-160 Zeichen.`,
+          impact: 'Nicht optimale Länge kann zu abgeschnittenen Snippets in Suchergebnissen führen.',
+          recommendation: 'Schreiben Sie eine prägnante Meta-Description mit 120-160 Zeichen.'
         });
       }
     } else {
       result.issues.push({
-        id: 'seo-description-missing',
+        id: 'seo-no-description',
         category: 'seo',
-        severity: 'critical',
-        title: 'Meta-Description fehlt',
-        description: 'Die Seite hat keine Meta-Description',
-        recommendation: 'Fügen Sie eine aussagekräftige Meta-Description hinzu.'
+        severity: 'high',
+        title: 'Keine Meta-Description vorhanden',
+        description: 'Ihre Seite hat keine Meta-Description.',
+        impact: 'Google generiert dann selbst einen Snippet-Text, der möglicherweise nicht optimal ist.',
+        recommendation: 'Fügen Sie eine ansprechende Meta-Description mit 120-160 Zeichen hinzu.'
       });
     }
 
     // H1 (15 points)
-    if (seoData.h1Count === 1) {
+    if (result.data.h1Count === 1) {
       scorePoints += 15;
-    } else if (seoData.h1Count > 1) {
-      scorePoints += 5;
+    } else if (result.data.h1Count > 1) {
+      scorePoints += 8;
       result.issues.push({
         id: 'seo-multiple-h1',
         category: 'seo',
         severity: 'warning',
         title: 'Mehrere H1-Überschriften',
-        description: `Die Seite hat ${seoData.h1Count} H1-Überschriften`,
+        description: `Ihre Seite hat ${result.data.h1Count} H1-Überschriften. Optimal ist genau eine.`,
+        impact: 'Mehrere H1s können die Seitenstruktur für Suchmaschinen verwirren.',
         recommendation: 'Verwenden Sie nur eine H1-Überschrift pro Seite.'
       });
     } else {
       result.issues.push({
-        id: 'seo-h1-missing',
+        id: 'seo-no-h1',
         category: 'seo',
-        severity: 'critical',
-        title: 'H1-Überschrift fehlt',
-        description: 'Die Seite hat keine H1-Überschrift',
-        recommendation: 'Fügen Sie eine H1-Überschrift hinzu.'
+        severity: 'high',
+        title: 'Keine H1-Überschrift',
+        description: 'Ihre Seite hat keine H1-Überschrift.',
+        impact: 'Die H1 ist wichtig für SEO und Barrierefreiheit.',
+        recommendation: 'Fügen Sie eine aussagekräftige H1-Überschrift hinzu.'
       });
     }
 
     // Images with Alt (15 points)
-    if (seoData.imageCount > 0) {
-      const altRatio = seoData.imagesWithAlt / seoData.imageCount;
+    if (result.data.imageCount > 0) {
+      const altRatio = result.data.imagesWithAlt / result.data.imageCount;
       if (altRatio === 1) {
         scorePoints += 15;
       } else if (altRatio >= 0.8) {
         scorePoints += 10;
-        result.issues.push({
-          id: 'seo-alt-partial',
-          category: 'seo',
-          severity: 'warning',
-          title: 'Einige Bilder ohne Alt-Text',
-          description: `${seoData.imagesWithoutAlt} von ${seoData.imageCount} Bildern haben keinen Alt-Text`,
-          recommendation: 'Fügen Sie allen Bildern beschreibende Alt-Texte hinzu.'
-        });
       } else {
-        scorePoints += 5;
+        scorePoints += Math.round(altRatio * 10);
         result.issues.push({
-          id: 'seo-alt-missing',
+          id: 'seo-images-alt',
           category: 'seo',
-          severity: 'critical',
-          title: 'Viele Bilder ohne Alt-Text',
-          description: `${seoData.imagesWithoutAlt} von ${seoData.imageCount} Bildern haben keinen Alt-Text`,
-          recommendation: 'Alt-Texte sind wichtig für SEO und Barrierefreiheit.'
+          severity: altRatio < 0.5 ? 'high' : 'warning',
+          title: 'Bilder ohne Alt-Text',
+          description: `${result.data.imagesWithoutAlt} von ${result.data.imageCount} Bildern haben keinen Alt-Text.`,
+          impact: 'Alt-Texte sind wichtig für SEO und Barrierefreiheit.',
+          recommendation: 'Fügen Sie beschreibende Alt-Texte zu allen Bildern hinzu.'
         });
       }
     } else {
-      scorePoints += 15; // No images = no issue
+      scorePoints += 15; // No images, no penalty
     }
 
     // Canonical URL (10 points)
-    if (seoData.canonicalUrl) {
+    if (result.data.canonicalUrl) {
       scorePoints += 10;
     } else {
       result.issues.push({
-        id: 'seo-canonical-missing',
+        id: 'seo-no-canonical',
         category: 'seo',
-        severity: 'info',
-        title: 'Canonical-Tag fehlt',
-        description: 'Die Seite hat keinen Canonical-Tag',
-        recommendation: 'Fügen Sie einen Canonical-Tag hinzu, um Duplicate Content zu vermeiden.'
+        severity: 'warning',
+        title: 'Kein Canonical-Tag',
+        description: 'Ihre Seite hat keinen Canonical-Tag.',
+        impact: 'Ohne Canonical kann es zu Duplicate-Content-Problemen kommen.',
+        recommendation: 'Fügen Sie einen Canonical-Tag hinzu, der auf die bevorzugte URL verweist.'
       });
     }
 
     // Open Graph Tags (10 points)
-    if (Object.keys(seoData.ogTags).length >= 4) {
+    if (Object.keys(result.data.ogTags).length >= 3) {
       scorePoints += 10;
-    } else if (Object.keys(seoData.ogTags).length > 0) {
+    } else if (Object.keys(result.data.ogTags).length > 0) {
       scorePoints += 5;
       result.issues.push({
-        id: 'seo-og-partial',
+        id: 'seo-og-incomplete',
         category: 'seo',
-        severity: 'info',
+        severity: 'low',
         title: 'Open Graph Tags unvollständig',
-        description: 'Nicht alle wichtigen OG-Tags sind gesetzt',
-        recommendation: 'Fügen Sie og:title, og:description, og:image und og:url hinzu.'
+        description: 'Ihre Seite hat nicht alle wichtigen Open Graph Tags (og:title, og:description, og:image).',
+        impact: 'Social Media Shares werden möglicherweise nicht optimal dargestellt.',
+        recommendation: 'Ergänzen Sie og:title, og:description und og:image Tags.'
+      });
+    } else {
+      result.issues.push({
+        id: 'seo-no-og',
+        category: 'seo',
+        severity: 'low',
+        title: 'Keine Open Graph Tags',
+        description: 'Ihre Seite hat keine Open Graph Tags für Social Media.',
+        impact: 'Social Media Shares zeigen möglicherweise keine optimale Vorschau.',
+        recommendation: 'Fügen Sie og:title, og:description und og:image Tags hinzu.'
       });
     }
 
     // Structured Data (10 points)
-    if (seoData.structuredData) {
+    if (result.data.structuredData) {
       scorePoints += 10;
     } else {
       result.issues.push({
-        id: 'seo-structured-data-missing',
+        id: 'seo-no-structured-data',
         category: 'seo',
-        severity: 'info',
-        title: 'Strukturierte Daten fehlen',
-        description: 'Die Seite enthält keine strukturierten Daten (JSON-LD)',
-        recommendation: 'Fügen Sie Schema.org Markup hinzu für bessere Suchergebnisse.'
+        severity: 'warning',
+        title: 'Keine strukturierten Daten',
+        description: 'Ihre Seite verwendet keine Schema.org strukturierten Daten.',
+        impact: 'Strukturierte Daten können Rich Snippets in Suchergebnissen ermöglichen.',
+        recommendation: 'Implementieren Sie LocalBusiness oder Organization Schema Markup.'
       });
+    }
+
+    // Internal Links (5 points)
+    if (result.data.internalLinks >= 3) {
+      scorePoints += 5;
     }
 
     result.score = Math.round((scorePoints / maxPoints) * 100);
 
   } catch (error) {
     console.error('SEO analysis error:', error);
+    result.score = 50;
     result.issues.push({
-      id: 'seo-error',
+      id: 'seo-analysis-error',
       category: 'seo',
-      severity: 'critical',
-      title: 'SEO-Analyse fehlgeschlagen',
-      description: 'Die Seite konnte nicht analysiert werden',
-      recommendation: 'Überprüfen Sie, ob die Website erreichbar ist.'
+      severity: 'warning',
+      title: 'SEO-Analyse unvollständig',
+      description: 'Die SEO-Analyse konnte nicht vollständig durchgeführt werden.',
+      impact: 'Einige SEO-Faktoren konnten nicht geprüft werden.',
+      recommendation: 'Versuchen Sie es später erneut.'
     });
-  } finally {
-    if (browser) {
-      await browser.close();
-    }
   }
 
   return result;

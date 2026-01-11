@@ -1,5 +1,5 @@
-import { chromium } from 'playwright';
 import { AuditIssue } from '@/lib/types';
+import * as cheerio from 'cheerio';
 
 export interface ConversionResult {
   score: number;
@@ -36,185 +36,227 @@ export async function analyzeConversion(url: string): Promise<ConversionResult> 
     }
   };
 
-  let browser = null;
   let scorePoints = 0;
   const maxPoints = 100;
 
   try {
-    browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({
-      viewport: { width: 390, height: 844 },
-      isMobile: true
+    // Fetch HTML with fetch API (works on Vercel)
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'
+      },
+      signal: AbortSignal.timeout(15000)
     });
-    const page = await context.newPage();
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+    const textContent = $('body').text().toLowerCase();
+    const htmlLower = html.toLowerCase();
+
+    // CTA Detection
+    const ctaPatterns = [
+      /jetzt\s+(anfragen|buchen|bestellen|kaufen|kontakt|termin)/i,
+      /kostenlos\s+(anfragen|beraten|testen)/i,
+      /termin\s+(vereinbaren|buchen|machen)/i,
+      /(kontakt|anfrage|beratung)\s*(aufnehmen)?/i,
+      /call\s+to\s+action|book\s+now|contact\s+us|get\s+started/i
+    ];
+
+    // Check buttons and links for CTAs
+    const buttons = $('button, a.btn, a.button, [class*="btn"], [class*="cta"], [role="button"]');
+    let ctaCount = 0;
     
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-
-    const conversionData = await page.evaluate(() => {
-      const html = document.documentElement.innerHTML.toLowerCase();
-      const viewportHeight = window.innerHeight;
-
-      // CTA Detection
-      const ctaKeywords = ['jetzt', 'kontakt', 'termin', 'anfrage', 'buchen', 'bestellen', 
-                          'kaufen', 'anrufen', 'starten', 'gratis', 'kostenlos', 'now', 
-                          'contact', 'book', 'order', 'buy', 'call', 'start', 'free'];
-      
-      const buttons = Array.from(document.querySelectorAll('button, a.btn, a.button, [role="button"], .cta, .btn, .button'));
-      const ctaButtons = buttons.filter(btn => {
-        const text = btn.textContent?.toLowerCase() || '';
-        return ctaKeywords.some(kw => text.includes(kw));
-      });
-
-      // Check if CTA is above fold
-      let ctaAboveFold = false;
-      ctaButtons.forEach(btn => {
-        const rect = btn.getBoundingClientRect();
-        if (rect.top < viewportHeight && rect.top > 0) {
-          ctaAboveFold = true;
-        }
-      });
-
-      // Contact Form
-      const hasContactForm = document.querySelector('form') !== null && 
-        (html.includes('kontakt') || html.includes('contact') || 
-         html.includes('nachricht') || html.includes('message'));
-
-      // Clickable Phone
-      const hasPhoneClickable = document.querySelector('a[href^="tel:"]') !== null;
-
-      // WhatsApp
-      const hasWhatsapp = html.includes('whatsapp') || html.includes('wa.me');
-
-      // Chat Widget
-      const chatWidgets = ['tawk', 'intercom', 'drift', 'crisp', 'zendesk', 'livechat', 'tidio', 'hubspot'];
-      const hasChatWidget = chatWidgets.some(widget => html.includes(widget));
-
-      // Booking System
-      const bookingSystems = ['calendly', 'acuity', 'timify', 'terminland', 'doctolib', 'booksy', 'treatwell', 'fresha'];
-      const hasBookingSystem = bookingSystems.some(system => html.includes(system));
-
-      // Mobile Menu
-      const mobileMenu = document.querySelector('[class*="menu"], [class*="nav"], [class*="burger"], [aria-label*="menu"]');
-      const mobileMenuAccessible = mobileMenu !== null;
-
-      // Value Proposition (H1 or hero text)
-      const h1 = document.querySelector('h1');
-      const heroSection = document.querySelector('[class*="hero"], [class*="banner"], header');
-      const hasValueProposition = (h1 !== null && (h1.textContent?.length || 0) > 10) || 
-                                  (heroSection !== null && (heroSection.textContent?.length || 0) > 50);
-
-      return {
-        hasCta: ctaButtons.length > 0,
-        ctaCount: ctaButtons.length,
-        ctaAboveFold,
-        hasContactForm,
-        hasPhoneClickable,
-        hasWhatsapp,
-        hasChatWidget,
-        hasBookingSystem,
-        mobileMenuAccessible,
-        hasValueProposition
-      };
+    buttons.each((_, el) => {
+      const text = $(el).text().toLowerCase();
+      const href = $(el).attr('href') || '';
+      if (ctaPatterns.some(pattern => pattern.test(text)) || 
+          href.includes('tel:') || 
+          href.includes('mailto:') ||
+          href.includes('kontakt') ||
+          href.includes('contact') ||
+          href.includes('termin') ||
+          href.includes('booking')) {
+        ctaCount++;
+      }
     });
 
-    result.data = conversionData;
+    result.data.ctaCount = ctaCount;
+    result.data.hasCta = ctaCount > 0;
+    
+    // Assume CTA above fold if there's at least one in header or hero
+    result.data.ctaAboveFold = 
+      $('header, [class*="hero"], [class*="header"], nav').find('button, a.btn, [class*="btn"], [class*="cta"]').length > 0;
+
+    // Contact Form Detection
+    result.data.hasContactForm = 
+      $('form').filter((_, el) => {
+        const formHtml = $(el).html()?.toLowerCase() || '';
+        return formHtml.includes('email') || 
+               formHtml.includes('name') || 
+               formHtml.includes('nachricht') || 
+               formHtml.includes('message') ||
+               formHtml.includes('telefon') ||
+               formHtml.includes('phone');
+      }).length > 0;
+
+    // Clickable Phone
+    result.data.hasPhoneClickable = $('a[href^="tel:"]').length > 0;
+
+    // WhatsApp Detection
+    result.data.hasWhatsapp = 
+      htmlLower.includes('whatsapp') ||
+      htmlLower.includes('wa.me') ||
+      $('a[href*="wa.me"], a[href*="whatsapp"]').length > 0;
+
+    // Chat Widget Detection
+    const chatPatterns = [
+      /intercom|drift|zendesk|freshchat|tawk|livechat|hubspot|crisp|tidio/i,
+      /chat-widget|chat-bubble|chat-button/i
+    ];
+    result.data.hasChatWidget = 
+      chatPatterns.some(pattern => pattern.test(htmlLower)) ||
+      $('[class*="chat"], [id*="chat"]').length > 0;
+
+    // Booking System Detection
+    const bookingPatterns = [
+      /calendly|acuity|doctolib|treatwell|booksy|shore|timify|setmore|appointy/i,
+      /online-buchung|online-termin|termine\s+buchen/i
+    ];
+    result.data.hasBookingSystem = 
+      bookingPatterns.some(pattern => pattern.test(htmlLower)) ||
+      $('iframe[src*="calendly"], iframe[src*="booking"]').length > 0;
+
+    // Mobile Menu Detection
+    result.data.mobileMenuAccessible = 
+      $('[class*="mobile-menu"], [class*="hamburger"], [class*="menu-toggle"], [class*="burger"], button[aria-label*="menu" i], [class*="nav-toggle"]').length > 0 ||
+      $('nav').length > 0;
+
+    // Value Proposition Detection
+    const valuePatterns = [
+      /jahre\s+erfahrung|\d+\s*\+?\s*jahre/i,
+      /zufriedene\s+kunden|\d+\s*\+?\s*kunden/i,
+      /kostenlos|gratis|unverbindlich/i,
+      /qualität|meister|zertifiziert|ausgezeichnet/i
+    ];
+    result.data.hasValueProposition = valuePatterns.some(pattern => pattern.test(textContent));
 
     // Scoring
-
-    // CTA above fold (25 points)
-    if (conversionData.ctaAboveFold) {
-      scorePoints += 25;
-    } else if (conversionData.hasCta) {
-      scorePoints += 10;
-      result.issues.push({
-        id: 'conversion-cta-below-fold',
-        category: 'conversion',
-        severity: 'warning',
-        title: 'CTA nicht sofort sichtbar',
-        description: 'Der Haupt-Call-to-Action ist nicht im sichtbaren Bereich',
-        recommendation: 'Platzieren Sie einen CTA-Button im sofort sichtbaren Bereich.'
-      });
+    if (result.data.hasCta) {
+      if (result.data.ctaCount >= 3) {
+        scorePoints += 20;
+      } else {
+        scorePoints += 10;
+        result.issues.push({
+          id: 'conversion-few-ctas',
+          category: 'conversion',
+          severity: 'warning',
+          title: 'Wenige Call-to-Actions',
+          description: `Ihre Seite hat nur ${result.data.ctaCount} erkennbare CTAs.`,
+          impact: 'Mehr strategisch platzierte CTAs können die Conversion-Rate erhöhen.',
+          recommendation: 'Fügen Sie CTAs am Seitenende, nach wichtigen Abschnitten und im Header hinzu.'
+        });
+      }
     } else {
       result.issues.push({
         id: 'conversion-no-cta',
         category: 'conversion',
         severity: 'critical',
-        title: 'Kein Call-to-Action gefunden',
-        description: 'Es wurde kein klarer Handlungsaufruf gefunden',
-        recommendation: 'Fügen Sie auffällige CTA-Buttons hinzu (z.B. "Jetzt Termin buchen").'
+        title: 'Keine Call-to-Action erkannt',
+        description: 'Wir konnten keine klaren Handlungsaufforderungen auf Ihrer Seite finden.',
+        impact: 'Ohne CTAs wissen Besucher nicht, was sie tun sollen.',
+        recommendation: 'Fügen Sie klare CTAs wie "Jetzt anfragen" oder "Termin buchen" hinzu.'
       });
     }
 
-    // Contact Form (15 points)
-    if (conversionData.hasContactForm) {
+    if (result.data.ctaAboveFold) {
+      scorePoints += 15;
+    } else {
+      result.issues.push({
+        id: 'conversion-cta-below-fold',
+        category: 'conversion',
+        severity: 'high',
+        title: 'Kein CTA im sichtbaren Bereich',
+        description: 'Im oberen Bereich Ihrer Seite ist kein CTA sichtbar.',
+        impact: 'Besucher sollten sofort eine Handlungsmöglichkeit sehen.',
+        recommendation: 'Platzieren Sie einen prominenten CTA im Hero-Bereich oder Header.'
+      });
+    }
+
+    if (result.data.hasContactForm) {
       scorePoints += 15;
     } else {
       result.issues.push({
         id: 'conversion-no-form',
         category: 'conversion',
-        severity: 'warning',
-        title: 'Kein Kontaktformular',
-        description: 'Es wurde kein Kontaktformular gefunden',
-        recommendation: 'Ein Kontaktformular senkt die Hemmschwelle zur Kontaktaufnahme.'
+        severity: 'high',
+        title: 'Kein Kontaktformular gefunden',
+        description: 'Ihre Seite scheint kein Kontaktformular zu haben.',
+        impact: 'Formulare sind der einfachste Weg für Kunden, Kontakt aufzunehmen.',
+        recommendation: 'Fügen Sie ein einfaches Kontaktformular auf der Startseite oder Kontaktseite hinzu.'
       });
     }
 
-    // Clickable Phone (15 points)
-    if (conversionData.hasPhoneClickable) {
+    if (result.data.hasPhoneClickable) {
       scorePoints += 15;
     } else {
       result.issues.push({
         id: 'conversion-phone-not-clickable',
         category: 'conversion',
-        severity: 'warning',
+        severity: 'high',
         title: 'Telefonnummer nicht klickbar',
-        description: 'Die Telefonnummer ist nicht als tel:-Link formatiert',
-        recommendation: 'Machen Sie die Telefonnummer klickbar für mobile Nutzer.'
+        description: 'Die Telefonnummer ist nicht als klickbarer Link formatiert.',
+        impact: 'Mobile Nutzer können nicht direkt anrufen.',
+        recommendation: 'Formatieren Sie Telefonnummern als tel:-Links für direkte Anrufe.'
       });
     }
 
-    // Quick Contact Options (15 points)
-    const quickContact = [conversionData.hasWhatsapp, conversionData.hasChatWidget, conversionData.hasBookingSystem]
-      .filter(Boolean).length;
-    
-    if (quickContact >= 1) {
-      scorePoints += 15;
+    if (result.data.hasWhatsapp || result.data.hasChatWidget) {
+      scorePoints += 10;
     } else {
       result.issues.push({
-        id: 'conversion-no-quick-contact',
-        category: 'conversion',
-        severity: 'info',
-        title: 'Keine Schnellkontakt-Optionen',
-        description: 'Keine modernen Kontaktoptionen wie WhatsApp, Chat oder Online-Buchung',
-        recommendation: 'Erwägen Sie WhatsApp Business, einen Chat-Widget oder ein Buchungssystem.'
-      });
-    }
-
-    // Mobile Navigation (15 points)
-    if (conversionData.mobileMenuAccessible) {
-      scorePoints += 15;
-    } else {
-      result.issues.push({
-        id: 'conversion-mobile-nav',
+        id: 'conversion-no-instant-contact',
         category: 'conversion',
         severity: 'warning',
-        title: 'Mobile Navigation unklar',
-        description: 'Die mobile Navigation ist nicht eindeutig erkennbar',
-        recommendation: 'Stellen Sie sicher, dass die mobile Navigation leicht zugänglich ist.'
+        title: 'Keine Sofort-Kontaktmöglichkeit',
+        description: 'Ihre Seite hat kein WhatsApp oder Chat-Widget.',
+        impact: 'Viele Kunden bevorzugen schnelle Kommunikationswege.',
+        recommendation: 'Integrieren Sie einen WhatsApp-Button oder ein Chat-Widget.'
       });
     }
 
-    // Value Proposition (15 points)
-    if (conversionData.hasValueProposition) {
-      scorePoints += 15;
+    if (result.data.hasBookingSystem) {
+      scorePoints += 10;
+    }
+
+    if (result.data.mobileMenuAccessible) {
+      scorePoints += 10;
     } else {
       result.issues.push({
-        id: 'conversion-no-value-prop',
+        id: 'conversion-no-mobile-menu',
+        category: 'conversion',
+        severity: 'high',
+        title: 'Keine mobile Navigation erkannt',
+        description: 'Wir konnten keine mobile Navigation (Hamburger-Menü) finden.',
+        impact: 'Mobile Nutzer können nicht durch Ihre Seite navigieren.',
+        recommendation: 'Stellen Sie sicher, dass ein mobiles Menü vorhanden ist.'
+      });
+    }
+
+    if (result.data.hasValueProposition) {
+      scorePoints += 5;
+    } else {
+      result.issues.push({
+        id: 'conversion-no-value-proposition',
         category: 'conversion',
         severity: 'warning',
-        title: 'Keine klare Wertaussage',
-        description: 'Es fehlt eine klare Headline oder Value Proposition',
-        recommendation: 'Kommunizieren Sie sofort, was Sie anbieten und warum.'
+        title: 'Keine klaren Argumente erkennbar',
+        description: 'Wir konnten keine klaren Verkaufsargumente auf Ihrer Seite finden.',
+        impact: 'Besucher verstehen nicht sofort, warum sie Sie wählen sollten.',
+        recommendation: 'Zeigen Sie Erfahrung, Qualifikationen und Kundenzahlen prominent an.'
       });
     }
 
@@ -222,18 +264,16 @@ export async function analyzeConversion(url: string): Promise<ConversionResult> 
 
   } catch (error) {
     console.error('Conversion analysis error:', error);
+    result.score = 50;
     result.issues.push({
-      id: 'conversion-error',
+      id: 'conversion-analysis-error',
       category: 'conversion',
       severity: 'warning',
       title: 'Conversion-Analyse unvollständig',
-      description: 'Einige Conversion-Faktoren konnten nicht geprüft werden',
-      recommendation: 'Überprüfen Sie die Website manuell.'
+      description: 'Die Conversion-Analyse konnte nicht vollständig durchgeführt werden.',
+      impact: 'Einige Conversion-Faktoren konnten nicht geprüft werden.',
+      recommendation: 'Versuchen Sie es später erneut.'
     });
-  } finally {
-    if (browser) {
-      await browser.close();
-    }
   }
 
   return result;
