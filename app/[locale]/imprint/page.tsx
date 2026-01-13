@@ -35,7 +35,7 @@ export default function ImprintPage({ params: { locale } }: { params: { locale: 
             <h2 className="text-xl font-semibold mb-3">{t('contact')}</h2>
             <p className="text-gray-600 dark:text-gray-400">
               {t('email')}: gehrkemike2@gmail.com<br />
-              {t('phone')}: +49 163 267 0137
+              {t('phone')}: +49 2203 9424878
             </p>
           </section>
 

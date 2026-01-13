@@ -25,12 +25,12 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               {/* Telefonnummer - für besseren Trust Score */}
               <a
-                href="tel:+491632670137"
+                href="tel:+4922039424878"
                 className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors"
                 aria-label="Anrufen"
               >
                 <Phone className="w-4 h-4" />
-                0163 267 0137
+                +49 2203 9424878
               </a>
               {/* WhatsApp Button */}
               <a
@@ -83,7 +83,7 @@ export default function HomePage() {
             
             {/* Secondary CTA - Telefon */}
             <a
-              href="tel:+491632670137"
+              href="tel:+4922039424878"
               className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border-2 border-gray-300 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold hover:border-primary-500 hover:text-primary-500 transition-all min-h-[60px]"
               role="button"
               aria-label="Jetzt anrufen"
@@ -113,9 +113,15 @@ export default function HomePage() {
               <Zap className="w-6 h-6 text-primary-500" />
             </div>
             <h3 className="text-xl font-semibold mb-2">{t('home.features.performance.title')}</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               {t('home.features.performance.description')}
             </p>
+            <Link
+              href={`/${locale}/funnel`}
+              className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
+            >
+              Jetzt testen <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
           <div className="bg-white dark:bg-dark-900 rounded-2xl p-8 border border-gray-200 dark:border-dark-800 hover:border-primary-500/50 transition-colors">
@@ -123,9 +129,15 @@ export default function HomePage() {
               <Shield className="w-6 h-6 text-primary-500" />
             </div>
             <h3 className="text-xl font-semibold mb-2">{t('home.features.trust.title')}</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               {t('home.features.trust.description')}
             </p>
+            <Link
+              href={`/${locale}/funnel`}
+              className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
+            >
+              Jetzt testen <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
           <div className="bg-white dark:bg-dark-900 rounded-2xl p-8 border border-gray-200 dark:border-dark-800 hover:border-primary-500/50 transition-colors">
@@ -133,9 +145,15 @@ export default function HomePage() {
               <TrendingUp className="w-6 h-6 text-primary-500" />
             </div>
             <h3 className="text-xl font-semibold mb-2">{t('home.features.conversion.title')}</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               {t('home.features.conversion.description')}
             </p>
+            <Link
+              href={`/${locale}/funnel`}
+              className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
+            >
+              Jetzt testen <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
 
@@ -174,9 +192,9 @@ export default function HomePage() {
           </div>
           {/* Contact Info in Footer */}
           <div className="mt-4 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-            <a href="tel:+491632670137" className="hover:text-primary-500 transition-colors flex items-center gap-1">
+            <a href="tel:+4922039424878" className="hover:text-primary-500 transition-colors flex items-center gap-1">
               <Phone className="w-4 h-4" />
-              0163 267 0137
+              +49 2203 9424878
             </a>
             <a href="mailto:kontakt@mg-digital-solutions.com" className="hover:text-primary-500 transition-colors flex items-center gap-1">
               <MessageCircle className="w-4 h-4" />

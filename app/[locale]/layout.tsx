@@ -16,8 +16,8 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-// Schema.org Structured Data
-const structuredData = {
+// Schema.org Structured Data - WebApplication
+const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: 'WebCheck360',
@@ -33,17 +33,18 @@ const structuredData = {
   provider: {
     '@type': 'Organization',
     name: 'MG Digital Solutions',
-    url: 'https://www.mg-digital-solutions.com',
+    url: 'https://www.mg-digital-solutions.de',
     logo: 'https://webcheck360.de/logo.png',
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+49-163-267-0137',
+      telephone: '+49-2203-9424878',
       contactType: 'customer service',
       availableLanguage: ['German', 'English'],
-      email: 'kontakt@mg-digital-solutions.com',
+      email: 'hallo@mg-digital-solutions.de',
     },
     sameAs: [
-      'https://wa.me/491632670137'
+      'https://wa.me/491632670137',
+      'https://www.mg-digital-solutions.de'
     ],
   },
   aggregateRating: {
@@ -51,6 +52,62 @@ const structuredData = {
     ratingValue: '4.9',
     reviewCount: '127',
   },
+};
+
+// LocalBusiness Schema für Trust
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'WebCheck360 by MG Digital Solutions',
+  description: 'Kostenloser Website-Analyse Service für Performance, SEO, Mobile UX und Conversion',
+  url: 'https://webcheck360.de',
+  telephone: '+49-2203-9424878',
+  email: 'hallo@mg-digital-solutions.de',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Adolf-Kalsbach-Straße 40A',
+    addressLocality: 'Köln',
+    postalCode: '51147',
+    addressCountry: 'DE'
+  },
+  openingHours: 'Mo-Fr 09:00-18:00',
+  priceRange: 'Kostenlos',
+  areaServed: {
+    '@type': 'Country',
+    name: 'Germany'
+  }
+};
+
+// FAQ Schema für SEO
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Was kostet der Website-Check?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Der WebCheck360 ist komplett kostenlos. Sie erhalten eine vollständige Analyse Ihrer Website mit Performance, SEO, Mobile UX und Conversion Score.'
+      }
+    },
+    {
+      '@type': 'Question', 
+      name: 'Wie lange dauert die Analyse?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Die Analyse dauert nur etwa 60 Sekunden. Sie erhalten sofort detaillierte Ergebnisse und konkrete Handlungsempfehlungen.'
+      }
+    },
+    {
+      '@type': 'Question',
+      name: 'Was wird bei der Website-Analyse geprüft?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Wir prüfen Performance (Ladezeit, Core Web Vitals), SEO (Meta-Tags, Struktur), Mobile UX (Responsive Design), Vertrauen (SSL, Impressum) und Conversion (CTAs, Formulare).'
+      }
+    }
+  ]
 };
 
 export default async function LocaleLayout({
@@ -71,9 +128,19 @@ export default async function LocaleLayout({
       <head>
         <link rel="canonical" href={`https://webcheck360.de/${locale}`} />
         <Script
-          id="structured-data"
+          id="webapp-schema"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+        />
+        <Script
+          id="localbusiness-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
+        <Script
+          id="faq-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </head>
       <body className={inter.className} suppressHydrationWarning>
