@@ -12,7 +12,13 @@
     "next": "Weiter",
     "close": "Schließen",
     "yes": "Ja",
-    "no": "Nein"
+    "no": "Nein",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "openWebsite": "Website öffnen",
+    "auditNotFound": "Audit nicht gefunden",
+    "noProblems": "Keine Probleme gefunden",
+    "noProblemsDesc": "Die Analyse hat keine kritischen Probleme identifiziert."
   },
   "nav": {
     "home": "Startseite",
@@ -95,7 +101,9 @@
       "title": "Interesse an einer Optimierung?",
       "description": "Lassen Sie uns unverbindlich besprechen, wie wir Ihre Website verbessern können.",
       "button": "Kostenloses Gespräch vereinbaren"
-    }
+    },
+    "noProblems": "Keine Probleme gefunden",
+    "noProblemsDesc": "Die Analyse hat keine kritischen Probleme identifiziert."
   },
   "admin": {
     "login": {
@@ -142,17 +150,51 @@
     },
     "detail": {
       "title": "Analyse Details",
+      "back": "Zurück",
+      "openWebsite": "Website öffnen",
       "leadInfo": "Lead-Informationen",
       "noLead": "Kein Lead vorhanden",
       "notes": "Notizen",
+      "notePlaceholder": "Notiz hinzufügen...",
+      "noNotes": "Noch keine Notizen",
       "addNote": "Notiz hinzufügen",
       "followUp": "Follow-up Text",
-      "generateFollowUp": "Text generieren"
+      "copy": "Kopieren",
+      "copied": "Kopiert!",
+      "generateFollowUp": "Text generieren",
+      "analyzedWebsite": "Analysierte Website",
+      "message": "Nachricht",
+      "changeStatus": "Status ändern"
     }
   },
   "footer": {
     "copyright": "© 2024 WebCheck360. Alle Rechte vorbehalten.",
     "privacy": "Datenschutz",
     "imprint": "Impressum"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "intro": "Der Schutz Ihrer persönlichen Daten ist uns wichtig.",
+      "responsible": "Verantwortlicher",
+      "dataCollection": "Datenerfassung",
+      "dataCollectionText": "Wir erfassen Daten, die Sie uns freiwillig mitteilen, wenn Sie unseren Website-Check nutzen oder uns kontaktieren.",
+      "cookies": "Cookies",
+      "cookiesText": "Diese Website verwendet technisch notwendige Cookies, um die Funktionalität zu gewährleisten.",
+      "rights": "Ihre Rechte",
+      "rightsText": "Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten.",
+      "contact": "Kontakt",
+      "contactText": "Bei Fragen zum Datenschutz kontaktieren Sie uns bitte unter der unten angegebenen Adresse."
+    },
+    "imprint": {
+      "title": "Impressum",
+      "according": "Angaben gemäß § 5 TMG",
+      "contact": "Kontakt",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "responsible": "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
+      "dispute": "Streitschlichtung",
+      "disputeText": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+    }
   }
 }

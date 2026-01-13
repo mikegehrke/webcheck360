@@ -12,7 +12,13 @@
     "next": "Next",
     "close": "Close",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "openWebsite": "Open website",
+    "auditNotFound": "Audit not found",
+    "noProblems": "No problems found",
+    "noProblemsDesc": "The analysis did not identify any critical issues."
   },
   "nav": {
     "home": "Home",
@@ -95,7 +101,9 @@
       "title": "Interested in optimization?",
       "description": "Let's discuss how we can improve your website - no obligation.",
       "button": "Schedule a free consultation"
-    }
+    },
+    "noProblems": "No problems found",
+    "noProblemsDesc": "The analysis did not identify any critical issues."
   },
   "admin": {
     "login": {
@@ -142,17 +150,51 @@
     },
     "detail": {
       "title": "Audit Details",
+      "back": "Back",
+      "openWebsite": "Open website",
       "leadInfo": "Lead Information",
       "noLead": "No lead data",
       "notes": "Notes",
+      "notePlaceholder": "Add a note...",
+      "noNotes": "No notes yet",
       "addNote": "Add Note",
       "followUp": "Follow-up Text",
-      "generateFollowUp": "Generate Text"
+      "copy": "Copy",
+      "copied": "Copied!",
+      "generateFollowUp": "Generate Text",
+      "analyzedWebsite": "Analyzed Website",
+      "message": "Message",
+      "changeStatus": "Change status"
     }
   },
   "footer": {
     "copyright": "© 2024 WebCheck360. All rights reserved.",
     "privacy": "Privacy Policy",
     "imprint": "Imprint"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "intro": "Protecting your personal data is important to us.",
+      "responsible": "Data Controller",
+      "dataCollection": "Data Collection",
+      "dataCollectionText": "We collect data that you voluntarily provide when using our website check or contacting us.",
+      "cookies": "Cookies",
+      "cookiesText": "This website uses technically necessary cookies to ensure functionality.",
+      "rights": "Your Rights",
+      "rightsText": "You have the right to access, rectify, delete, and restrict the processing of your data.",
+      "contact": "Contact",
+      "contactText": "If you have questions about data protection, please contact us at the address below."
+    },
+    "imprint": {
+      "title": "Imprint",
+      "according": "Information according to § 5 TMG",
+      "contact": "Contact",
+      "email": "Email",
+      "phone": "Phone",
+      "responsible": "Responsible for content according to § 55 Abs. 2 RStV",
+      "dispute": "Dispute Resolution",
+      "disputeText": "The European Commission provides a platform for online dispute resolution (OS). We are not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board."
+    }
   }
 }

@@ -156,7 +156,7 @@ export default function AdminDetailPage({
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
               >
                 <ArrowLeft className="w-5 h-5" />
-                Zurück
+                {t('detail.back')}
               </Link>
               <span className="text-gray-300 dark:text-gray-700">|</span>
               <h1 className="font-semibold">{audit.domain}</h1>
@@ -167,7 +167,7 @@ export default function AdminDetailPage({
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-primary-600 hover:text-primary-700"
             >
-              Website öffnen
+              {t('detail.openWebsite')}
               <ExternalLink className="w-4 h-4" />
             </a>
           </div>
@@ -240,7 +240,7 @@ export default function AdminDetailPage({
                 <CardTitle>{t('detail.followUp')}</CardTitle>
                 <Button variant="outline" size="sm" onClick={copyFollowUp}>
                   {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-                  {copied ? 'Kopiert!' : 'Kopieren'}
+                  {copied ? t('detail.copied') : t('detail.copy')}
                 </Button>
               </CardHeader>
               <CardContent>
@@ -289,7 +289,7 @@ export default function AdminDetailPage({
                     )}
                     {audit.lead.message && (
                       <div className="pt-3 border-t border-gray-200 dark:border-dark-700">
-                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Nachricht:</p>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{t('detail.message')}:</p>
                         <p className="text-sm bg-gray-50 dark:bg-dark-800 p-3 rounded-lg">
                           {audit.lead.message}
                         </p>
@@ -304,7 +304,7 @@ export default function AdminDetailPage({
 
                     {/* Status */}
                     <div className="pt-4 border-t border-gray-200 dark:border-dark-700">
-                      <p className="text-sm font-medium mb-2">Status ändern:</p>
+                      <p className="text-sm font-medium mb-2">{t('detail.changeStatus')}:</p>
                       <div className="flex flex-wrap gap-2">
                         {statuses.map((status) => (
                           <button
@@ -328,7 +328,7 @@ export default function AdminDetailPage({
 
                 {audit.industry && (
                   <div className="pt-4 border-t border-gray-200 dark:border-dark-700">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Branche</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('audits.columns.industry')}</p>
                     <p className="font-medium">{audit.industry}</p>
                   </div>
                 )}
@@ -346,7 +346,7 @@ export default function AdminDetailPage({
                     type="text"
                     value={newNote}
                     onChange={(e) => setNewNote(e.target.value)}
-                    placeholder="Notiz hinzufügen..."
+                    placeholder={t('detail.notePlaceholder')}
                     className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-dark-700 bg-white dark:bg-dark-800 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     onKeyDown={(e) => e.key === 'Enter' && addNote()}
                   />
@@ -369,7 +369,7 @@ export default function AdminDetailPage({
                   ))}
                   {notes.length === 0 && (
                     <p className="text-sm text-gray-400 text-center py-4">
-                      Noch keine Notizen
+                      {t('detail.noNotes')}
                     </p>
                   )}
                 </div>
