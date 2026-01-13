@@ -449,3 +449,4 @@ export const categoryTranslations: Record<string, Record<'de' | 'en', string>> =
   conversion: { de: 'Conversion', en: 'Conversion' }
 };
 // Build trigger Tue Jan 13 18:13:58 CET 2026
+// Build trigger Tue Jan 13 18:32:27 CET 2026
