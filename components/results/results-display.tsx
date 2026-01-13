@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Audit, AuditIssue } from '@/lib/types';
 import { getScoreLabel } from '@/lib/utils';
+import { translateIssue } from '@/lib/issue-translations';
 
 interface ResultsDisplayProps {
   audit: Audit;
@@ -63,15 +64,14 @@ function getSeverityIcon(severity: AuditIssue['severity']) {
   }
 }
 
-function getSeverityBadge(severity: AuditIssue['severity']) {
-  switch (severity) {
-    case 'critical':
-      return <Badge variant="error">Kritisch</Badge>;
-    case 'warning':
-      return <Badge variant="warning">Warnung</Badge>;
-    case 'info':
-      return <Badge variant="info">Info</Badge>;
-  }
+// Helper to get translated issue content
+function getTranslatedIssue(issue: AuditIssue, locale: 'de' | 'en') {
+  return translateIssue(issue.id, locale, {
+    title: issue.title,
+    description: issue.description,
+    recommendation: issue.recommendation,
+    impact: issue.impact
+  });
 }
 
 export function ResultsDisplay({ audit, locale, onRequestReport }: ResultsDisplayProps) {
@@ -183,22 +183,25 @@ export function ResultsDisplay({ audit, locale, onRequestReport }: ResultsDispla
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {criticalIssues.map((issue) => (
-                <div key={issue.id} className="p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
-                  <div className="flex items-start gap-3">
-                    {getSeverityIcon(issue.severity)}
-                    <div>
-                      <h4 className="font-semibold">{issue.title}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {issue.description}
-                      </p>
-                      <p className="text-sm text-primary-600 dark:text-primary-400 mt-2">
-                        💡 {issue.recommendation}
-                      </p>
+              {criticalIssues.map((issue) => {
+                const translated = getTranslatedIssue(issue, locale);
+                return (
+                  <div key={issue.id} className="p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
+                    <div className="flex items-start gap-3">
+                      {getSeverityIcon(issue.severity)}
+                      <div>
+                        <h4 className="font-semibold">{translated.title}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          {translated.description}
+                        </p>
+                        <p className="text-sm text-primary-600 dark:text-primary-400 mt-2">
+                          💡 {translated.recommendation}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </CardContent>
           </Card>
         )}
@@ -213,22 +216,25 @@ export function ResultsDisplay({ audit, locale, onRequestReport }: ResultsDispla
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {warningIssues.map((issue) => (
-                <div key={issue.id} className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl">
-                  <div className="flex items-start gap-3">
-                    {getSeverityIcon(issue.severity)}
-                    <div>
-                      <h4 className="font-semibold">{issue.title}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {issue.description}
-                      </p>
-                      <p className="text-sm text-primary-600 dark:text-primary-400 mt-2">
-                        💡 {issue.recommendation}
-                      </p>
+              {warningIssues.map((issue) => {
+                const translated = getTranslatedIssue(issue, locale);
+                return (
+                  <div key={issue.id} className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl">
+                    <div className="flex items-start gap-3">
+                      {getSeverityIcon(issue.severity)}
+                      <div>
+                        <h4 className="font-semibold">{translated.title}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          {translated.description}
+                        </p>
+                        <p className="text-sm text-primary-600 dark:text-primary-400 mt-2">
+                          💡 {translated.recommendation}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </CardContent>
           </Card>
         )}
@@ -243,18 +249,22 @@ export function ResultsDisplay({ audit, locale, onRequestReport }: ResultsDispla
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {infoIssues.map((issue) => (
-                <div key={issue.id} className="p-4 bg-gray-50 dark:bg-dark-800 rounded-xl">
-                  <div className="flex items-start gap-3">
-                    {getSeverityIcon(issue.severity)}
-                    <div>
-                      <h4 className="font-semibold">{issue.title}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {issue.description}
-                      </p>
+              {infoIssues.map((issue) => {
+                const translated = getTranslatedIssue(issue, locale);
+                return (
+                  <div key={issue.id} className="p-4 bg-gray-50 dark:bg-dark-800 rounded-xl">
+                    <div className="flex items-start gap-3">
+                      {getSeverityIcon(issue.severity)}
+                      <div>
+                        <h4 className="font-semibold">{translated.title}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          {translated.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                );
+              })}
               ))}
             </CardContent>
           </Card>

@@ -196,5 +196,21 @@
       "dispute": "Dispute Resolution",
       "disputeText": "The European Commission provides a platform for online dispute resolution (OS). We are not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board."
     }
+  },
+  "home": {
+    "features": {
+      "performance": {
+        "title": "Performance",
+        "description": "Loading time, Core Web Vitals and mobile optimization at a glance."
+      },
+      "trust": {
+        "title": "Trust",
+        "description": "Imprint, privacy policy, HTTPS and important trust factors."
+      },
+      "conversion": {
+        "title": "Conversion",
+        "description": "CTAs, contact options and user guidance analyzed."
+      }
+    }
   }
 }

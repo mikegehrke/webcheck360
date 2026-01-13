@@ -196,5 +196,21 @@
       "dispute": "Streitschlichtung",
       "disputeText": "Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
     }
+  },
+  "home": {
+    "features": {
+      "performance": {
+        "title": "Performance",
+        "description": "Ladezeit, Core Web Vitals und Mobile-Optimierung auf einen Blick."
+      },
+      "trust": {
+        "title": "Vertrauen",
+        "description": "Impressum, Datenschutz, HTTPS und wichtige Trust-Faktoren."
+      },
+      "conversion": {
+        "title": "Conversion",
+        "description": "CTAs, Kontaktmöglichkeiten und Nutzerführung analysiert."
+      }
+    }
   }
 }

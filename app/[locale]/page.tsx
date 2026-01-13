@@ -62,9 +62,9 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4">
               <Zap className="w-6 h-6 text-primary-500" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">Performance</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('home.features.performance.title')}</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              Ladezeit, Core Web Vitals und Mobile-Optimierung auf einen Blick.
+              {t('home.features.performance.description')}
             </p>
           </div>
 
@@ -72,9 +72,9 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4">
               <Shield className="w-6 h-6 text-primary-500" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">Vertrauen</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('home.features.trust.title')}</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              Impressum, Datenschutz, HTTPS und wichtige Trust-Faktoren.
+              {t('home.features.trust.description')}
             </p>
           </div>
 
@@ -82,9 +82,9 @@ export default function HomePage() {
             <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4">
               <TrendingUp className="w-6 h-6 text-primary-500" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">Conversion</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('home.features.conversion.title')}</h3>
             <p className="text-gray-600 dark:text-gray-400">
-              CTAs, Kontaktmöglichkeiten und Nutzerführung analysiert.
+              {t('home.features.conversion.description')}
             </p>
           </div>
         </div>
