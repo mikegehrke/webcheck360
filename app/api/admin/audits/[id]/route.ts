@@ -25,9 +25,26 @@ export async function GET(
       .eq('audit_id', params.id)
       .order('created_at', { ascending: false });
 
+    // Build scores object from separate fields
+    const scores = {
+      performance: audit.score_performance || 0,
+      mobile_ux: audit.score_mobile_ux || 0,
+      seo: audit.score_seo || 0,
+      trust: audit.score_trust || 0,
+      conversion: audit.score_conversion || 0,
+    };
+
+    // Build screenshots object
+    const screenshots = {
+      desktop: audit.screenshot_desktop || null,
+      mobile: audit.screenshot_mobile || null,
+    };
+
     return NextResponse.json({ 
       audit: {
         ...audit,
+        scores,
+        screenshots,
         lead: lead || null
       }, 
       notes: notes || [] 
