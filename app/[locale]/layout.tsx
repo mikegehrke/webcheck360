@@ -37,10 +37,14 @@ const structuredData = {
     logo: 'https://webcheck360.de/logo.png',
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+49-XXX-XXXXXXX',
+      telephone: '+49-176-4775-7577',
       contactType: 'customer service',
       availableLanguage: ['German', 'English'],
+      email: 'kontakt@mg-digital-solutions.com',
     },
+    sameAs: [
+      'https://wa.me/4917647757577'
+    ],
   },
   aggregateRating: {
     '@type': 'AggregateRating',

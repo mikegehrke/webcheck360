@@ -23,14 +23,25 @@ export default function HomePage() {
               <span className="font-bold text-xl">WebCheck360</span>
             </div>
             <div className="flex items-center gap-4">
-              {/* Contact Button - für besseren Conversion Score */}
+              {/* Telefonnummer - für besseren Trust Score */}
               <a
-                href="mailto:kontakt@mg-digital-solutions.com"
-                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors"
-                aria-label="Kontakt aufnehmen"
+                href="tel:+4917647757577"
+                className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors"
+                aria-label="Anrufen"
+              >
+                <Phone className="w-4 h-4" />
+                +49 176 4775 7577
+              </a>
+              {/* WhatsApp Button */}
+              <a
+                href="https://wa.me/4917647757577?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                aria-label="WhatsApp Kontakt"
               >
                 <MessageCircle className="w-4 h-4" />
-                Kontakt
+                WhatsApp
               </a>
               <LanguageSwitcher />
             </div>
@@ -70,15 +81,27 @@ export default function HomePage() {
               <ArrowRight className="w-6 h-6" />
             </Link>
             
-            {/* Secondary CTA */}
+            {/* Secondary CTA - Telefon */}
             <a
-              href="mailto:kontakt@mg-digital-solutions.com?subject=Anfrage%20WebCheck360"
+              href="tel:+4917647757577"
               className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border-2 border-gray-300 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold hover:border-primary-500 hover:text-primary-500 transition-all min-h-[60px]"
               role="button"
-              aria-label="Termin buchen"
+              aria-label="Jetzt anrufen"
             >
               <Phone className="w-5 h-5" />
-              Termin buchen
+              Jetzt anrufen
+            </a>
+            {/* WhatsApp CTA */}
+            <a
+              href="https://wa.me/4917647757577?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-green-500 text-white font-semibold hover:bg-green-600 transition-all min-h-[60px]"
+              role="button"
+              aria-label="WhatsApp schreiben"
+            >
+              <MessageCircle className="w-5 h-5" />
+              WhatsApp
             </a>
           </div>
         </div>
@@ -150,10 +173,23 @@ export default function HomePage() {
             </Link>
           </div>
           {/* Contact Info in Footer */}
-          <div className="mt-4 flex items-center justify-center gap-6">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <a href="tel:+4917647757577" className="hover:text-primary-500 transition-colors flex items-center gap-1">
+              <Phone className="w-4 h-4" />
+              +49 176 4775 7577
+            </a>
             <a href="mailto:kontakt@mg-digital-solutions.com" className="hover:text-primary-500 transition-colors flex items-center gap-1">
               <MessageCircle className="w-4 h-4" />
               kontakt@mg-digital-solutions.com
+            </a>
+            <a 
+              href="https://wa.me/4917647757577" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-green-500 transition-colors flex items-center gap-1"
+            >
+              <MessageCircle className="w-4 h-4" />
+              WhatsApp
             </a>
           </div>
         </div>
