@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllAudits, supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,8 +34,32 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const audits = await getAllAudits();
-    return NextResponse.json({ audits });
+    // Get all audits with their associated leads
+    const { data: audits, error: auditsError } = await supabase
+      .from('audits')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (auditsError) {
+      console.error('Error fetching audits:', auditsError);
+      return NextResponse.json({ audits: [] });
+    }
+
+    // Get all leads
+    const { data: leads } = await supabase
+      .from('leads')
+      .select('*');
+
+    // Combine audits with their leads
+    const auditsWithLeads = audits?.map(audit => {
+      const lead = leads?.find(l => l.audit_id === audit.id);
+      return {
+        ...audit,
+        lead: lead || null
+      };
+    }) || [];
+
+    return NextResponse.json({ audits: auditsWithLeads });
   } catch (error) {
     console.error('Admin audits fetch error:', error);
     return NextResponse.json(

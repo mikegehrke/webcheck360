@@ -1,31 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const isVercel = process.env.VERCEL === '1' || process.env.VERCEL_ENV !== undefined;
+import { getAudit, getLeadByAuditId, supabase } from '@/lib/supabase';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (isVercel) {
-    return NextResponse.json({ 
-      error: 'Admin not available on Vercel deployment',
-      audit: null 
-    }, { status: 404 });
-  }
-
   try {
-    const { getAuditWithLead, getNotesForAudit } = await import('@/lib/db');
-    const auditData = await getAuditWithLead(params.id);
+    const audit = await getAudit(params.id);
     
-    if (!auditData) {
+    if (!audit) {
       return NextResponse.json(
         { error: 'Audit not found' },
         { status: 404 }
       );
     }
 
-    const notes = await getNotesForAudit(params.id);
-    return NextResponse.json({ audit: auditData, notes });
+    // Get associated lead if exists
+    const lead = await getLeadByAuditId(params.id);
+
+    // Get notes for this audit
+    const { data: notes } = await supabase
+      .from('notes')
+      .select('*')
+      .eq('audit_id', params.id)
+      .order('created_at', { ascending: false });
+
+    return NextResponse.json({ 
+      audit: {
+        ...audit,
+        lead: lead || null
+      }, 
+      notes: notes || [] 
+    });
   } catch (error) {
     console.error('Admin audit fetch error:', error);
     return NextResponse.json(
@@ -39,17 +45,24 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (isVercel) {
-    return NextResponse.json({ error: 'Admin not available on Vercel' }, { status: 403 });
-  }
-
   try {
-    const { updateLeadStatus } = await import('@/lib/db');
     const body = await request.json();
     const { status } = body;
 
     if (status) {
-      await updateLeadStatus(params.id, status);
+      // Update lead status
+      const { error } = await supabase
+        .from('leads')
+        .update({ status })
+        .eq('audit_id', params.id);
+      
+      if (error) {
+        console.error('Error updating lead status:', error);
+        return NextResponse.json(
+          { error: 'Failed to update status' },
+          { status: 500 }
+        );
+      }
     }
 
     return NextResponse.json({ success: true });
