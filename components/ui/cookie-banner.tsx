@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { X, Cookie } from 'lucide-react';
 import Link from 'next/link';
 
 export function CookieBanner() {
   const t = useTranslations();
+  const locale = useLocale();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -45,9 +46,14 @@ export function CookieBanner() {
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               {t('cookies.description')}{' '}
-              <Link href="/privacy" className="text-primary-500 hover:underline">
+              <a 
+                href={`/${locale}/privacy`} 
+                className="text-primary-500 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {t('cookies.learnMore')}
-              </Link>
+              </a>
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3">
