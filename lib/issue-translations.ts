@@ -36,7 +36,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       impact: 'Without a title tag, Google cannot properly index your page.'
     }
   },
-  'seo-meta-length': {
+  'seo-description-length': {
     de: {
       title: 'Meta-Description Länge optimieren',
       description: 'Ihre Meta-Description ist zu lang oder zu kurz. Optimal sind 120-160 Zeichen.',
@@ -48,7 +48,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Write a concise meta description with 120-160 characters.'
     }
   },
-  'seo-no-meta': {
+  'seo-no-description': {
     de: {
       title: 'Keine Meta-Description vorhanden',
       description: 'Ihre Seite hat keine Meta-Description.',
@@ -90,7 +90,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       impact: 'The H1 is important for SEO and accessibility.'
     }
   },
-  'seo-images-no-alt': {
+  'seo-images-alt': {
     de: {
       title: 'Bilder ohne Alt-Text',
       description: 'Einige Bilder haben keinen Alt-Text.',
@@ -180,7 +180,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       impact: 'Without HTTPS, browsers show warnings and Google ranks you lower.'
     }
   },
-  'trust-no-imprint': {
+  'trust-no-impressum': {
     de: {
       title: 'Kein Impressum gefunden',
       description: 'Ihre Seite scheint kein Impressum zu haben.',
@@ -246,7 +246,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Display your address in the footer or imprint.'
     }
   },
-  'trust-no-testimonials': {
+  'trust-no-social-proof': {
     de: {
       title: 'Keine Kundenstimmen oder Bewertungen',
       description: 'Wir konnten keine Testimonials oder Bewertungen finden.',
@@ -270,7 +270,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Implement a GDPR-compliant cookie banner.'
     }
   },
-  'trust-analysis-error': {
+  'trust-scan-error': {
     de: {
       title: 'Vertrauensanalyse unvollständig',
       description: 'Die Vertrauensanalyse konnte nicht vollständig durchgeführt werden.',
@@ -284,7 +284,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
   },
 
   // Conversion Issues
-  'conv-few-ctas': {
+  'conversion-few-ctas': {
     de: {
       title: 'Wenige Call-to-Actions',
       description: 'Ihre Seite hat nur wenige CTAs.',
@@ -296,7 +296,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Add more prominent CTAs at strategic locations.'
     }
   },
-  'conv-no-cta': {
+  'conversion-no-cta': {
     de: {
       title: 'Keine Call-to-Action erkannt',
       description: 'Wir konnten keine klaren Handlungsaufforderungen auf Ihrer Seite finden.',
@@ -310,7 +310,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       impact: 'Without CTAs, visitors do not know what to do.'
     }
   },
-  'conv-no-above-fold-cta': {
+  'conversion-cta-below-fold': {
     de: {
       title: 'Kein CTA im sichtbaren Bereich',
       description: 'Im direkt sichtbaren Bereich ist keine Handlungsaufforderung erkennbar.',
@@ -322,7 +322,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Place a prominent CTA button in the header area.'
     }
   },
-  'conv-no-form': {
+  'conversion-no-form': {
     de: {
       title: 'Kein Kontaktformular gefunden',
       description: 'Wir konnten kein Kontaktformular auf Ihrer Seite finden.',
@@ -336,7 +336,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       impact: 'Forms lower the barrier to making contact.'
     }
   },
-  'conv-phone-not-clickable': {
+  'conversion-phone-not-clickable': {
     de: {
       title: 'Telefonnummer nicht klickbar',
       description: 'Die Telefonnummer ist nicht als klickbarer Link hinterlegt.',
@@ -348,7 +348,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Make phone numbers clickable with tel: links.'
     }
   },
-  'conv-no-instant-contact': {
+  'conversion-no-instant-contact': {
     de: {
       title: 'Keine Sofort-Kontaktmöglichkeit',
       description: 'Ihre Seite hat kein WhatsApp oder Chat-Widget.',
@@ -360,7 +360,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Add a WhatsApp button or chat widget.'
     }
   },
-  'conv-no-mobile-nav': {
+  'conversion-no-mobile-menu': {
     de: {
       title: 'Keine mobile Navigation erkannt',
       description: 'Wir konnten keine Hamburger-Menü auf Ihrer mobilen Seite erkennen.',
@@ -372,7 +372,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       recommendation: 'Make sure your page has mobile navigation.'
     }
   },
-  'conv-no-usp': {
+  'conversion-no-value-proposition': {
     de: {
       title: 'Keine klaren Argumente erkennbar',
       description: 'Wir konnten keine klaren Verkaufsargumente auf Ihrer Seite finden.',
@@ -386,7 +386,7 @@ export const issueTranslations: Record<string, Record<'de' | 'en', IssueTranslat
       impact: 'Without USPs, visitors do not know why they should choose you.'
     }
   },
-  'conv-analysis-error': {
+  'conversion-analysis-error': {
     de: {
       title: 'Conversion-Analyse unvollständig',
       description: 'Die Conversion-Analyse konnte nicht vollständig durchgeführt werden.',
