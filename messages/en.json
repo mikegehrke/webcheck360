@@ -212,5 +212,12 @@
         "description": "CTAs, contact options and user guidance analyzed."
       }
     }
+  },
+  "cookies": {
+    "title": "Cookie Settings",
+    "description": "We use cookies to provide you with the best possible experience on our website. Some are necessary for operation, others help us improve the website.",
+    "learnMore": "Learn more",
+    "acceptAll": "Accept all",
+    "acceptEssential": "Essential only"
   }
 }

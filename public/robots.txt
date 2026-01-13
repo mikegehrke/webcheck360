@@ -1,0 +1,10 @@
+# Robots.txt für WebCheck360
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://webcheck360.de/sitemap.xml
+
+# Admin-Bereich ausschließen
+Disallow: /admin
+Disallow: /api/

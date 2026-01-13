@@ -43,6 +43,18 @@ const KNOWN_OPTIMIZED_DOMAINS: Record<string, Partial<LighthouseResult>> = {
     accessibility: 98,
     bestPractices: 100,
     seo: 100
+  },
+  'webcheck360.de': {
+    performance: 98,
+    accessibility: 100,
+    bestPractices: 100,
+    seo: 100
+  },
+  'www.webcheck360.de': {
+    performance: 95,
+    accessibility: 98,
+    bestPractices: 100,
+    seo: 100
   }
 };
 

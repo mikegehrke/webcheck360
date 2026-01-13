@@ -212,5 +212,12 @@
         "description": "CTAs, Kontaktmöglichkeiten und Nutzerführung analysiert."
       }
     }
+  },
+  "cookies": {
+    "title": "Cookie-Einstellungen",
+    "description": "Wir verwenden Cookies, um Ihnen die bestmögliche Erfahrung auf unserer Website zu bieten. Einige sind notwendig für den Betrieb, andere helfen uns, die Website zu verbessern.",
+    "learnMore": "Mehr erfahren",
+    "acceptAll": "Alle akzeptieren",
+    "acceptEssential": "Nur notwendige"
   }
 }
