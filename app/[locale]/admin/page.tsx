@@ -62,7 +62,14 @@ export default function AdminPage({ params: { locale } }: { params: { locale: st
       const auditsData = await auditsRes.json();
       const statsData = await statsRes.json();
       
-      setAudits(auditsData.audits || []);
+      // Transform audits to include hasEmail from lead data
+      const transformedAudits = (auditsData.audits || []).map((audit: any) => ({
+        ...audit,
+        hasEmail: !!audit.lead?.email,
+        status: audit.status || 'new'
+      }));
+      
+      setAudits(transformedAudits);
       setStats(statsData);
     } catch (error) {
       console.error('Failed to load data:', error);
