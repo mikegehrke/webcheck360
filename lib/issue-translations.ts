@@ -448,3 +448,4 @@ export const categoryTranslations: Record<string, Record<'de' | 'en', string>> =
   trust: { de: 'Vertrauen', en: 'Trust' },
   conversion: { de: 'Conversion', en: 'Conversion' }
 };
+// Build trigger Tue Jan 13 18:13:58 CET 2026
