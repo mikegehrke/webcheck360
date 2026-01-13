@@ -25,16 +25,16 @@ export default function HomePage() {
             <div className="flex items-center gap-4">
               {/* Telefonnummer - für besseren Trust Score */}
               <a
-                href="tel:+4917647757577"
+                href="tel:+491632670137"
                 className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors"
                 aria-label="Anrufen"
               >
                 <Phone className="w-4 h-4" />
-                +49 176 4775 7577
+                0163 267 0137
               </a>
               {/* WhatsApp Button */}
               <a
-                href="https://wa.me/4917647757577?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
+                href="https://wa.me/491632670137?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
@@ -83,7 +83,7 @@ export default function HomePage() {
             
             {/* Secondary CTA - Telefon */}
             <a
-              href="tel:+4917647757577"
+              href="tel:+491632670137"
               className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border-2 border-gray-300 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold hover:border-primary-500 hover:text-primary-500 transition-all min-h-[60px]"
               role="button"
               aria-label="Jetzt anrufen"
@@ -93,7 +93,7 @@ export default function HomePage() {
             </a>
             {/* WhatsApp CTA */}
             <a
-              href="https://wa.me/4917647757577?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
+              href="https://wa.me/491632670137?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-green-500 text-white font-semibold hover:bg-green-600 transition-all min-h-[60px]"
@@ -174,16 +174,16 @@ export default function HomePage() {
           </div>
           {/* Contact Info in Footer */}
           <div className="mt-4 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-            <a href="tel:+4917647757577" className="hover:text-primary-500 transition-colors flex items-center gap-1">
+            <a href="tel:+491632670137" className="hover:text-primary-500 transition-colors flex items-center gap-1">
               <Phone className="w-4 h-4" />
-              +49 176 4775 7577
+              0163 267 0137
             </a>
             <a href="mailto:kontakt@mg-digital-solutions.com" className="hover:text-primary-500 transition-colors flex items-center gap-1">
               <MessageCircle className="w-4 h-4" />
               kontakt@mg-digital-solutions.com
             </a>
             <a 
-              href="https://wa.me/4917647757577" 
+              href="https://wa.me/491632670137" 
               target="_blank" 
               rel="noopener noreferrer"
               className="hover:text-green-500 transition-colors flex items-center gap-1"
