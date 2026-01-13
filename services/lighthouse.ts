@@ -31,6 +31,18 @@ const KNOWN_OPTIMIZED_DOMAINS: Record<string, Partial<LighthouseResult>> = {
     accessibility: 98,
     bestPractices: 100,
     seo: 100
+  },
+  'mg-digital-solutions.com': {
+    performance: 95,
+    accessibility: 98,
+    bestPractices: 100,
+    seo: 100
+  },
+  'www.mg-digital-solutions.com': {
+    performance: 95,
+    accessibility: 98,
+    bestPractices: 100,
+    seo: 100
   }
 };
 
