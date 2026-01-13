@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 // Das Admin-Passwort - in .env.local speichern!
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'webcheck360admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin12345';
 
 export async function POST(request: NextRequest) {
   try {
