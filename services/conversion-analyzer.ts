@@ -59,27 +59,41 @@ export async function analyzeConversion(url: string): Promise<ConversionResult> 
 
     // CTA Detection
     const ctaPatterns = [
-      /jetzt\s+(anfragen|buchen|bestellen|kaufen|kontakt|termin)/i,
-      /kostenlos\s+(anfragen|beraten|testen)/i,
+      /jetzt\s+(anfragen|buchen|bestellen|kaufen|kontakt|termin|testen|starten|analysieren|anrufen|loslegen)/i,
+      /kostenlos\s+(anfragen|beraten|testen|starten|analysieren)/i,
       /termin\s+(vereinbaren|buchen|machen)/i,
       /(kontakt|anfrage|beratung)\s*(aufnehmen)?/i,
-      /call\s+to\s+action|book\s+now|contact\s+us|get\s+started/i
+      /call\s+to\s+action|book\s+now|contact\s+us|get\s+started|try\s+now|start\s+now/i,
+      /mehr\s+erfahren|zum\s+angebot|angebot\s+ansehen/i,
+      /gratis|unverbindlich|sofort|direkt/i,
+      /anrufen|schreiben|anfragen/i
     ];
 
     // Check buttons and links for CTAs
-    const buttons = $('button, a.btn, a.button, [class*="btn"], [class*="cta"], [role="button"]');
+    // Extended selector to catch more CTA-like elements
+    const buttons = $('button, a.btn, a.button, [class*="btn"], [class*="cta"], [role="button"], a[href*="funnel"], a[href*="contact"], a[href*="kontakt"], a[href*="termin"], a[href*="booking"]');
     let ctaCount = 0;
     
     buttons.each((_, el) => {
       const text = $(el).text().toLowerCase();
       const href = $(el).attr('href') || '';
+      const classes = $(el).attr('class') || '';
+      // Check for CTA patterns in text, href, or styling classes
       if (ctaPatterns.some(pattern => pattern.test(text)) || 
           href.includes('tel:') || 
           href.includes('mailto:') ||
           href.includes('kontakt') ||
           href.includes('contact') ||
           href.includes('termin') ||
-          href.includes('booking')) {
+          href.includes('booking') ||
+          href.includes('funnel') ||
+          href.includes('wa.me') ||
+          href.includes('whatsapp') ||
+          classes.includes('primary') ||
+          classes.includes('cta') ||
+          $(el).attr('aria-label')?.toLowerCase().includes('kontakt') ||
+          $(el).attr('aria-label')?.toLowerCase().includes('anrufen') ||
+          $(el).attr('aria-label')?.toLowerCase().includes('whatsapp')) {
         ctaCount++;
       }
     });
@@ -91,7 +105,7 @@ export async function analyzeConversion(url: string): Promise<ConversionResult> 
     result.data.ctaAboveFold = 
       $('header, [class*="hero"], [class*="header"], nav').find('button, a.btn, [class*="btn"], [class*="cta"]').length > 0;
 
-    // Contact Form Detection
+    // Contact Form Detection - also check for input fields outside forms
     result.data.hasContactForm = 
       $('form').filter((_, el) => {
         const formHtml = $(el).html()?.toLowerCase() || '';
@@ -100,8 +114,12 @@ export async function analyzeConversion(url: string): Promise<ConversionResult> 
                formHtml.includes('nachricht') || 
                formHtml.includes('message') ||
                formHtml.includes('telefon') ||
-               formHtml.includes('phone');
-      }).length > 0;
+               formHtml.includes('phone') ||
+               formHtml.includes('url') ||
+               formHtml.includes('website');
+      }).length > 0 ||
+      // Also check for standalone input fields that act as forms
+      $('input[type="email"], input[type="tel"], input[type="url"], input[placeholder*="website" i], input[placeholder*="url" i]').length > 0;
 
     // Clickable Phone
     result.data.hasPhoneClickable = $('a[href^="tel:"]').length > 0;
