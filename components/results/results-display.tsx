@@ -265,7 +265,6 @@ export function ResultsDisplay({ audit, locale, onRequestReport }: ResultsDispla
                   </div>
                 );
               })}
-              ))}
             </CardContent>
           </Card>
         )}
