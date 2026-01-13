@@ -125,7 +125,7 @@ export function ContactModal({ isOpen, onClose, auditId, domain, score, locale }
                 {t.close}
               </Button>
               <a
-                href="https://mg-digital-solutions-beta.vercel.app"
+                href="https://mg-digitalsolutions-one.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-3 text-primary-600 hover:text-primary-700 font-medium"
@@ -240,7 +240,7 @@ export function ContactModal({ isOpen, onClose, auditId, domain, score, locale }
               </Button>
               
               <a
-                href="https://mg-digital-solutions-beta.vercel.app"
+                href="https://mg-digitalsolutions-one.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full py-2 text-sm text-gray-500 hover:text-primary-600 transition-colors"
