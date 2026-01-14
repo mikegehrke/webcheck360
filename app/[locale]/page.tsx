@@ -145,6 +145,24 @@ export default function HomePage() {
       {/* Hero Section */}
       <main className="pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
+          {/* Scarcity und Social Proof Sektion */}
+          <div className="bg-primary-50 dark:bg-primary-950/20 rounded-2xl p-6 border border-primary-200 dark:border-primary-800 mb-12">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                  Über 2.847 Websites bereits analysiert
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-medium">
+                <div className="w-4 h-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+                  <span className="text-xs">⚡</span>
+                </div>
+                Nur 60 Sekunden für komplette Analyse
+              </div>
+            </div>
+          </div>
+
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
             {t('funnel.title')}
           </h1>
@@ -166,7 +184,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href={`/${locale}/funnel`}
-              className="inline-flex items-center gap-2 px-10 py-5 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-black font-bold text-xl hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:-translate-y-1 min-h-[60px]"
+              className="inline-flex items-center gap-3 px-12 py-6 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-black font-bold text-xl hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:-translate-y-1 min-h-[64px] min-w-[280px] sm:min-w-auto"
               role="button"
               aria-label="Jetzt kostenlos Website analysieren"
             >
@@ -177,7 +195,7 @@ export default function HomePage() {
             {/* Secondary CTA - Telefon */}
             <a
               href="tel:+4922039424878"
-              className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border-2 border-gray-300 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold hover:border-primary-500 hover:text-primary-500 transition-all min-h-[60px]"
+              className="inline-flex items-center gap-3 px-8 py-5 rounded-xl border-2 border-gray-300 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold hover:border-primary-500 hover:text-primary-500 transition-all min-h-[64px] min-w-[200px] sm:min-w-auto"
               role="button"
               aria-label={t('home.navigation.callNow')}
             >
@@ -189,13 +207,33 @@ export default function HomePage() {
               href="https://wa.me/491632670137?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-green-500 text-white font-semibold hover:bg-green-600 transition-all min-h-[60px]"
+              className="inline-flex items-center gap-3 px-8 py-5 rounded-xl bg-green-500 text-white font-semibold hover:bg-green-600 transition-all min-h-[64px] min-w-[180px] sm:min-w-auto"
               role="button"
               aria-label="WhatsApp schreiben"
             >
               <MessageCircle className="w-5 h-5" />
               WhatsApp
             </a>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap justify-center items-center gap-6 mt-8 text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-green-500" />
+              <span>SSL-verschlüsselt</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              <span>DSGVO-konform</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-blue-500" />
+              <span>Keine Registrierung nötig</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-orange-500">★★★★★</span>
+              <span>4.9/5 (127 Bewertungen)</span>
+            </div>
           </div>
         </div>
 

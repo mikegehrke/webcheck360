@@ -5,7 +5,11 @@ import { notFound } from 'next/navigation';
 import { locales, Locale } from '@/i18n';
 
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true
+});
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
