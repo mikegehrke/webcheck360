@@ -8,7 +8,9 @@ import { locales, Locale } from '@/i18n';
 const inter = Inter({ 
   subsets: ['latin'],
   display: 'swap',
-  preload: true
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'arial']
 });
 
 export function generateStaticParams() {
@@ -130,6 +132,8 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="canonical" href={locale === 'de' ? 'https://webcheck360.de/' : `https://webcheck360.de/${locale}`} />
         <script
           type="application/ld+json"
