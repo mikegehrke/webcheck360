@@ -1,0 +1,2 @@
+# Exclude API routes from static export
+app/api/**
