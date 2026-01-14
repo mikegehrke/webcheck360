@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Minus, Crown, Target } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface CompetitorData {
   domain: string;

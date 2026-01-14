@@ -244,5 +244,61 @@
     "learnMore": "Mehr erfahren",
     "acceptAll": "Alle akzeptieren",
     "acceptEssential": "Nur notwendige"
+  },
+  "advanced": {
+    "exitIntent": {
+      "title": "Warten Sie!",
+      "subtitle": "Nur noch {seconds} Sekunden für Ihre kostenlose Analyse",
+      "benefits": {
+        "free": "100% kostenlos, keine versteckten Kosten",
+        "fast": "Ergebnis in nur 30-60 Sekunden",
+        "secure": "SSL-verschlüsselt & DSGVO-konform"
+      },
+      "cta": "Jetzt kostenlos analysieren"
+    },
+    "competitorComparison": {
+      "title": "Ihre Website vs. Top 3 Konkurrenten",
+      "analyzing": "Analysiere Top 3 Konkurrenten...",
+      "position": {
+        "leader": "🏆 Marktführer in Ihrer Branche!",
+        "top2": "🥈 Unter den Top 2 in Ihrer Branche",
+        "top3": "🥉 Platz 3 von 4 in Ihrer Branche",
+        "improvement": "📊 Verbesserungspotenzial gegenüber Konkurrenten"
+      },
+      "actionTitle": "💡 Konkurrenz überholen in 30 Tagen",
+      "actionDesc": "Ich zeige Ihnen, wie Sie systematisch jeden Konkurrenten überholen können.",
+      "actionButton": "Konkurrenz-Strategie anfordern"
+    },
+    "leadMagnets": {
+      "recommendedTitle": "Basierend auf Ihrem Score ({score}/100)",
+      "recommendedSubtitle": "Empfohlener Bonus-Report",
+      "whatYouGet": "Was Sie erhalten:",
+      "emailLabel": "E-Mail für kostenlosen Download:",
+      "emailPlaceholder": "ihre@email.de",
+      "downloadButton": "Kostenlosen Report herunterladen",
+      "requestButton": "Kostenlosen Report anfordern",
+      "trustIndicators": {
+        "free": "100% Kostenlos",
+        "noSpam": "Kein Spam",
+        "instant": "Sofortiger Download"
+      },
+      "alternativeTitle": "Weitere Reports verfügbar:"
+    },
+    "socialProof": {
+      "analyzed": "Über {count} Websites bereits analysiert",
+      "timeUrgency": "Nur 60 Sekunden für komplette Analyse"
+    },
+    "dynamicPricing": {
+      "limited": "LIMITIERT",
+      "normalPrice": "Normalpreis €199",
+      "todayFree": "Heute: 100% KOSTENLOS",
+      "savings": "Sparen Sie €199 - Keine Kreditkarte erforderlich"
+    },
+    "trustBadges": {
+      "sslEncrypted": "SSL-verschlüsselt",
+      "gdprCompliant": "DSGVO-konform",
+      "noRegistration": "Keine Registrierung nötig",
+      "rating": "4.9/5 (127 Bewertungen)"
+    }
   }
 }

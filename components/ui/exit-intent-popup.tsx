@@ -10,7 +10,7 @@ interface ExitIntentPopupProps {
 }
 
 export function ExitIntentPopup({ onClose, onConvert }: ExitIntentPopupProps) {
-  const t = useTranslations();
+  const t = useTranslations('advanced.exitIntent');
   
   const [timeLeft, setTimeLeft] = useState(30);
 
@@ -44,10 +44,10 @@ export function ExitIntentPopup({ onClose, onConvert }: ExitIntentPopupProps) {
             <Clock className="w-8 h-8 text-orange-500" />
           </div>
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Warten Sie!
+            {t('title')}
           </h3>
           <p className="text-lg text-orange-600 dark:text-orange-400 font-semibold">
-            Nur noch {timeLeft} Sekunden für Ihre kostenlose Analyse
+            {t('subtitle', { seconds: timeLeft })}
           </p>
         </div>
 
@@ -55,24 +55,42 @@ export function ExitIntentPopup({ onClose, onConvert }: ExitIntentPopupProps) {
         <div className="space-y-3 mb-6">
           <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
             <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm">✓</div>
-            <span className="text-green-800 dark:text-green-200 font-medium">100% kostenlos, keine versteckten Kosten</span>
+            <span className="text-green-800 dark:text-green-200 font-medium">{t('benefits.free')}</span>
           </div>
           <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
             <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">⚡</div>
-            <span className="text-blue-800 dark:text-blue-200 font-medium">Ergebnis in nur 30-60 Sekunden</span>
+            <span className="text-blue-800 dark:text-blue-200 font-medium">{t('benefits.fast')}</span>
           </div>
           <div className="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
             <Shield className="w-6 h-6 text-purple-500" />
-            <span className="text-purple-800 dark:text-purple-200 font-medium">SSL-verschlüsselt & DSGVO-konform</span>
+            <span className="text-purple-800 dark:text-purple-200 font-medium">{t('benefits.secure')}</span>
           </div>
         </div>
 
         {/* CTA */}
         <button
-          onClick={onConvert}
+          onClick={async () => {
+            // Track exit intent conversion
+            try {
+              await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  name: 'Exit Intent User',
+                  email: 'exitintent@tracking.local',
+                  message: 'Exit Intent Popup - User showed interest',
+                  domain: window.location.hostname,
+                  locale: document.documentElement.lang || 'de'
+                })
+              });
+            } catch (error) {
+              console.log('Analytics tracking failed:', error);
+            }
+            onConvert();
+          }}
           className="w-full py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-black font-bold text-lg rounded-xl hover:shadow-xl transition-all"
         >
-          Jetzt kostenlos analysieren
+          {t('cta')}
         </button>
       </div>
     </div>

@@ -190,14 +190,14 @@ export default function HomePage() {
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="font-semibold text-gray-900 dark:text-gray-100">
-                  Über 2.847 Websites bereits analysiert
+                  {t('advanced.socialProof.analyzed', { count: '2.847' })}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-medium">
                 <div className="w-4 h-4 rounded-full bg-orange-500/20 flex items-center justify-center">
                   <span className="text-xs">⚡</span>
                 </div>
-                Nur 60 Sekunden für komplette Analyse
+                {t('advanced.socialProof.timeUrgency')}
               </div>
             </div>
           </div>
@@ -206,15 +206,15 @@ export default function HomePage() {
           <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 rounded-2xl p-6 border border-red-200 dark:border-red-800 mb-8">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">LIMITIERT</span>
-                <span className="text-red-600 dark:text-red-400 font-semibold">Normalpreis €199</span>
+                <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">{t('advanced.dynamicPricing.limited')}</span>
+                <span className="text-red-600 dark:text-red-400 font-semibold">{t('advanced.dynamicPricing.normalPrice')}</span>
                 <span className="line-through text-gray-500">€199</span>
               </div>
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                Heute: 100% KOSTENLOS
+                {t('advanced.dynamicPricing.todayFree')}
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Sparen Sie €199 - Keine Kreditkarte erforderlich
+                {t('advanced.dynamicPricing.savings')}
               </p>
             </div>
           </div>
@@ -306,19 +306,19 @@ export default function HomePage() {
           <div className="flex flex-wrap justify-center items-center gap-6 mt-8 text-sm text-gray-500 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-green-500" />
-              <span>SSL-verschlüsselt</span>
+              <span>{t('advanced.trustBadges.sslEncrypted')}</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              <span>DSGVO-konform</span>
+              <span>{t('advanced.trustBadges.gdprCompliant')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-blue-500" />
-              <span>Keine Registrierung nötig</span>
+              <span>{t('advanced.trustBadges.noRegistration')}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-orange-500">★★★★★</span>
-              <span>4.9/5 (127 Bewertungen)</span>
+              <span>{t('advanced.trustBadges.rating')}</span>
             </div>
           </div>
         </div>

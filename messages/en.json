@@ -244,5 +244,61 @@
     "learnMore": "Learn more",
     "acceptAll": "Accept all",
     "acceptEssential": "Essential only"
+  },
+  "advanced": {
+    "exitIntent": {
+      "title": "Wait!",
+      "subtitle": "Only {seconds} seconds left for your free analysis",
+      "benefits": {
+        "free": "100% free, no hidden costs",
+        "fast": "Results in just 30-60 seconds",
+        "secure": "SSL-encrypted & GDPR-compliant"
+      },
+      "cta": "Analyze for free now"
+    },
+    "competitorComparison": {
+      "title": "Your Website vs. Top 3 Competitors",
+      "analyzing": "Analyzing top 3 competitors...",
+      "position": {
+        "leader": "🏆 Market leader in your industry!",
+        "top2": "🥈 Among the top 2 in your industry",
+        "top3": "🥉 Place 3 of 4 in your industry",
+        "improvement": "📊 Room for improvement against competitors"
+      },
+      "actionTitle": "💡 Overtake competition in 30 days",
+      "actionDesc": "I'll show you how to systematically outperform every competitor.",
+      "actionButton": "Request competition strategy"
+    },
+    "leadMagnets": {
+      "recommendedTitle": "Based on your score ({score}/100)",
+      "recommendedSubtitle": "Recommended bonus report",
+      "whatYouGet": "What you get:",
+      "emailLabel": "Email for free download:",
+      "emailPlaceholder": "your@email.com",
+      "downloadButton": "Download free report",
+      "requestButton": "Request free report",
+      "trustIndicators": {
+        "free": "100% Free",
+        "noSpam": "No Spam",
+        "instant": "Instant Download"
+      },
+      "alternativeTitle": "More reports available:"
+    },
+    "socialProof": {
+      "analyzed": "Over {count} websites already analyzed",
+      "timeUrgency": "Only 60 seconds for complete analysis"
+    },
+    "dynamicPricing": {
+      "limited": "LIMITED",
+      "normalPrice": "Normal price €199",
+      "todayFree": "Today: 100% FREE",
+      "savings": "Save €199 - No credit card required"
+    },
+    "trustBadges": {
+      "sslEncrypted": "SSL-encrypted",
+      "gdprCompliant": "GDPR-compliant",
+      "noRegistration": "No registration needed",
+      "rating": "4.9/5 (127 reviews)"
+    }
   }
 }

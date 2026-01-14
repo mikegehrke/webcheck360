@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Download, FileText, Target, TrendingUp, Users } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface SmartLeadMagnetProps {
   websiteScore: number;
@@ -77,6 +78,7 @@ const LEAD_MAGNETS: LeadMagnet[] = [
 ];
 
 export function SmartLeadMagnet({ websiteScore, industry = 'general', userEmail, onDownload }: SmartLeadMagnetProps) {
+  const t = useTranslations('advanced.leadMagnets');
   const [selectedMagnet, setSelectedMagnet] = useState<LeadMagnet | null>(null);
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [email, setEmail] = useState(userEmail || '');
@@ -104,6 +106,24 @@ export function SmartLeadMagnet({ websiteScore, industry = 'general', userEmail,
       return;
     }
 
+    // Send lead data to API
+    try {
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: email.split('@')[0] || 'Lead Magnet User',
+          email,
+          message: `Lead Magnet Download: ${selectedMagnet.title}`,
+          domain: window.location.hostname,
+          score: websiteScore,
+          locale: document.documentElement.lang || 'de'
+        })
+      });
+    } catch (error) {
+      console.log('Lead tracking failed:', error);
+    }
+
     // Track download
     onDownload?.(selectedMagnet.id);
     
@@ -120,8 +140,8 @@ export function SmartLeadMagnet({ websiteScore, industry = 'general', userEmail,
     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-2xl p-6 border border-blue-200 dark:border-blue-800">
       {/* Smart Recommendation Header */}
       <div className="bg-blue-500 text-white rounded-lg p-3 mb-6 text-center">
-        <div className="text-sm font-medium opacity-90">Basierend auf Ihrem Score ({websiteScore}/100)</div>
-        <div className="text-lg font-bold">Empfohlener Bonus-Report</div>
+        <div className="text-sm font-medium opacity-90">{t('recommendedTitle', { score: websiteScore })}</div>
+        <div className="text-lg font-bold">{t('recommendedSubtitle')}</div>
       </div>
 
       {/* Lead Magnet Content */}
@@ -151,7 +171,7 @@ export function SmartLeadMagnet({ websiteScore, industry = 'general', userEmail,
 
       {/* Preview Content */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-4 mb-6">
-        <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-3">Was Sie erhalten:</h4>
+        <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-3">{t('whatYouGet')}</h4>
         <ul className="space-y-2">
           {selectedMagnet.preview.map((item, index) => (
             <li key={index} className="text-sm text-gray-700 dark:text-gray-300">
@@ -166,14 +186,14 @@ export function SmartLeadMagnet({ websiteScore, industry = 'general', userEmail,
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              E-Mail für kostenlosen Download:
+              {t('emailLabel')}
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
-              placeholder="ihre@email.de"
+              placeholder={t('emailPlaceholder')}
             />
           </div>
           <button
@@ -181,7 +201,7 @@ export function SmartLeadMagnet({ websiteScore, industry = 'general', userEmail,
             className="w-full bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
           >
             <Download className="w-5 h-5" />
-            Kostenlosen Report herunterladen
+            {t('downloadButton')}
           </button>
         </div>
       ) : (
@@ -190,20 +210,20 @@ export function SmartLeadMagnet({ websiteScore, industry = 'general', userEmail,
           className="w-full bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
         >
           <Download className="w-5 h-5" />
-          {userEmail ? 'Jetzt herunterladen' : 'Kostenlosen Report anfordern'}
+          {userEmail ? t('downloadButton') : t('requestButton')}
         </button>
       )}
 
       {/* Trust Indicators */}
       <div className="flex justify-center items-center gap-6 mt-4 text-xs text-gray-500 dark:text-gray-400">
-        <span>✅ 100% Kostenlos</span>
-        <span>✅ Kein Spam</span>
-        <span>✅ Sofortiger Download</span>
+        <span>✅ {t('trustIndicators.free')}</span>
+        <span>✅ {t('trustIndicators.noSpam')}</span>
+        <span>✅ {t('trustIndicators.instant')}</span>
       </div>
 
       {/* Alternative Magnets */}
       <div className="mt-6 pt-6 border-t border-blue-200 dark:border-blue-800">
-        <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Weitere Reports verfügbar:</h5>
+        <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{t('alternativeTitle')}</h5>
         <div className="flex gap-2">
           {LEAD_MAGNETS.filter(m => m.id !== selectedMagnet.id).slice(0, 2).map((magnet) => (
             <button
