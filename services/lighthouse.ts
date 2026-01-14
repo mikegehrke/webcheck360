@@ -108,8 +108,17 @@ export async function runLighthouseAnalysis(url: string): Promise<LighthouseResu
   try {
     console.log(`Running PageSpeed analysis for: ${url}`);
     
-    // Google PageSpeed Insights API (free, no API key required for basic usage)
-    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo`;
+    // Get API key from environment variable
+    const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY;
+    
+    if (apiKey) {
+      console.log('✅ Using Google PageSpeed API Key');
+    } else {
+      console.warn('⚠️ No API key found - using rate-limited endpoint (max 100 requests/day)');
+    }
+    
+    // Google PageSpeed Insights API
+    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo${apiKey ? `&key=${apiKey}` : ''}`;
     
     const response = await fetch(apiUrl, {
       headers: { 
@@ -121,6 +130,12 @@ export async function runLighthouseAnalysis(url: string): Promise<LighthouseResu
     if (!response.ok) {
       const errorText = await response.text();
       console.error('PageSpeed API error:', response.status, errorText);
+      
+      // Check for quota exceeded
+      if (response.status === 429) {
+        throw new Error('API quota exceeded. Please try again later or add an API key.');
+      }
+      
       throw new Error(`PageSpeed API error: ${response.status}`);
     }
 
@@ -151,11 +166,17 @@ export async function runLighthouseAnalysis(url: string): Promise<LighthouseResu
       errors: []
     };
 
-    console.log('PageSpeed analysis complete:', result.performance, result.seo);
+    console.log('✅ PageSpeed analysis complete:', {
+      performance: result.performance,
+      seo: result.seo,
+      accessibility: result.accessibility,
+      bestPractices: result.bestPractices
+    });
+    
     return result;
 
   } catch (error) {
-    console.error('Lighthouse analysis error:', error);
+    console.error('❌ Lighthouse analysis error:', error);
     return getDefaultResult([(error as Error).message], url);
   }
 }

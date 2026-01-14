@@ -8,6 +8,7 @@ import { ArrowRight, CheckCircle, Zap, Shield, TrendingUp, Phone, MessageCircle,
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { ABTest } from '@/components/ui/ab-test';
 import { ProgressiveInfo } from '@/components/ui/progressive-info';
+import MGDigitalCTA from '@/components/ui/mg-digital-cta';
 
 // Lazy load below-fold components
 const CookieBanner = dynamic(() => import('@/components/ui/cookie-banner').then(mod => ({ default: mod.CookieBanner })), { ssr: false });
@@ -390,6 +391,9 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* MG Digital Solutions CTA */}
+        <MGDigitalCTA />
 
         {/* Contact Form Section */}
         <section id="kontakt" className="max-w-2xl mx-auto mt-32 px-4">

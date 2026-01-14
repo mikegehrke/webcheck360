@@ -300,5 +300,18 @@
       "noRegistration": "No registration needed",
       "rating": "4.9/5 (127 reviews)"
     }
+  },
+  "mgCta": {
+    "badge": "Professional Web Development",
+    "headline": "Ready for more?",
+    "description": "From analysis to professional implementation – We optimize your website for maximum performance.",
+    "feature1Title": "Performance Optimization",
+    "feature1Desc": "Lighthouse 100/100 Guarantee",
+    "feature2Title": "SEO Optimization",
+    "feature2Desc": "Top Google Rankings",
+    "feature3Title": "Modern Technology",
+    "feature3Desc": "Next.js, React, TypeScript",
+    "ctaButton": "Optimize Your Website Now",
+    "ctaSubtext": "✓ Free Consultation  ✓ No Hidden Costs  ✓ 100% Satisfaction Guarantee"
   }
 }

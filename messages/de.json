@@ -300,5 +300,18 @@
       "noRegistration": "Keine Registrierung nötig",
       "rating": "4.9/5 (127 Bewertungen)"
     }
+  },
+  "mgCta": {
+    "badge": "Professionelle Webentwicklung",
+    "headline": "Bereit für mehr?",
+    "description": "Von der Analyse zur professionellen Umsetzung – Wir optimieren Ihre Website für maximale Performance.",
+    "feature1Title": "Performance-Optimierung",
+    "feature1Desc": "Lighthouse 100/100 Garantie",
+    "feature2Title": "SEO-Optimierung",
+    "feature2Desc": "Top Google Rankings",
+    "feature3Title": "Moderne Technologie",
+    "feature3Desc": "Next.js, React, TypeScript",
+    "ctaButton": "Jetzt Website optimieren lassen",
+    "ctaSubtext": "✓ Kostenlose Erstberatung  ✓ Keine versteckten Kosten  ✓ 100% Zufriedenheitsgarantie"
   }
 }
