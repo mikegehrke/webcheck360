@@ -247,7 +247,6 @@ export default function HomePage() {
             >
               {t('home.navigation.testNow')} <ArrowRight className="w-4 h-4" />
             </Link>
-            </Link>
           </div>
         </div>
 
