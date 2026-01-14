@@ -7,7 +7,7 @@ import { locales, Locale } from '@/i18n';
 
 const inter = Inter({ 
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
   preload: true,
   adjustFontFallback: true,
   fallback: ['system-ui', 'arial']
