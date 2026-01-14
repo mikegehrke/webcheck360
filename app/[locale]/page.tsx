@@ -3,12 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { ArrowRight, CheckCircle, Zap, Shield, TrendingUp, Phone, MessageCircle, Menu, X, Send } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
-import { CookieBanner } from '@/components/ui/cookie-banner';
-import { ExitIntentPopup } from '@/components/ui/exit-intent-popup';
 import { ABTest } from '@/components/ui/ab-test';
 import { ProgressiveInfo } from '@/components/ui/progressive-info';
+
+// Lazy load below-fold components
+const CookieBanner = dynamic(() => import('@/components/ui/cookie-banner').then(mod => ({ default: mod.CookieBanner })), { ssr: false });
+const ExitIntentPopup = dynamic(() => import('@/components/ui/exit-intent-popup').then(mod => ({ default: mod.ExitIntentPopup })), { ssr: false });
 
 export default function HomePage() {
   const t = useTranslations();

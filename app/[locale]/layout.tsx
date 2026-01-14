@@ -132,6 +132,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        <link rel="dns-prefetch" href="https://www.webcheck360.de" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="canonical" href={locale === 'de' ? 'https://webcheck360.de/' : `https://webcheck360.de/${locale}`} />
