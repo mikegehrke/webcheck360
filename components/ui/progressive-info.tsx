@@ -25,7 +25,7 @@ export function ProgressiveInfo({ sections, autoExpand = false, className = '' }
       const timer = setInterval(() => {
         setCurrentStep(prev => {
           if (prev < sections.length - 1) {
-            setExpandedSections(current => new Set([...current, sections[prev + 1].id]));
+            setExpandedSections(current => new Set([...Array.from(current), sections[prev + 1].id]));
             return prev + 1;
           } else {
             clearInterval(timer);
