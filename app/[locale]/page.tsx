@@ -8,11 +8,11 @@ import { ArrowRight, CheckCircle, Zap, Shield, TrendingUp, Phone, MessageCircle,
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { ABTest } from '@/components/ui/ab-test';
 import { ProgressiveInfo } from '@/components/ui/progressive-info';
-import MGDigitalCTA from '@/components/ui/mg-digital-cta';
 
 // Lazy load below-fold components
 const CookieBanner = dynamic(() => import('@/components/ui/cookie-banner').then(mod => ({ default: mod.CookieBanner })), { ssr: false });
 const ExitIntentPopup = dynamic(() => import('@/components/ui/exit-intent-popup').then(mod => ({ default: mod.ExitIntentPopup })), { ssr: false });
+const MGDigitalCTA = dynamic(() => import('@/components/ui/mg-digital-cta'), { ssr: false });
 
 export default function HomePage() {
   const t = useTranslations();
