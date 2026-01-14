@@ -21,8 +21,6 @@ export default function HomePage() {
 
   // Exit intent detection
   useEffect(() => {
-    let exitIntentTimer: NodeJS.Timeout;
-
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !showExitIntent) {
         setMouseLeaveCount(prev => prev + 1);
@@ -49,7 +47,6 @@ export default function HomePage() {
 
     return () => {
       document.removeEventListener('mouseleave', handleMouseLeave);
-      if (exitIntentTimer) clearTimeout(exitIntentTimer);
     };
   }, [showExitIntent, mouseLeaveCount]);
 
