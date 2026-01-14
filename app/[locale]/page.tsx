@@ -190,7 +190,7 @@ export default function HomePage() {
                   {t('advanced.socialProof.analyzed', { count: '2.847' })}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400 font-medium">
+              <div className="flex items-center gap-2 text-orange-800 dark:text-orange-300 font-medium">
                 <div className="w-4 h-4 rounded-full bg-orange-500/20 flex items-center justify-center">
                   <span className="text-xs">⚡</span>
                 </div>
@@ -324,15 +324,15 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto mt-32 grid md:grid-cols-3 gap-8 px-4">
           <div className="bg-white dark:bg-dark-900 rounded-2xl p-8 border border-gray-200 dark:border-dark-800 hover:border-primary-500/50 transition-colors">
             <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4">
-              <Zap className="w-6 h-6 text-primary-500" />
+              <Zap className="w-6 h-6 text-primary-700" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">{t('home.features.performance.title')}</h3>
+            <h2 className="text-xl font-semibold mb-2">{t('home.features.performance.title')}</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               {t('home.features.performance.description')}
             </p>
             <Link
               href={`/${locale}/funnel`}
-              className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:gap-3 transition-all hover:text-primary-800"
             >
               {t('home.navigation.testNow')} <ArrowRight className="w-4 h-4" />
             </Link>
@@ -340,15 +340,15 @@ export default function HomePage() {
 
           <div className="bg-white dark:bg-dark-900 rounded-2xl p-8 border border-gray-200 dark:border-dark-800 hover:border-primary-500/50 transition-colors">
             <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4">
-              <Shield className="w-6 h-6 text-primary-500" />
+              <Shield className="w-6 h-6 text-primary-700" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">{t('home.features.trust.title')}</h3>
+            <h2 className="text-xl font-semibold mb-2">{t('home.features.trust.title')}</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               {t('home.features.trust.description')}
             </p>
             <Link
               href={`/${locale}/funnel`}
-              className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:gap-3 transition-all hover:text-primary-800"
             >
               {t('home.navigation.testNow')} <ArrowRight className="w-4 h-4" />
             </Link>
@@ -356,15 +356,15 @@ export default function HomePage() {
 
           <div className="bg-white dark:bg-dark-900 rounded-2xl p-8 border border-gray-200 dark:border-dark-800 hover:border-primary-500/50 transition-colors">
             <div className="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center mb-4">
-              <TrendingUp className="w-6 h-6 text-primary-500" />
+              <TrendingUp className="w-6 h-6 text-primary-700" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">{t('home.features.conversion.title')}</h3>
+            <h2 className="text-xl font-semibold mb-2">{t('home.features.conversion.title')}</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               {t('home.features.conversion.description')}
             </p>
             <Link
               href={`/${locale}/funnel`}
-              className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
+              className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:gap-3 transition-all hover:text-primary-800"
             >
               {t('home.navigation.testNow')} <ArrowRight className="w-4 h-4" />
             </Link>

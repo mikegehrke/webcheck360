@@ -48,7 +48,7 @@ export function CookieBanner() {
               {t('cookies.description')}{' '}
               <a 
                 href={`/${locale}/privacy`} 
-                className="text-primary-500 hover:underline"
+                className="text-primary-700 hover:underline hover:text-primary-800 font-medium"
                 target="_blank"
                 rel="noopener noreferrer"
               >
