@@ -227,7 +227,7 @@ export default function HomePage() {
                 id: 'original',
                 component: (
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                    {t('funnel.title')}
+                    <span className="text-orange-500">60 Sekunden</span> – Kostenloser Website-Check · <span className="bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">100% GRATIS</span>
                   </h1>
                 ),
                 weight: 1
