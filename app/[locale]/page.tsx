@@ -18,9 +18,25 @@ export default function HomePage() {
     e.preventDefault();
     setFormStatus('sending');
     
-    // Simulate form submission - in production, send to your API
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          domain: 'webcheck360.de',
+          locale: locale,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send');
+      }
+
       setFormStatus('success');
       setFormData({ name: '', email: '', message: '' });
     } catch {
@@ -44,10 +60,10 @@ export default function HomePage() {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-6">
               <Link href={`/${locale}/funnel`} className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
-                Website analysieren
+                {t('home.navigation.analyze')}
               </Link>
               <a href="#kontakt" className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
-                Kontakt
+                {t('home.navigation.contact')}
               </a>
             </nav>
             
@@ -78,7 +94,7 @@ export default function HomePage() {
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-800 transition-colors hamburger menu-toggle"
-                aria-label="Menü öffnen"
+                aria-label={t('home.navigation.menuOpen')}
                 aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -95,14 +111,14 @@ export default function HomePage() {
                   className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Website analysieren
+                  {t('home.navigation.analyze')}
                 </Link>
                 <a 
                   href="#kontakt" 
                   className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Kontakt
+                  {t('home.navigation.contact')}
                 </a>
                 <a
                   href="tel:+4922039424878"
@@ -118,7 +134,7 @@ export default function HomePage() {
                   className="flex items-center gap-2 text-green-500 font-medium py-2"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  WhatsApp schreiben
+                  {t('home.navigation.whatsappWrite')}
                 </a>
               </div>
             </nav>
@@ -163,10 +179,10 @@ export default function HomePage() {
               href="tel:+4922039424878"
               className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border-2 border-gray-300 dark:border-dark-700 text-gray-700 dark:text-gray-300 font-semibold hover:border-primary-500 hover:text-primary-500 transition-all min-h-[60px]"
               role="button"
-              aria-label="Jetzt anrufen"
+              aria-label={t('home.navigation.callNow')}
             >
               <Phone className="w-5 h-5" />
-              Jetzt anrufen
+              {t('home.navigation.callNow')}
             </a>
             {/* WhatsApp CTA */}
             <a
@@ -197,7 +213,7 @@ export default function HomePage() {
               href={`/${locale}/funnel`}
               className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
             >
-              Jetzt testen <ArrowRight className="w-4 h-4" />
+              {t('home.navigation.testNow')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -213,7 +229,7 @@ export default function HomePage() {
               href={`/${locale}/funnel`}
               className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
             >
-              Jetzt testen <ArrowRight className="w-4 h-4" />
+              {t('home.navigation.testNow')} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
@@ -229,7 +245,8 @@ export default function HomePage() {
               href={`/${locale}/funnel`}
               className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:gap-3 transition-all"
             >
-              Jetzt testen <ArrowRight className="w-4 h-4" />
+              {t('home.navigation.testNow')} <ArrowRight className="w-4 h-4" />
+            </Link>
             </Link>
           </div>
         </div>
@@ -237,7 +254,7 @@ export default function HomePage() {
         {/* Trust Signals */}
         <div className="max-w-4xl mx-auto mt-20 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-            Bereits über 500+ Websites analysiert
+            {t('home.trust.analyzed')}
           </p>
           <div className="flex items-center justify-center gap-8 text-gray-400">
             <div className="flex items-center gap-1">
@@ -254,15 +271,15 @@ export default function HomePage() {
         {/* Contact Form Section */}
         <section id="kontakt" className="max-w-2xl mx-auto mt-32 px-4">
           <div className="bg-white dark:bg-dark-900 rounded-2xl p-8 border border-gray-200 dark:border-dark-800 shadow-lg">
-            <h2 className="text-3xl font-bold text-center mb-2">Kontakt aufnehmen</h2>
+            <h2 className="text-3xl font-bold text-center mb-2">{t('home.contactForm.title')}</h2>
             <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
-              Haben Sie Fragen? Schreiben Sie uns eine Nachricht!
+              {t('home.contactForm.subtitle')}
             </p>
             
             <form onSubmit={handleSubmit} className="space-y-6 contact-form" name="contact">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Name
+                  {t('home.contactForm.name')}
                 </label>
                 <input
                   type="text"
@@ -272,13 +289,13 @@ export default function HomePage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                  placeholder="Ihr Name"
+                  placeholder={t('home.contactForm.namePlaceholder')}
                 />
               </div>
               
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  E-Mail
+                  {t('home.contactForm.email')}
                 </label>
                 <input
                   type="email"
@@ -288,13 +305,13 @@ export default function HomePage() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                  placeholder="ihre@email.de"
+                  placeholder={t('home.contactForm.emailPlaceholder')}
                 />
               </div>
               
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Nachricht
+                  {t('home.contactForm.message')}
                 </label>
                 <textarea
                   id="message"
@@ -304,7 +321,7 @@ export default function HomePage() {
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors resize-none"
-                  placeholder="Ihre Nachricht..."
+                  placeholder={t('home.contactForm.messagePlaceholder')}
                 />
               </div>
               
@@ -314,24 +331,24 @@ export default function HomePage() {
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-black font-bold text-lg hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {formStatus === 'sending' ? (
-                  'Wird gesendet...'
+                  t('home.contactForm.sending')
                 ) : (
                   <>
                     <Send className="w-5 h-5" />
-                    Nachricht senden
+                    {t('home.contactForm.submit')}
                   </>
                 )}
               </button>
               
               {formStatus === 'success' && (
                 <p className="text-center text-green-500 font-medium">
-                  ✓ Vielen Dank! Ihre Nachricht wurde gesendet.
+                  ✓ {t('home.contactForm.success')}
                 </p>
               )}
               
               {formStatus === 'error' && (
                 <p className="text-center text-red-500 font-medium">
-                  Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
+                  {t('home.contactForm.error')}
                 </p>
               )}
             </form>

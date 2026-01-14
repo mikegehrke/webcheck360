@@ -211,6 +211,31 @@
         "title": "Conversion",
         "description": "CTAs, contact options and user guidance analyzed."
       }
+    },
+    "navigation": {
+      "analyze": "Analyze website",
+      "contact": "Contact",
+      "callNow": "Call now",
+      "whatsappWrite": "Write on WhatsApp",
+      "menuOpen": "Open menu",
+      "testNow": "Test now"
+    },
+    "trust": {
+      "analyzed": "Already 500+ websites analyzed"
+    },
+    "contactForm": {
+      "title": "Get in touch",
+      "subtitle": "Have questions? Send us a message!",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Your message...",
+      "submit": "Send message",
+      "sending": "Sending...",
+      "success": "Thank you! Your message has been sent.",
+      "error": "An error occurred. Please try again."
     }
   },
   "cookies": {

@@ -211,6 +211,31 @@
         "title": "Conversion",
         "description": "CTAs, Kontaktmöglichkeiten und Nutzerführung analysiert."
       }
+    },
+    "navigation": {
+      "analyze": "Website analysieren",
+      "contact": "Kontakt",
+      "callNow": "Jetzt anrufen",
+      "whatsappWrite": "WhatsApp schreiben",
+      "menuOpen": "Menü öffnen",
+      "testNow": "Jetzt testen"
+    },
+    "trust": {
+      "analyzed": "Bereits über 500+ Websites analysiert"
+    },
+    "contactForm": {
+      "title": "Kontakt aufnehmen",
+      "subtitle": "Haben Sie Fragen? Schreiben Sie uns eine Nachricht!",
+      "name": "Name",
+      "namePlaceholder": "Ihr Name",
+      "email": "E-Mail",
+      "emailPlaceholder": "ihre@email.de",
+      "message": "Nachricht",
+      "messagePlaceholder": "Ihre Nachricht...",
+      "submit": "Nachricht senden",
+      "sending": "Wird gesendet...",
+      "success": "Vielen Dank! Ihre Nachricht wurde gesendet.",
+      "error": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     }
   },
   "cookies": {
