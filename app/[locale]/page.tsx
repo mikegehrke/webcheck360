@@ -118,7 +118,7 @@ export default function HomePage() {
                 href="https://wa.me/491632670137?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors"
                 aria-label="WhatsApp Kontakt"
               >
                 <MessageCircle className="w-4 h-4" />
@@ -185,7 +185,7 @@ export default function HomePage() {
           <div className="bg-primary-50 dark:bg-primary-950/20 rounded-2xl p-6 border border-primary-200 dark:border-primary-800 mb-12">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                <div className="w-3 h-3 bg-green-700 rounded-full animate-pulse"></div>
                 <span className="font-semibold text-gray-900 dark:text-gray-100">
                   {t('advanced.socialProof.analyzed', { count: '2.847' })}
                 </span>
@@ -203,7 +203,7 @@ export default function HomePage() {
           <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 rounded-2xl p-6 border border-red-200 dark:border-red-800 mb-8">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">{t('advanced.dynamicPricing.limited')}</span>
+                <span className="bg-red-700 text-white px-2 py-1 rounded text-xs font-bold">{t('advanced.dynamicPricing.limited')}</span>
                 <span className="text-red-600 dark:text-red-400 font-semibold">{t('advanced.dynamicPricing.normalPrice')}</span>
                 <span className="line-through text-gray-500">€199</span>
               </div>
@@ -290,7 +290,7 @@ export default function HomePage() {
               href="https://wa.me/491632670137?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-5 rounded-xl bg-green-500 text-white font-semibold hover:bg-green-600 transition-all min-h-[64px] min-w-[180px] sm:min-w-auto"
+              className="inline-flex items-center gap-3 px-8 py-5 rounded-xl bg-green-700 text-white font-semibold hover:bg-green-800 transition-all min-h-[64px] min-w-[180px] sm:min-w-auto"
               role="button"
               aria-label="WhatsApp schreiben"
             >

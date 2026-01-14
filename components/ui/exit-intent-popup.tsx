@@ -54,7 +54,7 @@ export function ExitIntentPopup({ onClose, onConvert }: ExitIntentPopupProps) {
         {/* Value Props */}
         <div className="space-y-3 mb-6">
           <div className="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
-            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm">✓</div>
+            <div className="w-6 h-6 bg-green-700 rounded-full flex items-center justify-center text-white text-sm">✓</div>
             <span className="text-green-800 dark:text-green-200 font-medium">{t('benefits.free')}</span>
           </div>
           <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
