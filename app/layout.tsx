@@ -17,9 +17,8 @@ export const metadata: Metadata = {
   publisher: 'MG Digital Solutions',
   metadataBase: new URL('https://webcheck360.de'),
   alternates: {
-    canonical: 'https://webcheck360.de',
     languages: {
-      'de': 'https://webcheck360.de/de',
+      'de': 'https://webcheck360.de/',
       'en': 'https://webcheck360.de/en',
     },
   },
