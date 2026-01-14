@@ -1,14 +1,32 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Zap, Shield, TrendingUp, Phone, MessageCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle, Zap, Shield, TrendingUp, Phone, MessageCircle, Menu, X, Send } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { CookieBanner } from '@/components/ui/cookie-banner';
 
 export default function HomePage() {
   const t = useTranslations();
   const locale = useLocale();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormStatus('sending');
+    
+    // Simulate form submission - in production, send to your API
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setFormStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch {
+      setFormStatus('error');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-dark-950 dark:to-dark-900">
@@ -22,6 +40,17 @@ export default function HomePage() {
               </div>
               <span className="font-bold text-xl">WebCheck360</span>
             </div>
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-6">
+              <Link href={`/${locale}/funnel`} className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
+                Website analysieren
+              </Link>
+              <a href="#kontakt" className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium">
+                Kontakt
+              </a>
+            </nav>
+            
             <div className="flex items-center gap-4">
               {/* Telefonnummer - für besseren Trust Score */}
               <a
@@ -44,8 +73,56 @@ export default function HomePage() {
                 WhatsApp
               </a>
               <LanguageSwitcher />
+              
+              {/* Mobile Menu Button (Hamburger) */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-dark-800 transition-colors hamburger menu-toggle"
+                aria-label="Menü öffnen"
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
+          
+          {/* Mobile Navigation Menu */}
+          {mobileMenuOpen && (
+            <nav className="md:hidden py-4 border-t border-gray-200 dark:border-dark-800 mobile-menu mobile-nav">
+              <div className="flex flex-col gap-4">
+                <Link 
+                  href={`/${locale}/funnel`} 
+                  className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Website analysieren
+                </Link>
+                <a 
+                  href="#kontakt" 
+                  className="text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Kontakt
+                </a>
+                <a
+                  href="tel:+4922039424878"
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors font-medium py-2"
+                >
+                  <Phone className="w-4 h-4" />
+                  +49 2203 9424878
+                </a>
+                <a
+                  href="https://wa.me/491632670137?text=Hallo%2C%20ich%20interessiere%20mich%20f%C3%BCr%20WebCheck360"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-green-500 font-medium py-2"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp schreiben
+                </a>
+              </div>
+            </nav>
+          )}
         </div>
       </header>
 
@@ -173,6 +250,93 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Contact Form Section */}
+        <section id="kontakt" className="max-w-2xl mx-auto mt-32 px-4">
+          <div className="bg-white dark:bg-dark-900 rounded-2xl p-8 border border-gray-200 dark:border-dark-800 shadow-lg">
+            <h2 className="text-3xl font-bold text-center mb-2">Kontakt aufnehmen</h2>
+            <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
+              Haben Sie Fragen? Schreiben Sie uns eine Nachricht!
+            </p>
+            
+            <form onSubmit={handleSubmit} className="space-y-6 contact-form" name="contact">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                  placeholder="Ihr Name"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  E-Mail
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                  placeholder="ihre@email.de"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Nachricht
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-700 bg-white dark:bg-dark-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors resize-none"
+                  placeholder="Ihre Nachricht..."
+                />
+              </div>
+              
+              <button
+                type="submit"
+                disabled={formStatus === 'sending'}
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-black font-bold text-lg hover:shadow-xl hover:shadow-primary-500/30 transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {formStatus === 'sending' ? (
+                  'Wird gesendet...'
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    Nachricht senden
+                  </>
+                )}
+              </button>
+              
+              {formStatus === 'success' && (
+                <p className="text-center text-green-500 font-medium">
+                  ✓ Vielen Dank! Ihre Nachricht wurde gesendet.
+                </p>
+              )}
+              
+              {formStatus === 'error' && (
+                <p className="text-center text-red-500 font-medium">
+                  Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
+                </p>
+              )}
+            </form>
+          </div>
+        </section>
       </main>
 
       {/* Cookie Banner */}
