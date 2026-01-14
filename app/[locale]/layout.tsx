@@ -130,7 +130,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <link rel="canonical" href={`https://webcheck360.de/${locale}`} />
+        <link rel="canonical" href={locale === 'de' ? 'https://webcheck360.de/' : `https://webcheck360.de/${locale}`} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
