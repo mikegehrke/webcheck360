@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle, Zap, Shield, TrendingUp, Phone, MessageCircle, Menu, X, Send } from 'lucide-react';
 import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { CookieBanner } from '@/components/ui/cookie-banner';
+import { ExitIntentPopup } from '@/components/ui/exit-intent-popup';
+import { ABTest } from '@/components/ui/ab-test';
+import { ProgressiveInfo } from '@/components/ui/progressive-info';
 
 export default function HomePage() {
   const t = useTranslations();
@@ -13,6 +16,42 @@ export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [showExitIntent, setShowExitIntent] = useState(false);
+  const [mouseLeaveCount, setMouseLeaveCount] = useState(0);
+
+  // Exit intent detection
+  useEffect(() => {
+    let exitIntentTimer: NodeJS.Timeout;
+
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0 && !showExitIntent) {
+        setMouseLeaveCount(prev => prev + 1);
+        
+        // Show popup on second mouse leave attempt
+        if (mouseLeaveCount >= 1) {
+          setShowExitIntent(true);
+        } else {
+          // Micro-interaction: subtle notification on first leave
+          const notification = document.createElement('div');
+          notification.innerHTML = '⚡ Warten Sie! Kostenloser Website-Check dauert nur 60 Sekunden...';
+          notification.className = 'fixed top-4 right-4 z-50 bg-orange-500 text-white px-4 py-2 rounded-lg shadow-lg animate-bounce text-sm';
+          document.body.appendChild(notification);
+          
+          setTimeout(() => {
+            document.body.removeChild(notification);
+          }, 3000);
+        }
+      }
+    };
+
+    // Add mouse leave detection
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      if (exitIntentTimer) clearTimeout(exitIntentTimer);
+    };
+  }, [showExitIntent, mouseLeaveCount]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -180,9 +219,39 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-            {t('funnel.title')}
-          </h1>
+          {/* A/B Test Headlines */}
+          <ABTest
+            testName="homepage_headline"
+            variants={[
+              {
+                id: 'original',
+                component: (
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                    {t('funnel.title')}
+                  </h1>
+                ),
+                weight: 1
+              },
+              {
+                id: 'urgency',
+                component: (
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                    <span className="text-orange-500">60 Sekunden:</span> Kostenloser Website-Check mit Sofort-Ergebnis
+                  </h1>
+                ),
+                weight: 1
+              },
+              {
+                id: 'benefit',
+                component: (
+                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+                    Erhalten Sie <span className="bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">mehr Kundenanfragen</span> durch Website-Optimierung
+                  </h1>
+                ),
+                weight: 1
+              }
+            ]}
+          />
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
             {t('funnel.subtitle')}
           </p>
@@ -447,6 +516,20 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Cookie Banner */}
+      <CookieBanner />
+      
+      {/* Exit Intent Popup */}
+      {showExitIntent && (
+        <ExitIntentPopup
+          onClose={() => setShowExitIntent(false)}
+          onConvert={() => {
+            setShowExitIntent(false);
+            window.location.href = `/${locale}/funnel`;
+          }}
+        />
+      )}
     </div>
   );
 }
