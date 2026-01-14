@@ -163,6 +163,23 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Dynamic Pricing Display */}
+          <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 rounded-2xl p-6 border border-red-200 dark:border-red-800 mb-8">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">LIMITIERT</span>
+                <span className="text-red-600 dark:text-red-400 font-semibold">Normalpreis €199</span>
+                <span className="line-through text-gray-500">€199</span>
+              </div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                Heute: 100% KOSTENLOS
+              </div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Sparen Sie €199 - Keine Kreditkarte erforderlich
+              </p>
+            </div>
+          </div>
+
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
             {t('funnel.title')}
           </h1>

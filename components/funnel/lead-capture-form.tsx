@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Mail, User, ArrowRight, X } from 'lucide-react';
+import { Mail, User, ArrowRight, X, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+import { MLLeadScoring } from '@/lib/ml-lead-scoring';
+import { scheduleEmailSequence } from '@/lib/smart-retargeting';
 
 interface LeadCaptureFormProps {
   auditId: string;
@@ -34,15 +36,43 @@ export function LeadCaptureForm({ auditId, onSuccess, onSkip }: LeadCaptureFormP
     setIsLoading(true);
 
     try {
+      // Calculate lead score before submission
+      const leadScoringData = {
+        timeOnSite: Date.now() - (parseInt(sessionStorage.getItem('sessionStart') || '0')),
+        pageViews: parseInt(sessionStorage.getItem('pageViews') || '1'),
+        hasEmail: true,
+        deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' as const : 'desktop' as const,
+        trafficSource: document.referrer ? 'referral' : 'direct',
+        hasInteracted: true,
+        websiteScore: parseInt(sessionStorage.getItem('lastAnalysisScore') || '50')
+      };
+
+      const leadScore = MLLeadScoring.calculateScore(leadScoringData);
+
       const response = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ audit_id: auditId, name, email, consent }),
+        body: JSON.stringify({ 
+          audit_id: auditId, 
+          name, 
+          email, 
+          consent,
+          lead_score: leadScore.score,
+          lead_category: leadScore.category
+        }),
       });
 
       if (!response.ok) {
         throw new Error('Lead konnte nicht gespeichert werden');
       }
+
+      // Schedule smart email sequence based on score
+      scheduleEmailSequence(email, leadScoringData.websiteScore, {
+        name,
+        score: leadScoringData.websiteScore,
+        category: leadScore.category,
+        industry: sessionStorage.getItem('industry') || 'general'
+      });
 
       onSuccess?.();
     } catch (err) {
