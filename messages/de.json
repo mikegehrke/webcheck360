@@ -198,6 +198,22 @@
     }
   },
   "home": {
+    "headline": {
+      "variant1": {
+        "highlight": "60 Sekunden",
+        "text": "– Kostenloser Website-Check ·",
+        "accent": "100% GRATIS"
+      },
+      "variant2": {
+        "highlight": "60 Sekunden:",
+        "text": "Kostenloser Website-Check mit Sofort-Ergebnis"
+      },
+      "variant3": {
+        "text1": "Erhalten Sie",
+        "highlight": "mehr Kundenanfragen",
+        "text2": "durch Website-Optimierung"
+      }
+    },
     "features": {
       "performance": {
         "title": "Performance",

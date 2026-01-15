@@ -198,6 +198,22 @@
     }
   },
   "home": {
+    "headline": {
+      "variant1": {
+        "highlight": "60 Seconds",
+        "text": "– Free Website Check ·",
+        "accent": "100% FREE"
+      },
+      "variant2": {
+        "highlight": "60 Seconds:",
+        "text": "Free Website Check with Instant Results"
+      },
+      "variant3": {
+        "text1": "Get",
+        "highlight": "More Customer Inquiries",
+        "text2": "through Website Optimization"
+      }
+    },
     "features": {
       "performance": {
         "title": "Performance",

@@ -228,7 +228,7 @@ export default function HomePage() {
                 id: 'original',
                 component: (
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
-                    <span className="text-orange-500">60 Sekunden</span> – Kostenloser Website-Check · <span className="bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">100% GRATIS</span>
+                    <span className="text-orange-500">{t('home.headline.variant1.highlight')}</span> {t('home.headline.variant1.text')} <span className="bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">{t('home.headline.variant1.accent')}</span>
                   </h1>
                 ),
                 weight: 1
@@ -237,7 +237,7 @@ export default function HomePage() {
                 id: 'urgency',
                 component: (
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
-                    <span className="text-orange-500">60 Sekunden:</span> Kostenloser Website-Check mit Sofort-Ergebnis
+                    <span className="text-orange-500">{t('home.headline.variant2.highlight')}</span> {t('home.headline.variant2.text')}
                   </h1>
                 ),
                 weight: 1
@@ -246,7 +246,7 @@ export default function HomePage() {
                 id: 'benefit',
                 component: (
                   <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 min-h-[120px] sm:min-h-[140px] lg:min-h-[160px]">
-                    Erhalten Sie <span className="bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">mehr Kundenanfragen</span> durch Website-Optimierung
+                    {t('home.headline.variant3.text1')} <span className="bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">{t('home.headline.variant3.highlight')}</span> {t('home.headline.variant3.text2')}
                   </h1>
                 ),
                 weight: 1
